@@ -5,6 +5,8 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using System.Collections.Generic;
 using Landis.Utilities;
+using System.Data;
+using System;
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -113,6 +115,8 @@ namespace Landis.Extension.Succession.ForC
             InputVar<string> sDisturbType = new InputVar<string>("Disturbance Type");
             InputVar<int> nIntensity = new InputVar<int>("Intensity");
             InputVar<int> nBiomassPoolID = new InputVar<int>("Biomass Pool ID");
+            InputVar<string> sEcoregion = new InputVar<string>("Ecoregion");
+            InputVar<string> sSpecies = new InputVar<string>("Species");
             int nread = 0;
             int neco = 0;
 
@@ -469,51 +473,41 @@ namespace Landis.Extension.Succession.ForC
 
             //-------------------------
             //  Eco-Spp-DOM Pool Parameters
-            ReadName(Names.EcoSppDOMParms);
+            InputVar<string> ecoSppDOMInputFile = new InputVar<string>(Names.EcoSppDOMParms);
+            ReadVar(ecoSppDOMInputFile);
             speciesLineNums.Clear();  //  If parser re-used (i.e., for testing purposes)
 
-            InputVar<string> sEcoregion = new InputVar<string>("Ecoregion");
-            InputVar<string> sSpecies = new InputVar<string>("Species");
-            InputVar<double> dDecayRate = new InputVar<double>("Base Decay Rate");
-            InputVar<double> dAmountT0 = new InputVar<double>("Initial Amount");
-            InputVar<double> dQ10 = new InputVar<double>("Q10");
-
-            lastColumn = "the " + dAmountT0.Name + " column";
+            CSVParser ecoSppDOMParser = new CSVParser();
+            DataTable ecoSppDOMTable = ecoSppDOMParser.ParseToDataTable(ecoSppDOMInputFile.Value);
 
             nread = 0;
-            while (!AtEndOfInput && (CurrentName != Names.ForCSProportions))
+            foreach (DataRow row in ecoSppDOMTable.Rows)
             {
-                currentLine = new StringReader(CurrentLine);
+                IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
+                ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
+                int nDOMPID = System.Convert.ToInt32(row["DOMPool"]);
 
-                ReadValue(sEcoregion, currentLine);
-                IEcoregion ecoregion = GetEcoregion(sEcoregion.Value);
+                if ((nDOMPID <= 0) || (nDOMPID > SoilClass.NUMSOILPOOLS))
+                    throw new InputValueException("nDOMPoolID", "EcoSppDOMParamters: {0} is not a valid DOM pool ID.", nDOMPID);
 
-                ReadValue(sSpecies, currentLine);
-                ISpecies species = GetSpecies(sSpecies.Value);
-
-                ReadValue(nDOMPoolID, currentLine);
-                if ((nDOMPoolID.Value <= 0) || (nDOMPoolID.Value > SoilClass.NUMSOILPOOLS))
-                    throw new InputValueException("nDOMPoolID", "EcoSppDOMParamters: {0} is not a valid DOM pool ID.", nDOMPoolID.Value.Actual);
-                
-                ReadValue(dDecayRate, currentLine);
-                ReadValue(dAmountT0, currentLine);
-                ReadValue(dQ10, currentLine);
+                double decayRate = System.Convert.ToDouble(row["DecayRate"]);
+                double amountT0 = System.Convert.ToDouble(row["AmountT0"]);
+                double q10 = System.Convert.ToDouble(row["Q10"]);
 
                 // Convert from a 1-base to 0-base. (Don't need to do that because user enters the actual DOM pool)
-                parameters.SetDOMDecayRate(ecoregion, species, nDOMPoolID.Value - 1, dDecayRate.Value);
-                parameters.SetDOMPoolAmountT0(ecoregion, species, nDOMPoolID.Value - 1, dAmountT0.Value);
-                parameters.SetDOMPoolQ10(ecoregion, species, nDOMPoolID.Value - 1, dQ10.Value);
+                parameters.SetDOMDecayRate(ecoregion, species, nDOMPID - 1, decayRate);
+                parameters.SetDOMPoolAmountT0(ecoregion, species, nDOMPID - 1, amountT0);
+                parameters.SetDOMPoolQ10(ecoregion, species, nDOMPID - 1, q10);
 
                 nread += 1;
-                
-                CheckNoDataAfter(lastColumn, currentLine);
-                GetNextLine();
             }
             if (nread < neco * speciesDataset.Count * SoilClass.NUMSOILPOOLS)
             {
                 int missrow = (neco * speciesDataset.Count * SoilClass.NUMSOILPOOLS - nread);
                 throw new InputValueException(nDOMPoolID.Name, "{0} rows were missing from the EcoSppDOMParamters table.", missrow);
             }
+
+            GetNextLine();
 
             //-------------------------
             //  ForCSProportions
@@ -544,138 +538,136 @@ namespace Landis.Extension.Succession.ForC
 
             //-------------------------
             //  ANPPTimeSeries
-            ReadName(Names.ANPPTimeSeries);
-            InputVar<int> nYear = new InputVar<int>("Year");
-            InputVar<double> dANPP = new InputVar<double>("ANPP grams per m2-year");
-            InputVar<double> dStdDev = new InputVar<double>("ANPP Std Dev.");
-            int firstYear = -999;
-            nread = 0;
-            while (!AtEndOfInput && (CurrentName != Names.MaxBiomassTimeSeries))
-            {
-                currentLine = new StringReader(CurrentLine);
+            InputVar<string> ANPPTimeSeriesInputFile = new InputVar<string>(Names.ANPPTimeSeries);
+            ReadVar(ANPPTimeSeriesInputFile);
 
-                ReadValue(nYear, currentLine);
+            CSVParser ANPPTimeSeriesParser = new CSVParser();
+            DataTable ANPPTimeSeriesTable = ANPPTimeSeriesParser.ParseToDataTable(ANPPTimeSeriesInputFile.Value);
+
+            nread = 0;
+            int firstYear = -999;
+            int nYear = 0;
+            double dANPP = 0;
+            double dStdDev = 0;
+            foreach (DataRow row in ANPPTimeSeriesTable.Rows)
+            {
+                IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
+                ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
+
+                nYear = System.Convert.ToInt32(row["Year"]);
                 //if (nYear.Value < 0)
                 //    throw new InputValueException(nYear.Name, "ANPP: {0} is not a valid year.", nYear.ToString());
 
                 if (firstYear == -999)
                 {
-                    if (nYear.Value > 0)
-                        throw new InputValueException(nYear.Name, "The first year for ANPP must be <=0.");
+                    if (nYear > 0)
+                        throw new InputValueException("Year", "The first year for ANPP must be <=0.");
                     firstYear = 1;
                 }
-
-                ReadValue(sEcoregion, currentLine);
-                IEcoregion ecoregion = GetEcoregion(sEcoregion.Value);
-
-                ReadValue(sSpecies, currentLine);
-                ISpecies species = GetSpecies(sSpecies.Value);
-
-                ReadValue(dANPP, currentLine);
-                ReadValue(dStdDev, currentLine);
+                dANPP = System.Convert.ToDouble(row["ANPP"]);
+                dStdDev = System.Convert.ToDouble(row["ANPP-Std"]);
 
                 // Comment out the 2 lines below if we don't care if multiple rows with the
                 // same (ecoregion, species, year) tuple exist.
-                if (parameters.ANPPTimeCollection[ecoregion][species].Contains(new ANPP(nYear.Value, 0.0, 0.0)))
-                    throw new InputValueException(nYear.Name, "ANPP: Year {0} is already entered for the given ecoregion '{1}' and species '{2}'.", nYear.ToString(), ecoregion.Name, species.Name);
+                if (parameters.ANPPTimeCollection[ecoregion][species].Contains(new ANPP(nYear, 0.0, 0.0)))
+                    throw new InputValueException("Year", "ANPP: Year {0} is already entered for the given ecoregion '{1}' and species '{2}'.", nYear.ToString(), ecoregion.Name, species.Name);
 
                 // Create a ANPP object and add it to the time series.
-                parameters.ANPPTimeCollection[ecoregion][species].Add(new ANPP(nYear.Value, dANPP.Value, dStdDev.Value));
+                parameters.ANPPTimeCollection[ecoregion][species].Add(new ANPP(nYear, dANPP, dStdDev));
 
-                if (nYear.Value == 0)
+                if (nYear == 0)
                     nread += 1;
-
-                CheckNoDataAfter(lastColumn, currentLine);
-                GetNextLine();
             }
-
             if (firstYear == -999)
-                throw new InputValueException(nYear.Name, "No data were entered for ANPP. You must enter at least year 0.");
+                throw new InputValueException("Year", "No data were entered for ANPP. You must enter at least year 0.");
 
             if (nread < neco * speciesDataset.Count)
                 throw new InputValueException("ANPP", "ANPP values were not entered for year 0 for all species and ecoregions! Please check.");
-                //PlugIn.ModelCore.UI.WriteLine("ANPP: ANPP values wre not entered for year 0 for all species and ecoregions! Please check.");
+            //PlugIn.ModelCore.UI.WriteLine("ANPP: ANPP values wre not entered for year 0 for all species and ecoregions! Please check.");
+
+            GetNextLine();
 
             //-------------------------
             //  Maximum Biomass TimeSeries
-            ReadName(Names.MaxBiomassTimeSeries);
-            InputVar<double> dMaxBiomass = new InputVar<double>("MaxBiomass grams per m2");
-            firstYear = -999;
-            nread = 0;
-            while (!AtEndOfInput && (CurrentName != Names.EstablishProbabilities))
-            {
-                currentLine = new StringReader(CurrentLine);
+            InputVar<string> maxBiomassTimeSeriesInputFile = new InputVar<string>(Names.MaxBiomassTimeSeries);
+            ReadVar(maxBiomassTimeSeriesInputFile);
 
-                ReadValue(nYear, currentLine);
+            CSVParser maxBiomassTimeSeriesParser = new CSVParser();
+            DataTable maxBiomassTimeSeriesTable = maxBiomassTimeSeriesParser.ParseToDataTable(maxBiomassTimeSeriesInputFile.Value);
+
+            nread = 0;
+            firstYear = -999;
+            nYear = 0;
+            double dMaxBiomass = 0;
+            foreach (DataRow row in maxBiomassTimeSeriesTable.Rows)
+            {
+                IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
+                ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
+
+                nYear = System.Convert.ToInt32(row["Year"]);
+                //if (nYear.Value < 0)
+                //    throw new InputValueException(nYear.Name, "ANPP: {0} is not a valid year.", nYear.ToString());
 
                 if (firstYear == -999)
                 {
-                    if (nYear.Value > 0)
-                        throw new InputValueException(nYear.Name, "The first year for MaxBiomass must be <=0.");
+                    if (nYear > 0)
+                        throw new InputValueException("Year", "The first year for MaxBiomass must be <=0.");
                     firstYear = 1;
                 }
 
-                ReadValue(sEcoregion, currentLine);
-                IEcoregion ecoregion = GetEcoregion(sEcoregion.Value);
-
-                ReadValue(sSpecies, currentLine);
-                ISpecies species = GetSpecies(sSpecies.Value);
-
-                ReadValue(dMaxBiomass, currentLine);
+                dMaxBiomass = System.Convert.ToDouble(row["MaxBiomass"]);
 
                 // Create a MaxBiomass object and add it to the time series.
 
-                parameters.MaxBiomassTimeCollection[ecoregion][species].Add(new MaxBiomass(nYear.Value, dMaxBiomass.Value, 0.0));
+                parameters.MaxBiomassTimeCollection[ecoregion][species].Add(new MaxBiomass(nYear, dMaxBiomass, 0.0));
 
-                if (nYear.Value == 0)
+                if (nYear == 0)
                     nread += 1;
-
-                CheckNoDataAfter(lastColumn, currentLine);
-                GetNextLine();
             }
-
             if (firstYear == -999)
-                throw new InputValueException(nYear.Name, "No data were entered for MaxBiomass. You must enter at least year 0.");
+                throw new InputValueException("Year", "No data were entered for MaxBiomass. You must enter at least year 0.");
 
             if (nread < neco * speciesDataset.Count)
                 throw new InputValueException("MaxBiomass", "MaxBiomass values wre not entered for year 0 for all species and ecoregions! Please check.");
 
+            GetNextLine();
+
             //-------------------------
             //  EstablishProbabilities
-            ReadName(Names.EstablishProbabilities);
-            InputVar<double> dEstProb = new InputVar<double>("Establish Probability");
+            InputVar<string> establishProbabilitiesInputFile = new InputVar<string>(Names.EstablishProbabilities);
+            ReadVar(establishProbabilitiesInputFile);
+
+            CSVParser establishProbabilitiesParser = new CSVParser();
+            DataTable establishProbabilitiesTable = establishProbabilitiesParser.ParseToDataTable(establishProbabilitiesInputFile.Value);
+
             nread = 0;
-            while (!AtEndOfInput && (CurrentName != Names.RootDynamics))
+            nYear = 0;
+            double dEstProb = 0;
+            foreach (DataRow row in establishProbabilitiesTable.Rows)
             {
-                currentLine = new StringReader(CurrentLine);
+                IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
+                ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
 
-                ReadValue(nYear, currentLine);
-                if (nYear.Value < 0)
-                    throw new InputValueException(nYear.Name, "{0} is not a valid year.", nYear.ToString());
+                nYear = System.Convert.ToInt32(row["Year"]);
 
-                ReadValue(sEcoregion, currentLine);
-                IEcoregion ecoregion = GetEcoregion(sEcoregion.Value);
+                if (nYear < 0)
+                    throw new InputValueException("Year", "{0} is not a valid year.", nYear.ToString());
 
-                ReadValue(sSpecies, currentLine);
-                ISpecies species = GetSpecies(sSpecies.Value);
-
-                ReadValue(dEstProb, currentLine);
+                dEstProb = System.Convert.ToDouble(row["Probability"]);
 
                 //if (parameters.EstabProbTimeCollection[ecoregion][species].Contains(new EstabProb(nYear.Value, 0.0)))
                 //    throw new InputValueException(nYear.Name, "Year {0} is already entered for the given ecoregion '{1}' and species '{2}'.", nYear.ToString(), ecoregion.Name, species.Name);
 
                 // Create an EstablishmentProbability object.
                 //parameters.SetEstablishProbability(ecoregion, species, dEstProb.Value);
-                parameters.EstabProbTimeCollection[ecoregion][species].Add(new EstabProb(nYear.Value, dEstProb.Value));
+                parameters.EstabProbTimeCollection[ecoregion][species].Add(new EstabProb(nYear, dEstProb));
 
                 nread += 1;
-                CheckNoDataAfter(lastColumn, currentLine);
-                GetNextLine();
             }
             if (nread < neco * speciesDataset.Count)
                 throw new InputValueException("Establishment Probabilities", "EstablishmentProbabilities: Establishment probabilities were not entered for all species and ecoregions! Please check.");
-            //PlugIn.ModelCore.UI.WriteLine("EstablishmentProbabilities: Establishment probabilities were not entered for all species and ecoregions! Please check.");
 
+            GetNextLine();
 
             //-------------------------
             //  Root Dynamics
@@ -974,6 +966,28 @@ namespace Landis.Extension.Succession.ForC
             else
                 return (true);
 
+        }
+
+        //---------------------------------------------------------------------
+        private IEcoregion GetEcoregion(string ecoName)
+        {
+            IEcoregion ecoregion = PlugIn.ModelCore.Ecoregions[ecoName];
+            if (ecoregion == null)
+                throw new InputValueException(ecoName,
+                                              "{0} is not an ecoregion name.",
+                                              ecoName);
+
+            return ecoregion;
+        }
+        //---------------------------------------------------------------------
+        private ISpecies ReadSpecies(string speciesName)
+        {
+            ISpecies species = PlugIn.ModelCore.Species[speciesName.Trim()];
+            if (species == null)
+                throw new InputValueException(speciesName,
+                                              "{0} is not a species name.",
+                                              speciesName);
+            return species;
         }
 
     }
