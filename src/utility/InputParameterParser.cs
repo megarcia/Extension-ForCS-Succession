@@ -507,8 +507,6 @@ namespace Landis.Extension.Succession.ForC
                 throw new InputValueException(nDOMPoolID.Name, "{0} rows were missing from the EcoSppDOMParamters table.", missrow);
             }
 
-            GetNextLine();
-
             //-------------------------
             //  ForCSProportions
             ReadName(Names.ForCSProportions);
@@ -585,8 +583,6 @@ namespace Landis.Extension.Succession.ForC
                 throw new InputValueException("ANPP", "ANPP values were not entered for year 0 for all species and ecoregions! Please check.");
             //PlugIn.ModelCore.UI.WriteLine("ANPP: ANPP values wre not entered for year 0 for all species and ecoregions! Please check.");
 
-            GetNextLine();
-
             //-------------------------
             //  Maximum Biomass TimeSeries
             InputVar<string> maxBiomassTimeSeriesInputFile = new InputVar<string>(Names.MaxBiomassTimeSeries);
@@ -630,8 +626,6 @@ namespace Landis.Extension.Succession.ForC
             if (nread < neco * speciesDataset.Count)
                 throw new InputValueException("MaxBiomass", "MaxBiomass values wre not entered for year 0 for all species and ecoregions! Please check.");
 
-            GetNextLine();
-
             //-------------------------
             //  EstablishProbabilities
             InputVar<string> establishProbabilitiesInputFile = new InputVar<string>(Names.EstablishProbabilities);
@@ -666,8 +660,6 @@ namespace Landis.Extension.Succession.ForC
             }
             if (nread < neco * speciesDataset.Count)
                 throw new InputValueException("Establishment Probabilities", "EstablishmentProbabilities: Establishment probabilities were not entered for all species and ecoregions! Please check.");
-
-            GetNextLine();
 
             //-------------------------
             //  Root Dynamics
