@@ -650,6 +650,46 @@ namespace Landis.Extension.Succession.ForC
             //Debug.Assert(ecoregion != null);
             this.m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0);
         }
+
+        //---------------------------------------------------------------------
+        public void SetDOMDecayRate(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
+        {
+            //Debug.Assert(ecoregion != null);
+            if (newValue == 0 && idxDOMPool != 9)
+            {
+                string strCombo = "Ecoregion: " + ecoregion.Name;
+                strCombo += " species: " + species.Name;
+                int actPool = idxDOMPool + 1;
+                strCombo += " DOMPool: ";
+                strCombo += actPool;
+                PlugIn.ModelCore.UI.WriteLine("Warning: Decay rate for " + strCombo + " is 0. No decay will occur.");
+            }
+            this.m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 0.0, 1.0, "DOMDecayRate");
+        }
+        //---------------------------------------------------------------------
+        public void SetDOMPoolAmountT0(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
+        {
+            //Debug.Assert(ecoregion != null);
+            if (newValue < 0)
+                throw new InputValueException("DOMPoolAmountT0", "DOMPoolAmountT0 is not greater than 0.");
+            if (newValue == 0 && idxDOMPool != 9)
+            {
+                string strCombo = "Ecoregion: " + ecoregion.Name;
+                strCombo += " species: " + species.Name;
+                int actPool = idxDOMPool + 1;
+                strCombo += " DOMPool: ";
+                strCombo += actPool;
+                PlugIn.ModelCore.UI.WriteLine("Warning: Initial DOM value for " + strCombo + " is 0. This can cause modelling artifacts.");
+            }
+            this.m_aDOMPoolAmountT0[ecoregion][species][idxDOMPool] = newValue;
+        }
+        //---------------------------------------------------------------------
+        public void SetDOMPoolQ10(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
+        {
+            //Debug.Assert(ecoregion != null);
+            this.m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0, "DOMPoolQ10");
+        }
+
         //---------------------------------------------------------------------
 
         public void SetDOMInitialVFastAG(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue)

@@ -86,6 +86,20 @@ namespace Landis.Extension.Succession.ForC
             }
             return newValue.Actual;
         }
+
+        //---------------------------------------------------------------------
+
+        public static double CheckBiomassParm(double newValue,
+                                                    double minValue,
+                                                    double maxValue,
+                                                    string name)
+        {
+            if (newValue < minValue || newValue > maxValue)
+                throw new InputValueException(name,
+                                              "{0} is not between {1:0.0} and {2:0.0}",
+                                              name, minValue, maxValue);
+            return newValue;
+        }
         //---------------------------------------------------------------------
 
         public static int CheckBiomassParm(InputValue<int> newValue,
