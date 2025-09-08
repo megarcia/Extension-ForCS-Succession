@@ -117,8 +117,6 @@ namespace Landis.Extension.Succession.ForC
             Cohort.MortalityEvent += CohortMortality;
             //Landis.Library.UniversalCohorts.Cohort.DeathEvent += CohortTotalMortality;
 
-            AgeOnlyDisturbances.Module.Initialize();
-
             InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
         }
 

@@ -31,7 +31,6 @@ namespace Landis.Extension.Succession.ForC
             public const string LightEstablishmentTable = "LightEstablishmentTable";
             public const string SpeciesParameters = "SpeciesParameters";
             public const string FireReductionParameters = "FireReductionParameters";
-            public const string AgeOnlyDisturbanceParms = "AgeOnlyDisturbances:BiomassParameters";
             public const string DOMPools = "DOMPools";
             public const string EcoSppDOMParms = "EcoSppDOMParameters";
             public const string ForCSProportions = "ForCSProportions";
