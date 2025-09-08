@@ -120,40 +120,4 @@ namespace Landis.Extension.Succession.ForC
             FineRootTurnover = FineRoot * SpeciesData.FineTurnover[species][ecoregion][i];
         }   
     }
-
-
-    //--------------------------------------------------------
-    // A place to hold the initial snag information
-    //--------------------------------------------------------
-    public class Snags
-    {
-
-        public static bool bSnagsPresent = false;
-        private double[,] BioSnag = new double[2, PlugIn.ModelCore.Species.Count];
-        public const int NUMSNAGS = 1000;
-
-        public static int[] DiedAt = new int[NUMSNAGS];
-        public static int[] initSpecIdx = new int[NUMSNAGS];
-        public static int[] initSnagAge = new int[NUMSNAGS];
-        public static string[] initSnagDist = new string[NUMSNAGS];
-        public static bool[] bSnagsUsed = new bool[NUMSNAGS];     //flag for if this site contained this snag type.
-
-        public static void Initialize(IInputSnagParms parameters)
-        {
-            if (parameters != null)
-            {
-                bSnagsPresent = true;
-                for (int i = 0; i < NUMSNAGS; i++)
-                {
-                    DiedAt[i] = parameters.SnagAgeAtDeath[i];
-                    initSnagAge[i] = parameters.SnagTimeSinceDeath[i];
-                    initSpecIdx[i] = parameters.SnagSpecies[i];
-                    initSnagDist[i] = parameters.SnagDisturb[i];
-                    bSnagsUsed[i] = false;
-                }
-            }
-        }
-
-    }
-
 }
