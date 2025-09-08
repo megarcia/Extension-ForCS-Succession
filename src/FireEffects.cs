@@ -4,7 +4,6 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Utilities;
 using Landis.Library.UniversalCohorts;
-
 using System;
 using System.Collections.Generic;
 
@@ -14,9 +13,7 @@ namespace Landis.Extension.Succession.ForC
     {
         public const int mk_nIntensityCount = 5;
 
-        //---------------------------------------------------------------------
-
-        // Crown scorching is when a cohort to loses its foliage but is not killed.
+        // Crown scorching, when a cohort loses its foliage but is not killed.
         public static double CrownScorching(ICohort cohort, byte siteSeverity)
         {
 
@@ -32,24 +29,7 @@ namespace Landis.Extension.Succession.ForC
                 if (difference > 0)
                     return 1.0 * ageFraction;
             }
-
-            //Reset fire severity ???
-            //SiteVars.FireSeverity[site] = 0;
-
             return 0.0;
-        }
-
-    }
-
-
-    public class ForestFloor
-    {
-        //this routine is called from disturbances such as drought
-        //public void DisturbanceImpactsBiomass(ActiveSite site, ISpecies species, int age, double wood, double nonwood, string DistTypeName, int tmpFireSeverity)
-        public static void DisturbanceImpactsBiomass(ActiveSite site, ISpecies species, int age, double wood, double nonwood, string DistTypeName, int tmpFireSeverity)
-        {
-            SiteVars.soilClass[site].DisturbanceImpactsBiomass(site, species, age, wood, nonwood, DistTypeName, 0);  
-            int iage = age;
         }
     }
 }
