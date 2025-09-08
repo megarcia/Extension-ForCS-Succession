@@ -7,7 +7,7 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public interface IInputDMParameters
     {
-        IDictionary<int, IDOMPool> DOMPools { get;}
+        IDictionary<int, IDOMPool> DOMPools { get; }
         /// <summary>
         /// Returns an array of IDisturbTransferFromPools objects, indexed by a 0-based severity level.
         /// </summary>
