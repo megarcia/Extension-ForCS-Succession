@@ -23,17 +23,6 @@ namespace Landis.Extension.Succession.ForC
         BlackCarbon
     };
 
-    public interface IDOMPool
-    {
-        int ID { get; }
-
-        string Name { get; }
-
-        double Q10 { get; }
-
-        double PropAir { get; }
-    }
-
     public class DOMPool : IDOMPool
     {
         private int m_nID;
