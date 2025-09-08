@@ -14,7 +14,7 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public interface IInputClimateParms
     {
-        Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimate>> ClimateAnnualCollection { get; }
+        Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>> ClimateAnnualCollection { get; }
 
     }
 
@@ -22,20 +22,20 @@ namespace Landis.Extension.Succession.ForC
     public class InputClimateParms
         : IInputClimateParms
     {
-        private Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimate>> m_ClimateAnnualCollection; 
+        private Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>> m_ClimateAnnualCollection; 
         private IEcoregionDataset m_dsEcoregion;
 
         public InputClimateParms()
         {
             this.m_dsEcoregion = PlugIn.ModelCore.Ecoregions;
-            this.m_ClimateAnnualCollection = new Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimate>>(m_dsEcoregion);
+            this.m_ClimateAnnualCollection = new Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>>(m_dsEcoregion);
             foreach (IEcoregion ecoregion in m_dsEcoregion)
             {
-                this.m_ClimateAnnualCollection[ecoregion] = new TimeCollection<IClimate>();
+                this.m_ClimateAnnualCollection[ecoregion] = new TimeCollection<IClimateAnnual>();
             }
 
          }
-        public Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimate>> ClimateAnnualCollection { get { return m_ClimateAnnualCollection; } }
+        public Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>> ClimateAnnualCollection { get { return m_ClimateAnnualCollection; } }
 
         //---------------------------------------------------------------------
 

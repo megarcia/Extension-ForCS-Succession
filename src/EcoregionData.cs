@@ -183,7 +183,7 @@ namespace Landis.Extension.Succession.ForC
         {
             int usetime = PlugIn.ModelCore.CurrentTime;
             if (spinupyear < 0) usetime = spinupyear;
-            IClimate climatetemperature;
+            IClimateAnnual climatetemperature;
 
             for (int y = 0; y < years; ++y)
             {
