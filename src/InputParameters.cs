@@ -405,24 +405,6 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        //---------------------------------------------------------------------
-
-        public string AgeOnlyDisturbanceParms
-        {
-            get
-            {
-                return ageOnlyDisturbanceParms;
-            }
-            set
-            {
-                string path = value;
-                if (path.Trim(null).Length == 0)
-                    throw new InputValueException(path, "\"{0}\" is not a valid path.", path);
-                ageOnlyDisturbanceParms = value;
-            }
-        }
-
-
         public void SetOutputBiomass(InputValue<int> newValue)
         {
             System.Diagnostics.Debug.Assert(newValue != null);

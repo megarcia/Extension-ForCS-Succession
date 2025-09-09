@@ -383,9 +383,8 @@ namespace Landis.Extension.Succession.ForC
             string lastColumn = "the " + mbm.Name + " column";
 
             nread = 0;
-            //while (!AtEndOfInput && (CurrentName != Names.AgeOnlyDisturbanceParms))
-                while (!AtEndOfInput && (CurrentName != Names.DOMPools))
-                {
+            while (!AtEndOfInput && (CurrentName != Names.DOMPools))
+            {
                 currentLine = new StringReader(CurrentLine);
                 ISpecies species = ReadSpecies(currentLine);
 
@@ -422,26 +421,17 @@ namespace Landis.Extension.Succession.ForC
             }
             if (nread < speciesDataset.Count)
                 throw NewParseException("SpeciesParameters: Data were only entered for {0} species!", nread);
-                                              
-            
+
+
             //--------- Read In Ecoregion Table ---------------------------
-            //No longer reading in this table - instead just hard-wiring two variables: Latitude and FieldCapacity
+            // No longer reading in this table - instead just hard-wiring two variables: Latitude and FieldCapacity
+            // MG 20250909 TODO: use ecoregion parameters, not hardwired variable values
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 parameters.SetFieldCapacity(ecoregion, 49.0);
                 parameters.SetLatitude(ecoregion, 0.4);
             }
 
-
-            //---------------------------------------------------------------------
-            /*
-            InputVar<string> ageOnlyDisturbanceParms = new InputVar<string>(Names.AgeOnlyDisturbanceParms);
-                
-            ReadVar(ageOnlyDisturbanceParms);
-            parameters.AgeOnlyDisturbanceParms = ageOnlyDisturbanceParms.Value;
-            */
-
-            //-------------------------
             //  DOM Decay Parameters
             ReadName(Names.DOMPools);
             InputVar<string> sDOMPool = new InputVar<string>("DOMPoolName");
