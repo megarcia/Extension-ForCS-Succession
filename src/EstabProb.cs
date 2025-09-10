@@ -1,6 +1,8 @@
+// NOTE: InputValueException --> Landis.Utilities.InputValueException
+
 namespace Landis.Extension.Succession.ForC
 {
-    public class EstabProb: TimeInput, IEstabProb
+    public class EstabProb : TimeInput, IEstabProb
     {
         double m_dEstabProb = 0.0;
 
@@ -26,7 +28,8 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 if (value < 0.0)
-                    throw new Landis.Utilities.InputValueException(value.ToString(), "Establishment Probability must be >= 0.  The value provided is = {0}.", value);
+                    throw new InputValueException(value.ToString(),
+                                                  "Establishment Probability must be >= 0.  The value provided is = {0}.", value);
                 m_dEstabProb = value;
             }
         }

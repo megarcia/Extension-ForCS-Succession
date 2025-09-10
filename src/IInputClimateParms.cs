@@ -7,6 +7,6 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public interface IInputClimateParms
     {
-        Landis.Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>> ClimateAnnualCollection { get; }
+        Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>> ClimateAnnualCollection { get; }
     }
 }

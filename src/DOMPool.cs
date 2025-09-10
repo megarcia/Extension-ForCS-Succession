@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Landis.Utilities;
+// NOTE: InputValueException --> Landis.Utilities.InputValueException
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -55,7 +52,8 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 if (value <= 0)
-                    throw new InputValueException(value.ToString(), "DOM pool must have an ID larger than 0.  The value provided is = {0}.", value);
+                    throw new InputValueException(value.ToString(),
+                                                  "DOM pool must have an ID larger than 0.  The value provided is = {0}.", value);
                 m_nID = value;
             }
         }
@@ -70,7 +68,8 @@ namespace Landis.Extension.Succession.ForC
             {
                 string sName = value.Trim();
                 if (System.String.IsNullOrEmpty(sName))
-                    throw new InputValueException(sName, "A DOM pool must have a valid name.");
+                    throw new InputValueException(sName,
+                                                  "A DOM pool must have a valid name.");
                 m_sName = value;
             }
         }
@@ -84,7 +83,8 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 if (value < 0.0)
-                    throw new InputValueException(value.ToString(), "Q10 must be greater than or equal to 0.");
+                    throw new InputValueException(value.ToString(),
+                                                  "Q10 must be greater than or equal to 0.");
                 m_dQ10 = value;
             }
         }
@@ -98,7 +98,8 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 if ((value < 0.0) || (value > 1.0))
-                    throw new Landis.Utilities.InputValueException(value.ToString(), "Proportion to Air must be in the range [0.0, 1.0].");
+                    throw new InputValueException(value.ToString(),
+                                                  "Proportion to Air must be in the range [0.0, 1.0].");
                 m_dPropAir = value;
             }
         }

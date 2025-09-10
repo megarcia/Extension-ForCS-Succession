@@ -1,6 +1,5 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
-using Landis.Utilities;
 using System.Collections.Generic;
 
 namespace Landis.Extension.Succession.ForC
@@ -12,31 +11,22 @@ namespace Landis.Extension.Succession.ForC
     public static class MapNames
     {
         public const string TimestepVar = "timestep";
-
         private static IDictionary<string, bool> knownVars;
         private static IDictionary<string, string> varValues;
-
-        //---------------------------------------------------------------------
 
         static MapNames()
         {
             knownVars = new Dictionary<string, bool>();
             knownVars[TimestepVar] = true;
-
             varValues = new Dictionary<string, string>();
         }
-
-        //---------------------------------------------------------------------
 
         public static void CheckTemplateVars(string template)
         {
             OutputPath.CheckTemplateVars(template, knownVars);
         }
 
-        //---------------------------------------------------------------------
-
-        public static string ReplaceTemplateVars(string template,
-                                                 int    timestep)
+        public static string ReplaceTemplateVars(string template, int timestep)
         {
             varValues[TimestepVar] = timestep.ToString();
             return OutputPath.ReplaceTemplateVars(template, varValues);

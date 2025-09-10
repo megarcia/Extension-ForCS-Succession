@@ -1,27 +1,31 @@
+// NOTE: InputValueException --> Landis.Utilities.InputValueException
+
+using System.Collections.Generic;
+using System.Diagnostics;
+
 namespace Landis.Extension.Succession.ForC
 {
     class DisturbTransferFromPools : IDisturbTransferFromPools
     {
         private string m_sName;
+
         /// <summary>
         /// Implemented as a dictionary, however it could also be a simple array.
         /// </summary>
-        private System.Collections.Generic.Dictionary<int, DisturbTransferFromPool> m_dict;
+        private Dictionary<int, DisturbTransferFromPool> m_dict;
 
         public DisturbTransferFromPools(string sName)
         {
-            System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(sName));
+            Debug.Assert(!string.IsNullOrEmpty(sName));
             m_sName = sName;
-            m_dict = new Dictionary<int,DisturbTransferFromPool>();
+            m_dict = new Dictionary<int, DisturbTransferFromPool>();
         }
 
         public void InitializeDOMPools(IDictionary<int, IDOMPool> dictDOMPools)
         {
             m_dict.Clear();
             foreach (KeyValuePair<int, IDOMPool> kvp in dictDOMPools)
-            {
                 m_dict.Add(kvp.Value.ID, new DisturbTransferFromPool(kvp.Value.ID, kvp.Value.Name));
-            }
         }
 
         public void InitializeBiomassPools()
@@ -39,7 +43,8 @@ namespace Landis.Extension.Succession.ForC
         public IDisturbTransferFromPool GetDisturbTransfer(int nPoolID)
         {
             if (!m_dict.ContainsKey(nPoolID))
-                throw new Landis.Utilities.InputValueException(nPoolID.ToString(), "Pool ID cannot be found.  Has Initialize*() been called?");
+                throw new InputValueException(nPoolID.ToString(),
+                                              "Pool ID cannot be found.  Has Initialize*() been called?");
             return m_dict[nPoolID];
         }
     }

@@ -7,7 +7,7 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public interface IInputSnagParms
     {
-        int[] SnagSpecies { get ; } 
+        int[] SnagSpecies { get; } 
         int[] SnagAgeAtDeath { get; }
         int[] SnagTimeSinceDeath { get; }
         string[] SnagDisturb { get; }       

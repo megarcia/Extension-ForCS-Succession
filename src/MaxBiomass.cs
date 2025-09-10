@@ -1,3 +1,5 @@
+// NOTE: InputValueException --> Landis.Utilities.InputValueException
+
 namespace Landis.Extension.Succession.ForC
 {
     public class MaxBiomass : TimeInput, IMaxBiomass
@@ -11,10 +13,10 @@ namespace Landis.Extension.Succession.ForC
         {
         }
 
-        public MaxBiomass(int nYear, double dMaxBiomass, double dStdDev)
+        public MaxBiomass(int nYear, double dMaxBiomass)
         {
-            this.Year = nYear;
-            this.MaxBio = dMaxBiomass;
+            Year = nYear;
+            MaxBio = dMaxBiomass;
         }
 
         public double MaxBio
@@ -26,7 +28,8 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 if (value < 0.0)
-                    throw new Landis.Utilities.InputValueException(value.ToString(), "Maximum biomass must be >= 0.  The value provided is = {0}.", value);
+                    throw new InputValueException(value.ToString(),
+                                                  "Maximum biomass must be >= 0.  The value provided is = {0}.", value);
                 m_dMaxBiomass = value;
             }
         }

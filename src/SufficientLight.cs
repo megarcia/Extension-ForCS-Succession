@@ -1,6 +1,6 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
-using Landis.Utilities;
+// NOTE: InputValueException --> Landis.Utilities.InputValueException
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -17,102 +17,116 @@ namespace Landis.Extension.Succession.ForC
         private double probabilityLight4;
         private double probabilityLight5;
         
-        //---------------------------------------------------------------------
-
         public SufficientLight()
         {
         }
-        //---------------------------------------------------------------------
 
         /// <summary>
         /// The shade class (between 1 and 5).
         /// </summary>
         public byte ShadeClass
         {
-            get {
+            get
+            {
                 return shadeClass;
             }
-            set {
-                    if (value > 5 || value < 1)
-                        throw new InputValueException(value.ToString(),
-                                                      "Value must be between 1 and 5.");
+            set
+            {
+                if (value > 5 || value < 1)
+                    throw new InputValueException(value.ToString(),
+                                                  "Value must be between 1 and 5.");
                 shadeClass = value;
             }
         }
 
-        //---------------------------------------------------------------------
         public double ProbabilityLight0
         {
-            get {
+            get
+            {
                 return probabilityLight0;
             }
-            set {
-                    if (value < 0.0 || value > 1.0)
-                        throw new InputValueException(value.ToString(),
-                                              "Value must be between 0 and 1");
+            set
+            {
+                if (value < 0.0 || value > 1.0)
+                    throw new InputValueException(value.ToString(),
+                                                  "Value must be between 0 and 1");
                 probabilityLight0 = value;
             }
         }
-        //---------------------------------------------------------------------
+
         public double ProbabilityLight1
         {
-            get {
+            get
+            {
                 return probabilityLight1;
             }
-            set {
+            set
+            {
                 if (value < 0.0 || value > 1.0)
-                    throw new InputValueException(value.ToString(), "Value must be between 0 and 1");
+                    throw new InputValueException(value.ToString(),
+                                                  "Value must be between 0 and 1");
                 probabilityLight1 = value;
             }
         }
-        //---------------------------------------------------------------------
+
         public double ProbabilityLight2
         {
-            get {
+            get
+            {
                 return probabilityLight2;
             }
-            set {
+            set
+            {
                 if (value < 0.0 || value > 1.0)
-                    throw new InputValueException(value.ToString(), "Value must be between 0 and 1");
+                    throw new InputValueException(value.ToString(),
+                                                  "Value must be between 0 and 1");
                 probabilityLight2 = value;
             }
         }
-        //---------------------------------------------------------------------
+
         public double ProbabilityLight3
         {
-            get {
+            get
+            {
                 return probabilityLight3;
             }
-            set {
+            set
+            {
                 if (value < 0.0 || value > 1.0)
-                    throw new InputValueException(value.ToString(), "Value must be between 0 and 1");
+                    throw new InputValueException(value.ToString(),
+                                                  "Value must be between 0 and 1");
                 probabilityLight3 = value;
             }
         }
-        //---------------------------------------------------------------------
+
         public double ProbabilityLight4
         {
-            get {
+            get
+            {
                 return probabilityLight4;
             }
-            set {
+            set
+            {
                 if (value < 0.0 || value > 1.0)
-                    throw new InputValueException(value.ToString(), "Value must be between 0 and 1");
+                    throw new InputValueException(value.ToString(),
+                                                  "Value must be between 0 and 1");
                 probabilityLight4 = value;
             }
         }
-        //---------------------------------------------------------------------
+
         public double ProbabilityLight5
         {
-            get {
+            get
+            {
                 return probabilityLight5;
             }
-            set {
+            set
+            {
                 if (value < 0.0 || value > 1.0)
-                    throw new InputValueException(value.ToString(), "Value must be between 0 and 1");
+                    throw new InputValueException(value.ToString(),
+                                                  "Value must be between 0 and 1");
                 probabilityLight5 = value;
             }
         }
-
     }
 }

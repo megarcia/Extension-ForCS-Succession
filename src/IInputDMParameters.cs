@@ -1,5 +1,7 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
+using System.Collections.Generic;
+
 namespace Landis.Extension.Succession.ForC
 {
     /// <summary>

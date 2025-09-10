@@ -1,11 +1,6 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
-using Landis.Library.Succession;
-using Landis.Core;
-using Landis.Utilities;
-using Landis.Library.Parameters;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Landis.Extension.Succession.ForC
 {

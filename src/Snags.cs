@@ -1,10 +1,5 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
-using Landis.SpatialModeling;
-using Landis.Core;
-using System.Collections.Generic;
-using Landis.Utilities;
-
 namespace Landis.Extension.Succession.ForC
 {
     public class Snags
@@ -15,8 +10,7 @@ namespace Landis.Extension.Succession.ForC
         public static int[] initSpecIdx = new int[NUMSNAGS];
         public static int[] initSnagAge = new int[NUMSNAGS];
         public static string[] initSnagDist = new string[NUMSNAGS];
-        public static bool[] bSnagsUsed = new bool[NUMSNAGS];     //flag for if this site contained this snag type.
-
+        public static bool[] bSnagsUsed = new bool[NUMSNAGS];     // flag for if this site contained this snag type.
         private double[,] BioSnag = new double[2, PlugIn.ModelCore.Species.Count];
 
         public static void Initialize(IInputSnagParms parameters)

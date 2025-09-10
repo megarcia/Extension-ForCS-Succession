@@ -25,7 +25,6 @@ namespace Landis.Extension.Succession.ForC
         {
             if (this.Contains(value))
                 m_listValues.Remove(value.Year);
-
             m_listValues.Add(value.Year, value);
         }
 
@@ -39,13 +38,9 @@ namespace Landis.Extension.Succession.ForC
         /// <remarks>Note that a match is the object which has the same or closest Year value.</remarks>
         public bool TryGetValue(int nYear, out T value)
         {
-            // default Keyword in Generic Code (C# Programming Guide)
-            // http://msdn.microsoft.com/en-us/library/xwth0h0d(VS.80).aspx
-            // How can I return NULL from a generic method in C#?
-            // http://stackoverflow.com/questions/302096/how-can-i-return-null-from-a-generic-method-in-c
             value = default(T); // null
             // Iterate the list in reverse order, returning the ITimeInput object with a Year <= value.Year
-            for (int n = (m_listValues.Count - 1); n >= 0; n--)
+            for (int n = m_listValues.Count - 1; n >= 0; n--)
             {
                 if (m_listValues.Values[n].Year <= nYear)
                 {

@@ -1,20 +1,16 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
-using Landis.Library.Succession;
-using Landis.Core;
-using Landis.SpatialModeling;
+// NOTE: InputValueException --> Landis.Utilities.InputValueException
+
 using System.Collections.Generic;
-using Landis.Utilities;
 using System.Data;
-using System;
 
 namespace Landis.Extension.Succession.ForC
 {
     /// <summary>
     /// A parser that reads biomass succession parameters from text input.
     /// </summary>
-    public class InputParametersParser
-        : Landis.Utilities.TextParser<IInputParameters>
+    public class InputParametersParser : Landis.Utilities.TextParser<IInputParameters>
     {
         public static class Names
         {
@@ -45,45 +41,25 @@ namespace Landis.Extension.Succession.ForC
             public const string initSnagFile = "SnagFile";
             public const string SnagData = "SnagData";
             public const string DMFile = "DisturbanceMatrixFile";
-
         }
 
         private delegate void SetParmMethod<TParm>(ISpecies          species,
                                                    IEcoregion        ecoregion,
                                                    InputValue<TParm> newValue);
 
-        //---------------------------------------------------------------------
-
         private IEcoregionDataset ecoregionDataset;
         private ISpeciesDataset speciesDataset;
         private Dictionary<string, int> speciesLineNums;
         private InputVar<string> speciesName;
-        //private InputVar<string> ecoregionName;
-
-        ////---------------------------------------------------------------------
-
-        //public override string LandisDataValue
-        //{
-        //    get {
-        //        return "ForC Succession";
-        //    }
-        //}
-
-        //---------------------------------------------------------------------
 
         static InputParametersParser()
         {
-            SeedingAlgorithmsUtil.RegisterForInputValues();
-            
-            //    FIXME: Need to add RegisterForInputValues method to
-            //  Percentage class, but for now, we'll trigger it by creating
-            //  a local variable of that type.
+            SeedingAlgorithmsUtil.RegisterForInputValues();            
+            // FIXME: Need to add RegisterForInputValues method to
+            // Percentage class, but for now, we'll trigger it by creating
+            // a local variable of that type.
             Percentage dummy = new Percentage();
-            //RegisterForInputValues();
-
         }
-
-        //---------------------------------------------------------------------
 
         public InputParametersParser()
         {
@@ -93,18 +69,15 @@ namespace Landis.Extension.Succession.ForC
             this.speciesName = new InputVar<string>("Species");
         }
 
-        //---------------------------------------------------------------------
-
         protected override IInputParameters Parse()
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
             if (landisData.Value.Actual != PlugIn.ExtensionName)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
-
+                throw new InputValueException(landisData.Value.String,
+                                              "The value is not \"{0}\"", PlugIn.ExtensionName);
             StringReader currentLine;
             Dictionary<string, int> lineNumbers = new Dictionary<string, int>();
-
             // InputVars common to different read routines.
             InputVar<int> nDOMPoolID = new InputVar<int>("DOMPoolID");
             InputVar<double> dPropAir = new InputVar<double>("Prop to Air");
@@ -118,71 +91,49 @@ namespace Landis.Extension.Succession.ForC
             InputVar<string> sSpecies = new InputVar<string>("Species");
             int nread = 0;
             int neco = 0;
-
-            //ReadLandisDataVar();
-            
             InputParameters parameters = new InputParameters();  
-
             //Get number of active ecoregions
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
-            {
-                if (ecoregion.Active) neco++;
-            }
-            
+                if (ecoregion.Active)
+                    neco++;
             InputVar<int> timestep = new InputVar<int>(Names.Timestep);
             ReadVar(timestep);
             parameters.Timestep = timestep.Value;
-
             InputVar<SeedingAlgorithms> seedAlg = new InputVar<SeedingAlgorithms>(Names.SeedingAlgorithm);
             ReadVar(seedAlg);
             parameters.SeedAlgorithm = seedAlg.Value;
-
-            /*LANDIS CLIMATE LIBRARY
+            /* LANDIS CLIMATE LIBRARY
             InputVar<string> climateFile = new InputVar<string>(Names.ClimateFile);
             ReadVar(climateFile);
             parameters.ClimateFile = climateFile.Value;
-             */
-
+            */
             InputVar<string> climateFile2 = new InputVar<string>(Names.ClimateFile2);
             ReadVar(climateFile2);
             parameters.ClimateFile2 = climateFile2.Value;
-
             //input from the biomass version of the model
-            //---------------------------------------------------------------------------------
-
             InputVar<string> initCommunities = new InputVar<string>("InitialCommunities");
             ReadVar(initCommunities);
             parameters.InitialCommunities = initCommunities.Value;
-
             InputVar<string> communitiesMap = new InputVar<string>("InitialCommunitiesMap");
             ReadVar(communitiesMap);
             parameters.InitialCommunitiesMap = communitiesMap.Value;
-
-            //---------------------------------------------------------------------------------
-
             InputVar<string> dmFile = new InputVar<string>(Names.DMFile);
             ReadVar(dmFile);
             parameters.DMFile = dmFile.Value;
-
-            //MARCH: new snag initial conditions file (optional)
             InputVar<string> initSnagFile = new InputVar<string>(Names.initSnagFile);
             if (ReadOptionalVar(initSnagFile))
                 parameters.InitSnagFile = initSnagFile.Value;
-
-
             //input from the biomass version of the model (optional variables)
             InputVar<bool> calimode = new InputVar<bool>(Names.CalibrateMode);
             if (ReadOptionalVar(calimode))
                 parameters.CalibrateMode = calimode.Value;
             else
                 parameters.CalibrateMode = false;
-
             InputVar<double> spinMort = new InputVar<double>("SpinupMortalityFraction");
             if (ReadOptionalVar(spinMort))
                 parameters.SpinupMortalityFraction = spinMort.Value;
             else
                 parameters.SpinupMortalityFraction = 0.0;
-
             // ForCSOutput
             ReadName(Names.ForCSOutput);
             currentLine = new StringReader(CurrentLine);
@@ -198,9 +149,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<int> nOutputSummary = new InputVar<int>("Output Summary Interval");
             ReadValue(nOutputSummary, currentLine);
             parameters.SetOutputSummary(nOutputSummary.Value);
-
             GetNextLine();
-
             // ForCSMapControl
             ReadName(Names.ForCSMapControl);
             currentLine = new StringReader(CurrentLine);
@@ -225,32 +174,16 @@ namespace Landis.Extension.Succession.ForC
             InputVar<int> nOutputToFPS = new InputVar<int>("ToFPS");
             ReadValue(nOutputToFPS, currentLine);
             parameters.SetOutputToFPS(nOutputToFPS.Value);
-
-            //PlugIn.ModelCore.UI.WriteLine("Intervals so far {0}, {1}, {2}, {3}", parameters.OutputBiomass, parameters.OutputDOMPools, parameters.OutputFlux, parameters.OutputSummary );
             GetNextLine();
-
             InputVar<string> sMapDir = new InputVar<string>("MapOutputDir");
             if (ReadOptionalVar(sMapDir))
-            {
                 parameters.OutputMapPath = sMapDir.Value;
-                //throw NewParseException("Got Map Dir {0}", sMapDir.Value);
-
-            }
             else
-            {
                 parameters.OutputMapPath = "ForCS";
-                //throw NewParseException("Didn't get Map Dir {0}", sMapDir.Value);
-            }
-
             InputVar<int> nMapOutput = new InputVar<int>("MapOutputInterval");
             if (ReadOptionalVar(nMapOutput))
-            {
                 parameters.SetOutputMap(nMapOutput.Value);  //note: defaults to 0 if not present
-            }
             PlugIn.ModelCore.UI.WriteLine("Intervals so far {0}, {1}", parameters.OutputMapPath, parameters.OutputMap);
-
-            //GetNextLine();
-
             // SoilSpinUp
             ReadName(Names.SpinUp);
             currentLine = new StringReader(CurrentLine);
@@ -267,43 +200,32 @@ namespace Landis.Extension.Succession.ForC
             ReadValue(nIterations, currentLine);
             parameters.SetIterations(nIterations.Value);
             GetNextLine();
-
-            //--------------------------
             //  MinRelativeBiomass table
-
             ReadName(Names.AvailableLightBiomass);
-
             List<IEcoregion> ecoregions = ReadEcoregions();
             string lastEcoregion = ecoregions[ecoregions.Count-1].Name;
-
             InputVar<byte> shadeClassVar = new InputVar<byte>("Shade Class");
-            for (byte shadeClass = 1; shadeClass <= 5; shadeClass++) {
+            for (byte shadeClass = 1; shadeClass <= 5; shadeClass++)
+            {
                 if (AtEndOfInput)
                     throw NewParseException("Expected a line with available light class {0}", shadeClass);
-
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(shadeClassVar, currentLine);
                 if (shadeClassVar.Value.Actual != shadeClass)
                     throw new InputValueException(shadeClassVar.Value.String,
                                                   "Expected the available light class {0}", shadeClass);
-
                 foreach (IEcoregion ecoregion in ecoregions) 
                 {
                     InputVar<Percentage> MinRelativeBiomass = new InputVar<Percentage>("Ecoregion " + ecoregion.Name);
                     ReadValue(MinRelativeBiomass, currentLine);
                     parameters.SetMinRelativeBiomass(shadeClass, ecoregion, MinRelativeBiomass.Value);
                 }
-
-                CheckNoDataAfter("the Ecoregion " + lastEcoregion + " column",
-                                 currentLine);
+                CheckNoDataAfter("the Ecoregion " + lastEcoregion + " column", currentLine);
                 GetNextLine();
             }
-
-            //----------------------------------------------------------
             //  Read table of sufficient light probabilities.
             //  Available light classes are in increasing order.
             ReadName(Names.LightEstablishmentTable);
-
             InputVar<byte> sc = new InputVar<byte>("Available Light Class");
             InputVar<double> pl0 = new InputVar<double>("Probability of Germination - Light Level 0");
             InputVar<double> pl1 = new InputVar<double>("Probability of Germination - Light Level 1");
@@ -311,20 +233,14 @@ namespace Landis.Extension.Succession.ForC
             InputVar<double> pl3 = new InputVar<double>("Probability of Germination - Light Level 3");
             InputVar<double> pl4 = new InputVar<double>("Probability of Germination - Light Level 4");
             InputVar<double> pl5 = new InputVar<double>("Probability of Germination - Light Level 5");
-            
             int previousNumber = 0;
-
             while (! AtEndOfInput && CurrentName != Names.SpeciesParameters
                                   && previousNumber != 6) {
                 currentLine = new StringReader(CurrentLine);
-
-                ISufficientLight suffLight = new SufficientLight();
-                
+                ISufficientLight suffLight = new SufficientLight();                
                 parameters.LightClassProbabilities.Add(suffLight);
-
                 ReadValue(sc, currentLine);
                 suffLight.ShadeClass = sc.Value;
-
                 //  Check that the current shade class is 1 more than
                 //  the previous number (numbers are must be in increasing order).
                 if (sc.Value.Actual != (byte) previousNumber + 1)
@@ -332,26 +248,18 @@ namespace Landis.Extension.Succession.ForC
                                                   "LightEstablishmentTable: Expected the severity number {0}",
                                                   previousNumber + 1);
                 previousNumber = (int) sc.Value.Actual;
-
                 ReadValue(pl0, currentLine);
                 suffLight.ProbabilityLight0 = pl0.Value;
-
                 ReadValue(pl1, currentLine);
                 suffLight.ProbabilityLight1 = pl1.Value;
-
                 ReadValue(pl2, currentLine);
                 suffLight.ProbabilityLight2 = pl2.Value;
-
                 ReadValue(pl3, currentLine);
                 suffLight.ProbabilityLight3 = pl3.Value;
-
                 ReadValue(pl4, currentLine);
                 suffLight.ProbabilityLight4 = pl4.Value;
-
                 ReadValue(pl5, currentLine);
                 suffLight.ProbabilityLight5 = pl5.Value;
-
-
                 CheckNoDataAfter("the " + pl5.Name + " column",
                                  currentLine);
                 GetNextLine();
@@ -360,14 +268,9 @@ namespace Landis.Extension.Succession.ForC
                 throw NewParseException("LightEstablishmentTable: Insufficient light probabilities defined.");
             if (previousNumber != 5)
                 throw NewParseException("LightEstablishmentTable: Expected shade class {0}", previousNumber + 1);
-
-            //-------------------------
-            //  Species Parameters table
-
+            // Species Parameters table
             ReadName(Names.SpeciesParameters);
-
             speciesLineNums.Clear();  //  If parser re-used (i.e., for testing purposes)
-
             InputVar<int> ft = new InputVar<int>("Functional Type");
             InputVar<double> leafLongevity = new InputVar<double>("Leaf Longevity");
             InputVar<byte> shadeTolerance = new InputVar<byte>("Shade Tolerance");
@@ -379,51 +282,37 @@ namespace Landis.Extension.Succession.ForC
             InputVar<double> dMerchCurveParmB = new InputVar<double>("Merch. Curve Parm B");
             InputVar<double> dPropNonMerch = new InputVar<double>("Proportion Non-Merchantible");
             InputVar<double> growthCurveShapeParm = new InputVar<double>("Growth Curve Shape Parameter");
-            
             string lastColumn = "the " + mbm.Name + " column";
-
             nread = 0;
             while (!AtEndOfInput && (CurrentName != Names.DOMPools))
             {
                 currentLine = new StringReader(CurrentLine);
                 ISpecies species = ReadSpecies(currentLine);
-
                 ReadValue(leafLongevity, currentLine);
                 parameters.SetLeafLongevity(species, leafLongevity.Value);
-
                 ReadValue(mortCurveShapeParm, currentLine);
                 parameters.SetMortCurveShape(species, mortCurveShapeParm.Value);
-
                 ReadValue(nMerchStemsMinAge, currentLine);
                 parameters.SetMerchStemsMinAge(species, nMerchStemsMinAge.Value);
-
                 ReadValue(dMerchCurveParmA, currentLine);
                 parameters.SetMerchCurveParmA(species, dMerchCurveParmA.Value);
                 ReadValue(dMerchCurveParmB, currentLine);
                 parameters.SetMerchCurveParmB(species, dMerchCurveParmB.Value);
-
                 ReadValue(dPropNonMerch, currentLine);
                 parameters.SetPropNonMerch(species, dPropNonMerch.Value);
-
                 ReadValue(growthCurveShapeParm, currentLine);
                 parameters.SetGrowthCurveShape(species, growthCurveShapeParm.Value);
-
                 ReadValue(shadeTolerance, currentLine);
                 parameters.SetShadeTolerance(species, shadeTolerance.Value);
-
                 ReadValue(fireTolerance, currentLine);
                 parameters.SetFireTolerance(species, fireTolerance.Value);
-
                 nread += 1;
-
                 CheckNoDataAfter(lastColumn, currentLine);
                 GetNextLine();
             }
             if (nread < speciesDataset.Count)
                 throw NewParseException("SpeciesParameters: Data were only entered for {0} species!", nread);
-
-
-            //--------- Read In Ecoregion Table ---------------------------
+            // Ecoregion Table
             // No longer reading in this table - instead just hard-wiring two variables: Latitude and FieldCapacity
             // MG 20250909 TODO: use ecoregion parameters, not hardwired variable values
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
@@ -431,8 +320,7 @@ namespace Landis.Extension.Succession.ForC
                 parameters.SetFieldCapacity(ecoregion, 49.0);
                 parameters.SetLatitude(ecoregion, 0.4);
             }
-
-            //  DOM Decay Parameters
+            // DOM Decay Parameters
             ReadName(Names.DOMPools);
             InputVar<string> sDOMPool = new InputVar<string>("DOMPoolName");
             nread = 0;
@@ -440,18 +328,14 @@ namespace Landis.Extension.Succession.ForC
             while (!AtEndOfInput && (CurrentName != Names.EcoSppDOMParms))
             {
                 currentLine = new StringReader(CurrentLine);
-
                 ReadValue(nDOMPoolID, currentLine);
                 ReadValue(sDOMPool, currentLine);
                 ReadValue(dPropAir, currentLine);
-
                 if (nDOMPoolID.Value.Actual != (byte)previousNumber + 1)
                     throw new InputValueException(nDOMPoolID.Value.String,
                                                   "DOMPools: Expected the pool ID {0}",
                                                   previousNumber + 1);
-
                 parameters.SetDOMPool(nDOMPoolID.Value, sDOMPool.Value, 0, dPropAir.Value);
-
                 previousNumber = nDOMPoolID.Value;
                 nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);
@@ -459,78 +343,60 @@ namespace Landis.Extension.Succession.ForC
             }
             if (nread < SoilClass.NUMSOILPOOLS)
                 throw NewParseException("DOMPools: Parameters were not entered for all DOM pools!");
-
-            //-------------------------
-            //  Eco-Spp-DOM Pool Parameters
+            // Eco-Spp-DOM Pool Parameters
             InputVar<string> ecoSppDOMInputFile = new InputVar<string>(Names.EcoSppDOMParms);
             ReadVar(ecoSppDOMInputFile);
             speciesLineNums.Clear();  //  If parser re-used (i.e., for testing purposes)
-
             CSVParser ecoSppDOMParser = new CSVParser();
             DataTable ecoSppDOMTable = ecoSppDOMParser.ParseToDataTable(ecoSppDOMInputFile.Value);
-
             nread = 0;
             foreach (DataRow row in ecoSppDOMTable.Rows)
             {
                 IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
                 ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
                 int nDOMPID = System.Convert.ToInt32(row["DOMPool"]);
-
                 if ((nDOMPID <= 0) || (nDOMPID > SoilClass.NUMSOILPOOLS))
-                    throw new InputValueException("nDOMPoolID", "EcoSppDOMParamters: {0} is not a valid DOM pool ID.", nDOMPID);
-
+                    throw new InputValueException("nDOMPoolID",
+                                                  "EcoSppDOMParamters: {0} is not a valid DOM pool ID.", nDOMPID);
                 double decayRate = System.Convert.ToDouble(row["DecayRate"]);
                 double amountT0 = System.Convert.ToDouble(row["AmountT0"]);
                 double q10 = System.Convert.ToDouble(row["Q10"]);
-
                 // Convert from a 1-base to 0-base. (Don't need to do that because user enters the actual DOM pool)
                 parameters.SetDOMDecayRate(ecoregion, species, nDOMPID - 1, decayRate);
                 parameters.SetDOMPoolAmountT0(ecoregion, species, nDOMPID - 1, amountT0);
                 parameters.SetDOMPoolQ10(ecoregion, species, nDOMPID - 1, q10);
-
                 nread += 1;
             }
             if (nread < neco * speciesDataset.Count * SoilClass.NUMSOILPOOLS)
             {
-                int missrow = (neco * speciesDataset.Count * SoilClass.NUMSOILPOOLS - nread);
-                throw new InputValueException(nDOMPoolID.Name, "{0} rows were missing from the EcoSppDOMParamters table.", missrow);
+                int missrow = neco * speciesDataset.Count * SoilClass.NUMSOILPOOLS - nread;
+                throw new InputValueException(nDOMPoolID.Name,
+                                              "{0} rows were missing from the EcoSppDOMParamters table.", missrow);
             }
-
-            //-------------------------
             //  ForCSProportions
             ReadName(Names.ForCSProportions);
             currentLine = new StringReader(CurrentLine);
-            
             InputVar<double> dPropBiomassFine = new InputVar<double>("Biomass Fine Roots");
             ReadValue(dPropBiomassFine, currentLine);
-            parameters.SetPropBiomassFine(dPropBiomassFine.Value);
-            
+            parameters.SetPropBiomassFine(dPropBiomassFine.Value);   
             InputVar<double> dPropBiomassCoarse = new InputVar<double>("Biomass Coarse Roots");
             ReadValue(dPropBiomassCoarse, currentLine);
             parameters.SetPropBiomassCoarse(dPropBiomassCoarse.Value);
-            
             InputVar<double> dPropDOMSlowAGToSlowBG = new InputVar<double>("DOM SlowAG to SlowBG");
             ReadValue(dPropDOMSlowAGToSlowBG, currentLine);
             parameters.SetPropDOMSlowAGToSlowBG(dPropDOMSlowAGToSlowBG.Value);
-            
             InputVar<double> dPropDOMStemSnagToMedium = new InputVar<double>("DOM Stem Snag to Medium");
             ReadValue(dPropDOMStemSnagToMedium, currentLine);
             parameters.SetPropDOMStemSnagToMedium(dPropDOMStemSnagToMedium.Value);
-
             InputVar<double> dPropDOMBranchSnagToFastAG = new InputVar<double>("DOM Branch Snag to FastAG");
             ReadValue(dPropDOMBranchSnagToFastAG, currentLine);
             parameters.SetPropDOMBranchSnagToFastAG(dPropDOMBranchSnagToFastAG.Value);
-
             GetNextLine();
-
-            //-------------------------
             //  ANPPTimeSeries
             InputVar<string> ANPPTimeSeriesInputFile = new InputVar<string>(Names.ANPPTimeSeries);
             ReadVar(ANPPTimeSeriesInputFile);
-
             CSVParser ANPPTimeSeriesParser = new CSVParser();
             DataTable ANPPTimeSeriesTable = ANPPTimeSeriesParser.ParseToDataTable(ANPPTimeSeriesInputFile.Value);
-
             nread = 0;
             int firstYear = -999;
             int nYear = 0;
@@ -540,25 +406,21 @@ namespace Landis.Extension.Succession.ForC
             {
                 IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
                 ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
-
                 nYear = System.Convert.ToInt32(row["Year"]);
-                //if (nYear.Value < 0)
-                //    throw new InputValueException(nYear.Name, "ANPP: {0} is not a valid year.", nYear.ToString());
-
                 if (firstYear == -999)
                 {
                     if (nYear > 0)
-                        throw new InputValueException("Year", "The first year for ANPP must be <=0.");
+                        throw new InputValueException("Year",
+                                                      "The first year for ANPP must be <=0.");
                     firstYear = 1;
                 }
                 dANPP = System.Convert.ToDouble(row["ANPP"]);
                 dStdDev = System.Convert.ToDouble(row["ANPP-Std"]);
-
                 // Comment out the 2 lines below if we don't care if multiple rows with the
                 // same (ecoregion, species, year) tuple exist.
                 if (parameters.ANPPTimeCollection[ecoregion][species].Contains(new ANPP(nYear, 0.0, 0.0)))
-                    throw new InputValueException("Year", "ANPP: Year {0} is already entered for the given ecoregion '{1}' and species '{2}'.", nYear.ToString(), ecoregion.Name, species.Name);
-
+                    throw new InputValueException("Year",
+                                                  "ANPP: Year {0} is already entered for the given ecoregion '{1}' and species '{2}'.", nYear.ToString(), ecoregion.Name, species.Name);
                 // Create a ANPP object and add it to the time series.
                 parameters.ANPPTimeCollection[ecoregion][species].Add(new ANPP(nYear, dANPP, dStdDev));
 
@@ -566,20 +428,16 @@ namespace Landis.Extension.Succession.ForC
                     nread += 1;
             }
             if (firstYear == -999)
-                throw new InputValueException("Year", "No data were entered for ANPP. You must enter at least year 0.");
-
+                throw new InputValueException("Year",
+                                              "No data were entered for ANPP. You must enter at least year 0.");
             if (nread < neco * speciesDataset.Count)
-                throw new InputValueException("ANPP", "ANPP values were not entered for year 0 for all species and ecoregions! Please check.");
-            //PlugIn.ModelCore.UI.WriteLine("ANPP: ANPP values wre not entered for year 0 for all species and ecoregions! Please check.");
-
-            //-------------------------
+                throw new InputValueException("ANPP",
+                                              "ANPP values were not entered for year 0 for all species and ecoregions! Please check.");
             //  Maximum Biomass TimeSeries
             InputVar<string> maxBiomassTimeSeriesInputFile = new InputVar<string>(Names.MaxBiomassTimeSeries);
             ReadVar(maxBiomassTimeSeriesInputFile);
-
             CSVParser maxBiomassTimeSeriesParser = new CSVParser();
             DataTable maxBiomassTimeSeriesTable = maxBiomassTimeSeriesParser.ParseToDataTable(maxBiomassTimeSeriesInputFile.Value);
-
             nread = 0;
             firstYear = -999;
             nYear = 0;
@@ -588,41 +446,31 @@ namespace Landis.Extension.Succession.ForC
             {
                 IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
                 ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
-
                 nYear = System.Convert.ToInt32(row["Year"]);
-                //if (nYear.Value < 0)
-                //    throw new InputValueException(nYear.Name, "ANPP: {0} is not a valid year.", nYear.ToString());
-
                 if (firstYear == -999)
                 {
                     if (nYear > 0)
-                        throw new InputValueException("Year", "The first year for MaxBiomass must be <=0.");
+                        throw new InputValueException("Year",
+                                                      "The first year for MaxBiomass must be <=0.");
                     firstYear = 1;
                 }
-
                 dMaxBiomass = System.Convert.ToDouble(row["MaxBiomass"]);
-
                 // Create a MaxBiomass object and add it to the time series.
-
-                parameters.MaxBiomassTimeCollection[ecoregion][species].Add(new MaxBiomass(nYear, dMaxBiomass, 0.0));
-
+                parameters.MaxBiomassTimeCollection[ecoregion][species].Add(new MaxBiomass(nYear, dMaxBiomass));
                 if (nYear == 0)
                     nread += 1;
             }
             if (firstYear == -999)
-                throw new InputValueException("Year", "No data were entered for MaxBiomass. You must enter at least year 0.");
-
+                throw new InputValueException("Year",
+                                              "No data were entered for MaxBiomass. You must enter at least year 0.");
             if (nread < neco * speciesDataset.Count)
-                throw new InputValueException("MaxBiomass", "MaxBiomass values wre not entered for year 0 for all species and ecoregions! Please check.");
-
-            //-------------------------
+                throw new InputValueException("MaxBiomass",
+                                              "MaxBiomass values wre not entered for year 0 for all species and ecoregions! Please check.");
             //  EstablishProbabilities
             InputVar<string> establishProbabilitiesInputFile = new InputVar<string>(Names.EstablishProbabilities);
             ReadVar(establishProbabilitiesInputFile);
-
             CSVParser establishProbabilitiesParser = new CSVParser();
             DataTable establishProbabilitiesTable = establishProbabilitiesParser.ParseToDataTable(establishProbabilitiesInputFile.Value);
-
             nread = 0;
             nYear = 0;
             double dEstProb = 0;
@@ -630,27 +478,18 @@ namespace Landis.Extension.Succession.ForC
             {
                 IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
                 ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
-
                 nYear = System.Convert.ToInt32(row["Year"]);
-
                 if (nYear < 0)
-                    throw new InputValueException("Year", "{0} is not a valid year.", nYear.ToString());
-
+                    throw new InputValueException("Year",
+                                                  "{0} is not a valid year.", nYear.ToString());
                 dEstProb = System.Convert.ToDouble(row["Probability"]);
-
-                //if (parameters.EstabProbTimeCollection[ecoregion][species].Contains(new EstabProb(nYear.Value, 0.0)))
-                //    throw new InputValueException(nYear.Name, "Year {0} is already entered for the given ecoregion '{1}' and species '{2}'.", nYear.ToString(), ecoregion.Name, species.Name);
-
                 // Create an EstablishmentProbability object.
-                //parameters.SetEstablishProbability(ecoregion, species, dEstProb.Value);
                 parameters.EstabProbTimeCollection[ecoregion][species].Add(new EstabProb(nYear, dEstProb));
-
                 nread += 1;
             }
             if (nread < neco * speciesDataset.Count)
-                throw new InputValueException("Establishment Probabilities", "EstablishmentProbabilities: Establishment probabilities were not entered for all species and ecoregions! Please check.");
-
-            //-------------------------
+                throw new InputValueException("Establishment Probabilities",
+                                              "EstablishmentProbabilities: Establishment probabilities were not entered for all species and ecoregions! Please check.");
             //  Root Dynamics
             ReadName(Names.RootDynamics);
             InputVar<double> dMinWoody = new InputVar<double>("Min Woody Biomass");
@@ -659,37 +498,27 @@ namespace Landis.Extension.Succession.ForC
             InputVar<double> dFineTurnover = new InputVar<double>("Fine Turnover");
             InputVar<double> dCoarseTurnover = new InputVar<double>("Coarse Turnover");
             nread = 0;
-            //MARCH TEMPORARY commentedt out while (!AtEndOfInput && (CurrentName != "No Section To Follow"))
             while (!AtEndOfInput && (CurrentName != "No Section To Follow" && CurrentName != Names.SnagData))
             {
                 currentLine = new StringReader(CurrentLine);
-
                 ReadValue(sEcoregion, currentLine);
                 IEcoregion ecoregion = GetEcoregion(sEcoregion.Value);
-
                 ReadValue(sSpecies, currentLine);
                 ISpecies species = GetSpecies(sSpecies.Value);
-
                 ReadValue(dMinWoody, currentLine);
                 int idxval = parameters.SetMinWoodyBio(ecoregion, species, dMinWoody.Value);
-
                 if (idxval > 0 && dMinWoody.Value == 0)
                     PlugIn.ModelCore.UI.WriteLine("Root Parameters: The MinBiomass=0 for an eco-spp combo was not entered first. Roots may not be calculated correctly");
                 if (idxval == 0 && dMinWoody.Value > 0)
                     PlugIn.ModelCore.UI.WriteLine("Root Parameters: The first MinBiomass value entered for an eco-spp combo was not 0.  Roots may not be calculated correctly");
-
                 ReadValue(dRatio, currentLine);
                 parameters.SetRootRatio(ecoregion, species, dRatio.Value, idxval);
-                
                 ReadValue(dPropFine, currentLine);
                 parameters.SetPropFine(ecoregion, species, dPropFine.Value, idxval);
-                
                 ReadValue(dFineTurnover, currentLine);
                 parameters.SetFineTurnover(ecoregion, species, dFineTurnover.Value, idxval);
-                
                 ReadValue(dCoarseTurnover, currentLine);
                 parameters.SetCoarseTurnover(ecoregion, species, dCoarseTurnover.Value, idxval);
-
                 if (dMinWoody.Value == 0) //we only want to count those that have a min biomass=0;
                     nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);
@@ -697,83 +526,8 @@ namespace Landis.Extension.Succession.ForC
             }
             if (nread < neco * speciesDataset.Count)
                 throw new InputValueException("Root Dynamics", "Root Dynamics: Root parameters for a MinimumBiomass = 0 were not entered for all species and ecoregions! Please check.");
-
-
-            
-            /*
-            //MARCH Read snag file
-            //first try - assume the information is at the bottom of the main ForC file.
-
-            InputVar<int> dAgeAtDeath = new InputVar<int>("Age At Death");
-            InputVar<int> dTimeSinceDeath = new InputVar<int>("Time Since Death");
-
-            ReadName(Names.SnagData);
-
-            nread = 0;            
-            while (!AtEndOfInput && (CurrentName != "No Section To Follow"))
-            {
-                currentLine = new StringReader(CurrentLine);
-                ISpecies species = ReadSpecies(currentLine);
-
-                ReadValue(dAgeAtDeath, currentLine);
-                //parameters.SetAgeAtDeath(species, dAgeAtDeath.Value);
-
-                ReadValue(dTimeSinceDeath, currentLine);
-                //parameters.SetTimeSinceDeath(species, dTimeSinceDeath.Value);
-
-                ReadValue(sDisturbType, currentLine);
-                bool bOk = CheckDisturbanceType(sDisturbType);
-                if (!bOk)
-                    throw new InputValueException(sDisturbType.Name, "Initial Snag Data {0} is not a valid disturbance type. Check that name is all lowercase.", sDisturbType.Value.Actual);
-
-                if (nread > 19)
-                    throw new InputValueException(Names.SnagData, "Too many intial snag types were entered. The remaining ones will not be read");
-                else
-                    parameters.SetInitSnagInfo(species, dAgeAtDeath.Value, dTimeSinceDeath.Value, sDisturbType.Value, nread);
-
-                nread++;
-                GetNextLine();
-            }
-             */
-          
-            
-            
             return parameters; 
         }
-
-         /*protected void ReadDynamicTable(List<Dynamic.ParametersUpdate> parameterUpdates)
-        {
-            int? prevYear = null;
-            int prevYearLineNum = 0;
-            InputVar<int> year = new InputVar<int>("Year", Dynamic.InputValidation.ReadYear);
-            InputVar<string> file = new InputVar<string>("Parameter File");
-            while (! AtEndOfInput) {
-                StringReader currentLine = new StringReader(CurrentLine);
-
-                ReadValue(year, currentLine);
-                if (prevYear.HasValue) {
-                    if (year.Value.Actual < prevYear.Value)
-                        throw new InputValueException(year.Value.String,
-                                                      "Year {0} is before year {1} which was on line {2}",
-                                                      year.Value.Actual, prevYear.Value, prevYearLineNum);
-                    if (year.Value.Actual == prevYear.Value)
-                        throw new InputValueException(year.Value.String,
-                                                      "Year {0} was already used on line {1}",
-                                                      year.Value.Actual, prevYearLineNum);
-                }
-                prevYear = year.Value.Actual;
-                prevYearLineNum = LineNumber;
-
-                ReadValue(file, currentLine);
-                Dynamic.InputValidation.CheckPath(file.Value);
-
-                CheckNoDataAfter("the " + file + " column", currentLine);
-                parameterUpdates.Add(new Dynamic.ParametersUpdate(year.Value.Actual,
-                                                                        file.Value.Actual));
-                GetNextLine();
-            }
-        }*/
-        //---------------------------------------------------------------------
 
         /// <summary>
         /// Reads a species name from the current line, and verifies the name.
@@ -795,18 +549,15 @@ namespace Landis.Extension.Succession.ForC
                 speciesLineNums[species.Name] = LineNumber;
             return species;
         }
-        //---------------------------------------------------------------------
 
         private ISpecies GetSpecies(InputValue<string> sName)
         {
             ISpecies species = speciesDataset[sName.Actual];
             if (species == null)
-                throw new InputValueException(sName.String, "{0} is not an species name.", sName.String);
-
+                throw new InputValueException(sName.String,
+                                              "{0} is not an species name.", sName.String);
             return species;
         }
-        //---------------------------------------------------------------------
-
 
         /// <summary>
         /// Reads an ecoregion name from the current line, and verifies the name.
@@ -818,16 +569,16 @@ namespace Landis.Extension.Succession.ForC
             IEcoregion ecoregion = ecoregionDataset[ecoregionName.Value.Actual];
             ISpecies species = speciesDataset[speciesName.Value.Actual];
             if (ecoregion == null)
-                throw new InputValueException(ecoregionName.Value.String, "{0} is not an ecoregion name.", ecoregionName.Value.String);
-
+                throw new InputValueException(ecoregionName.Value.String,
+                                              "{0} is not an ecoregion name.", ecoregionName.Value.String);
             int lineNumber;
             if (speciesLineNums.TryGetValue(ecoregion.Name, out lineNumber))
-                throw new InputValueException(ecoregionName.Value.String, "The ecoregion {0} was previously used on line {1}", ecoregionName.Value.String, lineNumber);
+                throw new InputValueException(ecoregionName.Value.String,
+                                              "The ecoregion {0} was previously used on line {1}", ecoregionName.Value.String, lineNumber);
             else
                 speciesLineNums[ecoregion.Name] = LineNumber;
             return ecoregion;
         }
-        //---------------------------------------------------------------------
 
         /// <summary>
         /// Reads ecoregion names as column headings
@@ -836,12 +587,12 @@ namespace Landis.Extension.Succession.ForC
         {
             if (AtEndOfInput)
                 throw NewParseException("Expected a line with the names of 1 or more active ecoregions.");
-
             InputVar<string> ecoregionName = new InputVar<string>("Ecoregion");
             List<IEcoregion> ecoregions = new List<IEcoregion>();
             StringReader currentLine = new StringReader(CurrentLine);
             TextReader.SkipWhitespace(currentLine);
-            while (currentLine.Peek() != -1) {
+            while (currentLine.Peek() != -1)
+            {
                 ReadValue(ecoregionName, currentLine);
                 IEcoregion ecoregion = ecoregionDataset[ecoregionName.Value.Actual];
                 if (ecoregion == null)
@@ -860,13 +611,10 @@ namespace Landis.Extension.Succession.ForC
                 TextReader.SkipWhitespace(currentLine);
             }
             GetNextLine();
-
             return ecoregions;
         }
 
-        //---------------------------------------------------------------------
-
-        private IEcoregion GetEcoregion(InputValue<string>      ecoregionName,
+        private IEcoregion GetEcoregion(InputValue<string> ecoregionName,
                                         Dictionary<string, int> lineNumbers)
         {
             IEcoregion ecoregion = ecoregionDataset[ecoregionName.Actual];
@@ -881,55 +629,46 @@ namespace Landis.Extension.Succession.ForC
                                               ecoregionName.String, lineNumber);
             else
                 lineNumbers[ecoregion.Name] = LineNumber;
-
             return ecoregion;
         }
-        //---------------------------------------------------------------------
 
         private IEcoregion GetEcoregion(InputValue<string> ecoregionName)
         {
             IEcoregion ecoregion = ecoregionDataset[ecoregionName.Actual];
             if (ecoregion == null)
-                throw new InputValueException(ecoregionName.String, "{0} is not an ecoregion name.", ecoregionName.String);
-
+                throw new InputValueException(ecoregionName.String,
+                                              "{0} is not an ecoregion name.", ecoregionName.String);
             return ecoregion;
         }
-        //---------------------------------------------------------------------
 
         /// <summary>
         /// Reads a table for a species parameter that varies by ecoregion.
         /// </summary>
-        private void ReadSpeciesEcoregionParm<TParm>(string               tableName,
+        private void ReadSpeciesEcoregionParm<TParm>(string tableName,
                                                      SetParmMethod<TParm> setParmMethod,
-                                                     params string[]      namesThatFollow)
+                                                     params string[] namesThatFollow)
         {
             ReadName(tableName);
             List<IEcoregion> ecoregions = ReadEcoregions();
             string lastEcoregion = ecoregions[ecoregions.Count-1].Name;
-
             List<string> namesAfterTable;
             if (namesThatFollow == null)
                 namesAfterTable = new List<string>();
             else
                 namesAfterTable = new List<string>(namesThatFollow);
-
             speciesLineNums.Clear();
             while (! AtEndOfInput && ! namesAfterTable.Contains(CurrentName)) {
                 StringReader currentLine = new StringReader(CurrentLine);
                 ISpecies species = ReadSpecies(currentLine);
-
                 foreach (IEcoregion ecoregion in ecoregions) {
                     InputVar<TParm> parameter = new InputVar<TParm>("Ecoregion " + ecoregion.Name);
                     ReadValue(parameter, currentLine);
                     setParmMethod(species, ecoregion, parameter.Value);
                 }
-
-                CheckNoDataAfter("the Ecoregion " + lastEcoregion + " column",
-                                 currentLine);
+                CheckNoDataAfter("the Ecoregion " + lastEcoregion + " column", currentLine);
                 GetNextLine();
             }
         }
-        //---------------------------------------------------------------------
  
         private bool CheckDisturbanceType(InputVar<string> sName)
         {
@@ -941,15 +680,12 @@ namespace Landis.Extension.Succession.ForC
                     break;
             }
             if (i == 0)
-            {
-                return (false);
-            }
+                return false;
             else
-                return (true);
+                return true;
 
         }
 
-        //---------------------------------------------------------------------
         private IEcoregion GetEcoregion(string ecoName)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregions[ecoName];
@@ -957,10 +693,9 @@ namespace Landis.Extension.Succession.ForC
                 throw new InputValueException(ecoName,
                                               "{0} is not an ecoregion name.",
                                               ecoName);
-
             return ecoregion;
         }
-        //---------------------------------------------------------------------
+
         private ISpecies ReadSpecies(string speciesName)
         {
             ISpecies species = PlugIn.ModelCore.Species[speciesName.Trim()];
@@ -970,6 +705,5 @@ namespace Landis.Extension.Succession.ForC
                                               speciesName);
             return species;
         }
-
     }
 }

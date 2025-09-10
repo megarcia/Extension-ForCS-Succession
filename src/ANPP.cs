@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Landis.Utilities;
+// NOTE: InputValueException --> Landis.Utilities.InputValueException
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -33,7 +30,8 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 if (value < 0.0)
-                    throw new InputValueException(value.ToString(), "Grams / m2-year must be >= 0.  The value provided is = {0}.", value);
+                    throw new InputValueException(value.ToString(),
+                                                  "Grams / m2-year must be >= 0.  The value provided is = {0}.", value);
                 m_dGramsPerMetre2Year = value;
             }
         }
@@ -47,7 +45,8 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 if (value < 0.0)
-                    throw new Landis.Utilities.InputValueException(value.ToString(), "Std deviation must be >= 0.  The value provided is = {0}.", value);
+                    throw new InputValueException(value.ToString(),
+                                                  "Std deviation must be >= 0.  The value provided is = {0}.", value);
                 m_dStdDev = value;
             }
         }

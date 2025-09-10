@@ -1,13 +1,5 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
-using Landis.SpatialModeling;
-using Landis.Core;
-using Landis.Library.UniversalCohorts;
-using System.Collections.Generic;
-using Landis.Utilities;
-using System.IO;
-using System;
-
 namespace Landis.Extension.Succession.ForC
 {
     public class SoilVars

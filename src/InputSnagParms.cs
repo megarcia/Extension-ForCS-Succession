@@ -1,16 +1,12 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
-using Landis.Library.Succession;
-using Landis.Core;
-using Landis.Utilities;
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Landis.Extension.Succession.ForC
 {
     public class InputSnagParms : IInputSnagParms
     {
-        //Initial Snag variables
+        /// <summary>
+        /// Initial Snag variables
+        /// </summary>
         private int[] m_SnagSpecies;
         private int[] m_SnagAgeAtDeath;
         private int[] m_SnagTimeSinceDeath;
@@ -18,13 +14,20 @@ namespace Landis.Extension.Succession.ForC
 
         public InputSnagParms()
         {
-            this.m_SnagAgeAtDeath = new int[Snags.NUMSNAGS];
-            this.m_SnagTimeSinceDeath = new int[Snags.NUMSNAGS];
-            this.m_SnagSpecies = new int[Snags.NUMSNAGS];
-            this.m_SnagDisturb = new string[Snags.NUMSNAGS];            
+            m_SnagAgeAtDeath = new int[Snags.NUMSNAGS];
+            m_SnagTimeSinceDeath = new int[Snags.NUMSNAGS];
+            m_SnagSpecies = new int[Snags.NUMSNAGS];
+            m_SnagDisturb = new string[Snags.NUMSNAGS];            
         }
 
-        //initial snag information
+        /// <summary>
+        /// Initial snag information
+        /// </summary>
+        /// <param name="species"></param>
+        /// <param name="dAgeAtDeath"></param>
+        /// <param name="dTimeSinceDeath"></param>
+        /// <param name="sDisturbType"></param>
+        /// <param name="i"></param>
         public void SetInitSnagInfo(ISpecies species, InputValue<int> dAgeAtDeath, InputValue<int> dTimeSinceDeath, InputValue<string> sDisturbType, int i)
         {
             m_SnagSpecies[i] = species.Index;
