@@ -10,7 +10,7 @@ namespace Landis.Extension.Succession.ForC
     {
         public static readonly string ExtensionName = "ForC Succession";
         private static ICore modelCore;
-        private IInputParameters parameters;
+        private IInputParams parameters;
         private IInputSnagParms paramSnag;
         private IInputClimateParms paramClimate;
         private IInputDisturbanceMatrixParams paramDM;
@@ -29,8 +29,8 @@ namespace Landis.Extension.Succession.ForC
         public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
-            InputParametersParser parser = new InputParametersParser();
-            parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
+            InputParamsParser parser = new InputParamsParser();
+            parameters = Landis.Data.Load<IInputParams>(dataFile, parser);
             InputClimateParser parser3 = new InputClimateParser();
             paramClimate = Landis.Data.Load<IInputClimateParms>(parameters.ClimateFile2, parser3);
             InputDisturbanceMatrixParser parser4 = new InputDisturbanceMatrixParser();

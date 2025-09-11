@@ -10,7 +10,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// A parser that reads biomass succession parameters from text input.
     /// </summary>
-    public class InputParametersParser : Landis.Utilities.TextParser<IInputParameters>
+    public class InputParamsParser : Landis.Utilities.TextParser<IInputParams>
     {
         private delegate void SetParmMethod<TParm>(ISpecies          species,
                                                    IEcoregion        ecoregion,
@@ -21,7 +21,7 @@ namespace Landis.Extension.Succession.ForC
         private Dictionary<string, int> speciesLineNums;
         private InputVar<string> speciesName;
 
-        static InputParametersParser()
+        static InputParamsParser()
         {
             SeedingAlgorithmsUtil.RegisterForInputValues();            
             // FIXME: Need to add RegisterForInputValues method to
@@ -30,7 +30,7 @@ namespace Landis.Extension.Succession.ForC
             Percentage dummy = new Percentage();
         }
 
-        public InputParametersParser()
+        public InputParamsParser()
         {
             this.ecoregionDataset = PlugIn.ModelCore.Ecoregions;
             this.speciesDataset = PlugIn.ModelCore.Species;
@@ -38,7 +38,7 @@ namespace Landis.Extension.Succession.ForC
             this.speciesName = new InputVar<string>("Species");
         }
 
-        protected override IInputParameters Parse()
+        protected override IInputParams Parse()
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
@@ -60,7 +60,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<string> sSpecies = new InputVar<string>("Species");
             int nread = 0;
             int neco = 0;
-            InputParameters parameters = new InputParameters();  
+            InputParams parameters = new InputParams();  
             //Get number of active ecoregions
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
                 if (ecoregion.Active)

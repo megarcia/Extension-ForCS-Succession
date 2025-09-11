@@ -84,7 +84,7 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// main constructor
         /// </summary>
-        public Soils(IInputParameters iParams, ActiveSite site, IInputDisturbanceMatrixParams iDMParams)
+        public Soils(IInputParams iParams, ActiveSite site, IInputDisturbanceMatrixParams iDMParams)
         {
             Debug.Assert(iParams != null);
             SoilVars.iParams = iParams;

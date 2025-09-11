@@ -10,7 +10,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// The parameters for biomass succession.
     /// </summary>
-    public class InputParameters : IInputParameters
+    public class InputParams : IInputParams
     {
         private int timestep;
         private SeedingAlgorithms seedAlg;
@@ -691,7 +691,7 @@ namespace Landis.Extension.Succession.ForC
             this.m_dEstablishProbability[species][ecoregion] = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
-        public InputParameters()
+        public InputParams()
         {
             minRelativeBiomass = new Library.Parameters.Ecoregions.AuxParm<Percentage>[6];
             for (byte shadeClass = 1; shadeClass <= 5; shadeClass++)

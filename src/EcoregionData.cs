@@ -27,7 +27,7 @@ namespace Landis.Extension.Succession.ForC
         public static Library.Parameters.Ecoregions.AuxParm<double> AnnualTemperature;
         private static bool bWroteMsg1;
 
-        public static void Initialize(IInputParameters parameters, IInputClimateParms paramClimate)
+        public static void Initialize(IInputParams parameters, IInputClimateParms paramClimate)
         {
             m_iCParams = paramClimate;
             ShadeBiomass = parameters.MinRelativeBiomass;

@@ -12,7 +12,7 @@ namespace Landis.Extension.Succession.ForC
         public static Dictionary<IEcoregion, List<IEcoSppDOMDynamicInputRecord>> EcoSppDOMData;
 
         //---------------------------------------------------------------------
-        public static void Initialize(IInputParameters parameters)
+        public static void Initialize(IInputParams parameters)
         {
 
         }

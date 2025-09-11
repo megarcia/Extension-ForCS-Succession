@@ -7,7 +7,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// The parameters for biomass succession.
     /// </summary>
-    public interface IInputParameters
+    public interface IInputParams
     {
         int Timestep { get; set; }
         SeedingAlgorithms SeedAlgorithm { get; set; }
