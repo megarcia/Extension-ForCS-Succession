@@ -72,7 +72,7 @@ namespace Landis.Extension.Succession.ForC
             int siteBiomass = SiteVars.TotalBiomass[site]; 
             // Save the pre-growth root biomass. This needs to be calculated BEFORE growth and mortality
             double TotalRoots = Roots.CalcRootBiomass(site, cohort.Species, cohort.Data.Biomass);
-            SiteVars.soilClass[site].CollectRootBiomass(TotalRoots, 0);
+            SiteVars.soils[site].CollectRootBiomass(TotalRoots, 0);
             // First, calculate age-related mortality.
             // Age-related mortality will include woody and standing leaf biomass (=0 for deciduous trees).
             double mortalityAge = CalcAgeMortality(cohort);
@@ -98,7 +98,7 @@ namespace Landis.Extension.Succession.ForC
             {
                 double standing_nonwood = CalcFractionANPPleaf(cohort.Species) * actualANPP;
                 defoliationLoss = standing_nonwood * defoliation;
-                SiteVars.soilClass[site].DisturbanceImpactsDOM(site, "defol", 0);  //just soil impacts. Dist impacts are handled differently??
+                SiteVars.soils[site].DisturbanceImpactsDOM(site, "defol", 0);  //just soil impacts. Dist impacts are handled differently??
             }
             ANPP = actualANPP;
             double deltaBiomass = (int)(actualANPP - totalMortality - defoliationLoss);
@@ -106,7 +106,7 @@ namespace Landis.Extension.Succession.ForC
             double totalLitter = UpdateDeadBiomass(cohort, actualANPP, totalMortality, site, newBiomass);
             // The KillNow flag indicates that this is the year of growth in which
             // to kill off some cohorts in order to make snags.
-            if (SiteVars.soilClass[site].bKillNow && Snags.bSnagsPresent)
+            if (SiteVars.soils[site].bKillNow && Snags.bSnagsPresent)
             {
                 // There could be more than one species-age combination, so we have 
                 // to loop through them. However, the user has been asked to put the 
@@ -123,7 +123,7 @@ namespace Landis.Extension.Succession.ForC
                         double foliar = (double)cohort.ComputeNonWoodyBiomass(site);
                         double wood = (double)cohort.Data.Biomass - foliar;
                         Snags.bSnagsUsed[idx] = true;
-                        SiteVars.soilClass[site].CollectBiomassMortality(cohort.Species, cohort.Data.Age, wood, foliar, 5 + idx);
+                        SiteVars.soils[site].CollectBiomassMortality(cohort.Species, cohort.Data.Age, wood, foliar, 5 + idx);
                     }
                     if (Snags.DiedAt[idx] > cohort.Data.Age || Snags.DiedAt[idx] == 0)
                         break; 
@@ -134,7 +134,7 @@ namespace Landis.Extension.Succession.ForC
                 // If we didn't kill this cohort to make a snag, then update the 
                 // post-growth root biomass.
                 TotalRoots = Roots.CalcRootBiomass(site, cohort.Species, newBiomass);
-                SiteVars.soilClass[site].CollectRootBiomass(TotalRoots, 1);
+                SiteVars.soils[site].CollectRootBiomass(TotalRoots, 1);
             }
             return deltaBiomass;
         }
@@ -256,10 +256,10 @@ namespace Landis.Extension.Succession.ForC
                 throw new ApplicationException("Error: Woody input is < 0");
             // Total mortality not including annual leaf litter
             M_noLeafLitter = (int)mortality_wood;
-            SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, mortality_wood, mortality_nonwood + annualLeafANPP, 0);
+            SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, mortality_wood, mortality_nonwood + annualLeafANPP, 0);
             // add root biomass information - now calculated based on both woody and non-woody biomass
             Roots.CalcRootTurnover(site, species, cohortBiomass);
-            SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 1);
+            SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 1);
             // if biomass is going down, then we need to capture a decrease in the roots as well.
             if (cohortBiomass < cohort.Data.Biomass)
             {
@@ -276,7 +276,7 @@ namespace Landis.Extension.Succession.ForC
                     // decrease in one pool and an increase in the other.)
                     double diffFine = preMortFine / preMortRoots * (preMortRoots - TotRoots);
                     double diffCoarse = preMortRoots - TotRoots - diffFine;
-                    SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, diffCoarse, diffFine, 1);
+                    SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, diffCoarse, diffFine, 1);
                     // write a note to the file if the allocation changes unexpectedly, but not during spin-up
                     if (((preMortCoarse - Roots.CoarseRoot) < 0 || (preMortFine - Roots.FineRoot) < 0) && PlugIn.ModelCore.CurrentTime > 0)
                     {
@@ -299,9 +299,9 @@ namespace Landis.Extension.Succession.ForC
             }
             if (PlugIn.ModelCore.CurrentTime == 0)
             {
-                SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, standing_wood, standing_nonwood, 3);
+                SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, standing_wood, standing_nonwood, 3);
                 Roots.CalcRootTurnover(site, species, standing_wood + standing_nonwood);
-                SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 4);
+                SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 4);
             }
             return annualLeafANPP + mortality_nonwood + mortality_wood;
         }

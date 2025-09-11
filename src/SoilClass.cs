@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Landis.Extension.Succession.ForC
 {
-    public class SoilClass
+    public class Soils
     {
         public enum SoilPoolType
         {
@@ -83,14 +83,14 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// default constructor
         /// </summary>
-        public SoilClass()
+        public Soils()
         {
         }
 
         /// <summary>
         /// main constructor
         /// </summary>
-        public SoilClass(IInputParameters iParams, ActiveSite site, IInputDMParameters iDMParams)
+        public Soils(IInputParameters iParams, ActiveSite site, IInputDMParameters iDMParams)
         {
             Debug.Assert(iParams != null);
             SoilVars.iParams = iParams;
@@ -103,7 +103,6 @@ namespace Landis.Extension.Succession.ForC
             InitializeOutput();  // note that this will actually only be done for the first site.
         }
 
-
         /// <summary>
         /// Clone constructor
         /// Given all the issues around the ICloneable interface, I have chosen to 
@@ -111,7 +110,7 @@ namespace Landis.Extension.Succession.ForC
         /// http://stackoverflow.com/questions/78536/cloning-objects-in-c
         /// </summary>
         /// <param name="oSrc"></param>
-        public SoilClass(SoilClass oSrc)
+        public Soils(Soils oSrc)
         {
             int i;
             for (int j = 0; j < PlugIn.ModelCore.Species.Count; j++)

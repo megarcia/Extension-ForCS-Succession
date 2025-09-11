@@ -26,7 +26,7 @@ namespace Landis.Extension.Succession.ForC
         public static ISiteVar<byte> fireSeverity;
         public static ISiteVar<string> HarvestPrescriptionName;
 
-        public static ISiteVar<SoilClass> soilClass;    
+        public static ISiteVar<Soils> soils;    
         public static ISiteVar<double> capacityReduction;
 
         // Site-level values for printing maps
@@ -62,7 +62,7 @@ namespace Landis.Extension.Succession.ForC
             ToFPSC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             fireSeverity = PlugIn.ModelCore.GetSiteVar<byte>("Fire.Severity");
             HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
-            soilClass = PlugIn.ModelCore.Landscape.NewSiteVar<SoilClass>();
+            soils = PlugIn.ModelCore.Landscape.NewSiteVar<Soils>();
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 //  site cohorts are initialized by the PlugIn.InitializeSite method
@@ -78,7 +78,7 @@ namespace Landis.Extension.Succession.ForC
                 Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();  //temporary - for memory testing SEPT
                 double totalMBOfPhysicalMemory = currentProcess.WorkingSet64 / 100000.0;
                 double totalMBOfVirtualMemory = currentProcess.VirtualMemorySize64 / 100000.0;
-                soilClass[site] = new SoilClass(iParams, site, iDMParams);
+                soils[site] = new Soils(iParams, site, iDMParams);
                 totalMBOfPhysicalMemory = currentProcess.WorkingSet64 / 100000.0;
                 totalMBOfVirtualMemory = currentProcess.VirtualMemorySize64 / 100000.0;
             }

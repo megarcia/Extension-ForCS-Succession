@@ -14,7 +14,7 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="tmpFireSeverity"></param>
         public static void DisturbanceImpactsBiomass(ActiveSite site, ISpecies species, int age, double wood, double nonwood, string DistTypeName, int tmpFireSeverity)
         {
-            SiteVars.soilClass[site].DisturbanceImpactsBiomass(site, species, age, wood, nonwood, DistTypeName, 0);  
+            SiteVars.soils[site].DisturbanceImpactsBiomass(site, species, age, wood, nonwood, DistTypeName, 0);  
             int iage = age;
         }
     }

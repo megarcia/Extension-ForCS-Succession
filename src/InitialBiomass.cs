@@ -10,7 +10,7 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public class InitialBiomass
     {
-        public SoilClass soilClass;
+        public Soils soils;
         public double SoilOrganicMatterC;
         public double DeadWoodMass;
         public double LitterMass;
@@ -36,7 +36,7 @@ namespace Landis.Extension.Succession.ForC
                                double litterMass,
                                double deadWoodDecayRate,
                                double litterDecayRate,
-                               SoilClass soilClass)
+                               Soils soils)
         {
             this.cohorts = cohorts;
             this.SoilOrganicMatterC = soilOrganicMatterC;
@@ -44,7 +44,7 @@ namespace Landis.Extension.Succession.ForC
             this.LitterMass = litterMass;
             this.DeadWoodDecayRate = deadWoodDecayRate;
             this.LitterDecayRate = litterDecayRate;
-            this.soilClass = soilClass;
+            this.soils = soils;
         }
 
         public static SiteCohorts Clone(SiteCohorts site_cohorts)
@@ -124,7 +124,7 @@ namespace Landis.Extension.Succession.ForC
                                                 SiteVars.LitterMass[site].Mass,
                                                 SiteVars.DeadWoodDecayRate[site],
                                                 SiteVars.LitterDecayRate[site],
-                                                SiteVars.soilClass[site]);
+                                                SiteVars.soils[site]);
             initialSites[key] = initialBiomass;
             return initialBiomass;
         }
@@ -183,7 +183,7 @@ namespace Landis.Extension.Succession.ForC
                                                         cohort.Data.Biomass,
                                                         cohort.Data.AdditionalParameters);
                     SiteVars.TotalBiomass[site] = Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
-                    SiteVars.soilClass[site].CollectBiomassMortality(cohort.Species, 0, 0, 0, 0);      //dummy for getting it to recognize that the species is now present.
+                    SiteVars.soils[site].CollectBiomassMortality(cohort.Species, 0, 0, 0, 0);      //dummy for getting it to recognize that the species is now present.
                 }
             }
             else
@@ -191,8 +191,8 @@ namespace Landis.Extension.Succession.ForC
             if (SoilVars.iParams.SoilSpinUpFlag == 0)
                 ReadSoilValuesFromTable(site);
             else
-                SiteVars.soilClass[site].SpinupSoils(site);
-            SiteVars.soilClass[site].LastInitialSoilPass(site);
+                SiteVars.soils[site].SpinupSoils(site);
+            SiteVars.soils[site].LastInitialSoilPass(site);
             return SiteVars.Cohorts[site];
         }
 
@@ -226,8 +226,8 @@ namespace Landis.Extension.Succession.ForC
                 //  Grow current biomass cohorts.
                 if (time == endTime)
                 {
-                    SiteVars.soilClass[site].lastAge = ageCohorts[0].Data.Age;       //signal both that the spin-up is done, and the oldest age
-                    SiteVars.soilClass[site].bKillNow = false;
+                    SiteVars.soils[site].lastAge = ageCohorts[0].Data.Age;       //signal both that the spin-up is done, and the oldest age
+                    SiteVars.soils[site].bKillNow = false;
                 }
                 PlugIn.GrowCohorts(site, successionTimestep, true);
                 //  Add those cohorts that were born at the current year
@@ -238,20 +238,20 @@ namespace Landis.Extension.Succession.ForC
                     int initialBiomass = initialBiomassMethod(species, SiteVars.Cohorts[site], site);
                     SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
                                                         initialBiomass, new System.Dynamic.ExpandoObject());
-                    SiteVars.soilClass[site].CollectBiomassMortality(species, 0, 0, 0, 0);      //dummy for getting it to recognize that the species is now present.
+                    SiteVars.soils[site].CollectBiomassMortality(species, 0, 0, 0, 0);      //dummy for getting it to recognize that the species is now present.
                     indexNextAgeCohort++;
                 }
                 if (time == endTime)
                 {
-                    SiteVars.soilClass[site].lastAge = ageCohorts[0].Data.Age;       //signal both that the spin-up is done, and the oldest age
-                    SiteVars.soilClass[site].bKillNow = false;
+                    SiteVars.soils[site].lastAge = ageCohorts[0].Data.Age;       //signal both that the spin-up is done, and the oldest age
+                    SiteVars.soils[site].bKillNow = false;
                 }
                 else if (time == endTime - 1)
                 {                              
                     // just before the last timestep, we want to send a signal 
                     // to the growth routine to kill the cohorts that need to 
                     // be snags. Hardwire this first for testing.
-                    SiteVars.soilClass[site].bKillNow = true;
+                    SiteVars.soils[site].bKillNow = true;
                 }
             }
         }
