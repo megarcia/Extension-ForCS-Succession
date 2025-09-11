@@ -2,35 +2,35 @@
 
 namespace Landis.Extension.Succession.ForC
 {
-    public class EstabProb : TimeInput, IEstabProb
+    public class ProbEstablishment : TimeInput, IProbEstablishment
     {
-        double m_dEstabProb = 0.0;
+        double m_dProbEstablishment = 0.0;
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public EstabProb()
+        public ProbEstablishment()
         {
         }
 
-        public EstabProb(int nYear, double dEstabProb)
+        public ProbEstablishment(int nYear, double dProbEstablishment)
         {
             this.Year = nYear;
-            this.Establishment = dEstabProb;
+            this.Establishment = dProbEstablishment;
         }
 
         public double Establishment
         {
             get
             {
-                return m_dEstabProb;
+                return m_dProbEstablishment;
             }
             set
             {
                 if (value < 0.0)
                     throw new InputValueException(value.ToString(),
                                                   "Establishment Probability must be >= 0.  The value provided is = {0}.", value);
-                m_dEstabProb = value;
+                m_dProbEstablishment = value;
             }
         }
     }

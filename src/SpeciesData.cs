@@ -154,11 +154,11 @@ namespace Landis.Extension.Succession.ForC
                         }
                         // Establishmenet is only used in projection, not spin-up. 
                         // Don't check for values when usetime < 0
-                        IEstabProb estprob;
+                        IProbEstablishment probEstablishment;
                         if (usetime >= 0)
                         {
-                            if (m_iParams.EstabProbTimeCollection[ecoregion][species].TryGetValue(usetime + y, out estprob))
-                                EstablishProbability[species][ecoregion] = (double)estprob.Establishment;
+                            if (m_iParams.ProbEstablishmentTimeCollection[ecoregion][species].TryGetValue(usetime + y, out probEstablishment))
+                                EstablishProbability[species][ecoregion] = (double)probEstablishment.Establishment;
                         }
                     }
                 }

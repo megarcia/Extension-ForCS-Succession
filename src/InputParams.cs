@@ -70,7 +70,7 @@ namespace Landis.Extension.Succession.ForC
         private double m_dFracDOMBranchSnagToFastAG;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> m_ANPPTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> m_MaxBiomassTimeCollection;
-        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IEstabProb>>> m_EstabProbTimeCollection;
+        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> m_ProbEstablishmentTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_MinWoodyBio;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_Ratio;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_PropFine;
@@ -334,7 +334,7 @@ namespace Landis.Extension.Succession.ForC
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBio { get { return m_MinWoodyBio; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get { return m_ANPPTimeCollection; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> MaxBiomassTimeCollection { get { return m_MaxBiomassTimeCollection; } }
-        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IEstabProb>>> EstabProbTimeCollection { get { return m_EstabProbTimeCollection; } }
+        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> ProbEstablishmentTimeCollection { get { return m_ProbEstablishmentTimeCollection; } }
         public Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> EstablishProbability { get { return m_dEstablishProbability; } }
 
         public Library.Parameters.Ecoregions.AuxParm<double> FieldCapacity
@@ -740,17 +740,17 @@ namespace Landis.Extension.Succession.ForC
             // ANPP and Max Biomass Time Collection
             this.m_ANPPTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>>(m_dsEcoregion);
             this.m_MaxBiomassTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>>(m_dsEcoregion);
-            this.m_EstabProbTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IEstabProb>>>(m_dsEcoregion);
+            this.m_ProbEstablishmentTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>>(m_dsEcoregion);
             foreach (IEcoregion ecoregion in m_dsEcoregion)
             {
                 this.m_ANPPTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>(m_dsSpecies);
                 this.m_MaxBiomassTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>(m_dsSpecies);
-                this.m_EstabProbTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IEstabProb>>(m_dsSpecies);
+                this.m_ProbEstablishmentTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>(m_dsSpecies);
                 foreach (ISpecies species in m_dsSpecies)
                 {
                     this.m_ANPPTimeCollection[ecoregion][species] = new TimeCollection<IANPP>();
                     this.m_MaxBiomassTimeCollection[ecoregion][species] = new TimeCollection<IMaxBiomass>();
-                    this.m_EstabProbTimeCollection[ecoregion][species] = new TimeCollection<IEstabProb>();
+                    this.m_ProbEstablishmentTimeCollection[ecoregion][species] = new TimeCollection<IProbEstablishment>();
                 }
             }
             this.m_dEstablishProbability = CreateSpeciesEcoregionParm<double>();

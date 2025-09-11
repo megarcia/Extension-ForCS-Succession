@@ -1,6 +1,6 @@
 namespace Landis.Extension.Succession.ForC
 {
-    public interface IEstabProb: ITimeInput
+    public interface IProbEstablishment: ITimeInput
     {
         double Establishment { get; }
     }

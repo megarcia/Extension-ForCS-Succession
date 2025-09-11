@@ -442,7 +442,7 @@ namespace Landis.Extension.Succession.ForC
             DataTable establishProbabilitiesTable = establishProbabilitiesParser.ParseToDataTable(establishProbabilitiesInputFile.Value);
             nread = 0;
             nYear = 0;
-            double dEstProb = 0;
+            double dProbEstablishment = 0;
             foreach (DataRow row in establishProbabilitiesTable.Rows)
             {
                 IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
@@ -451,9 +451,9 @@ namespace Landis.Extension.Succession.ForC
                 if (nYear < 0)
                     throw new InputValueException("Year",
                                                   "{0} is not a valid year.", nYear.ToString());
-                dEstProb = System.Convert.ToDouble(row["Probability"]);
+                dProbEstablishment = System.Convert.ToDouble(row["Probability"]);
                 // Create an EstablishmentProbability object.
-                parameters.EstabProbTimeCollection[ecoregion][species].Add(new EstabProb(nYear, dEstProb));
+                parameters.ProbEstablishmentTimeCollection[ecoregion][species].Add(new ProbEstablishment(nYear, dProbEstablishment));
                 nread += 1;
             }
             if (nread < neco * speciesDataset.Count)
