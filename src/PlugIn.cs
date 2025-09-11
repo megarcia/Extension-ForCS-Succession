@@ -10,10 +10,10 @@ namespace Landis.Extension.Succession.ForC
     {
         public static readonly string ExtensionName = "ForC Succession";
         private static ICore modelCore;
-        private IInputParams parameters;
-        private IInputSnagParams paramSnag;
-        private IInputClimateParams paramClimate;
-        private IInputDisturbanceMatrixParams paramDM;
+        private IInputParams inputParams;
+        private IInputSnagParams inputSnagParams;
+        private IInputClimateParams inputClimateParams;
+        private IInputDisturbanceMatrixParams inputDisturbanceMatrixParams;
         public static bool CalibrateMode;
         public static double CurrentYearSiteMortality;
         public static int MaxLife;
@@ -30,15 +30,15 @@ namespace Landis.Extension.Succession.ForC
         {
             modelCore = mCore;
             InputParamsParser parser = new InputParamsParser();
-            parameters = Landis.Data.Load<IInputParams>(dataFile, parser);
+            inputParams = Landis.Data.Load<IInputParams>(dataFile, parser);
             InputClimateParser parser3 = new InputClimateParser();
-            paramClimate = Landis.Data.Load<IInputClimateParams>(parameters.ClimateFile2, parser3);
+            inputClimateParams = Landis.Data.Load<IInputClimateParams>(inputParams.ClimateFile2, parser3);
             InputDisturbanceMatrixParser parser4 = new InputDisturbanceMatrixParser();
-            paramDM = Landis.Data.Load<IInputDisturbanceMatrixParams>(parameters.DMFile, parser4);
-            if (parameters.InitSnagFile != null)
+            inputDisturbanceMatrixParams = Landis.Data.Load<IInputDisturbanceMatrixParams>(inputParams.DMFile, parser4);
+            if (inputParams.InitSnagFile != null)
             {
                 InputSnagParser parser2 = new InputSnagParser();
-                paramSnag = Landis.Data.Load<IInputSnagParams>(parameters.InitSnagFile, parser2);
+                inputSnagParams = Landis.Data.Load<IInputSnagParams>(inputParams.InitSnagFile, parser2);
             }
             MaxLife = 0;
             foreach (ISpecies species in modelCore.Species)
@@ -46,7 +46,7 @@ namespace Landis.Extension.Succession.ForC
                 if (MaxLife < species.Longevity)
                     MaxLife = species.Longevity;
             }
-            SiteVars.Initialize(parameters, paramDM);
+            SiteVars.Initialize(inputParams, inputDisturbanceMatrixParams);
         }
 
         public static ICore ModelCore
@@ -59,19 +59,19 @@ namespace Landis.Extension.Succession.ForC
        
         public override void Initialize()
         {
-            Timestep = parameters.Timestep;
-            sufficientLight = parameters.LightClassProbabilities;
+            Timestep = inputParams.Timestep;
+            sufficientLight = inputParams.LightClassProbabilities;
             //  Initialize climate.  A list of ecoregion indices is passed so that
             //  the climate library can operate independently of the LANDIS-II core.
             List<int> ecoregionIndices = new List<int>();
             foreach(IEcoregion ecoregion in ModelCore.Ecoregions)
                 ecoregionIndices.Add(ecoregion.Index);
-            // Climate.Initialize(parameters.ClimateFile, false, modelCore);     //LANDIS CLIMATE LIBRARY
-            EcoregionData.Initialize(parameters, paramClimate);
-            SpeciesData.Initialize(parameters);
-            CalibrateMode = parameters.CalibrateMode;
-            CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
-            Snags.Initialize(paramSnag);
+            // Climate.Initialize(inputParams.ClimateFile, false, modelCore);     //LANDIS CLIMATE LIBRARY
+            EcoregionData.Initialize(inputParams, inputClimateParams);
+            SpeciesData.Initialize(inputParams);
+            CalibrateMode = inputParams.CalibrateMode;
+            CohortBiomass.SpinupMortalityFraction = inputParams.SpinupMortalityFraction;
+            Snags.Initialize(inputSnagParams);
             //  Cohorts must be created before the base class is initialized
             //  because the base class' reproduction module uses the core's
             //  SuccessionCohorts property in its Initialization method.
@@ -80,10 +80,10 @@ namespace Landis.Extension.Succession.ForC
             Reproduction.Establish = Establish;
             Reproduction.AddNewCohort = AddNewCohort;
             Reproduction.MaturePresent = MaturePresent;
-            base.Initialize(modelCore, parameters.SeedAlgorithm); 
+            base.Initialize(modelCore, inputParams.SeedAlgorithm); 
             InitialBiomass.Initialize(Timestep);
             Cohort.MortalityEvent += CohortMortality;
-            InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
+            InitializeSites(inputParams.InitialCommunities, inputParams.InitialCommunitiesMap, modelCore);
         }
 
         public override void Run()
@@ -95,10 +95,10 @@ namespace Landis.Extension.Succession.ForC
             SpeciesData.GenerateNewANPPandMaxBiomass(Timestep, 0);
             base.RunReproductionFirst();
             //write the maps, if the timestep is right
-            if (parameters.OutputMap > 0)   // 0 = don't print
+            if (inputParams.OutputMap > 0)   // 0 = don't print
             {  
-                if (ModelCore.CurrentTime % parameters.OutputMap == 0)
-                    Outputs.WriteMaps(parameters.OutputMapPath, parameters.OutputMap);
+                if (ModelCore.CurrentTime % inputParams.OutputMap == 0)
+                    Outputs.WriteMaps(inputParams.OutputMapPath, inputParams.OutputMap);
             }
             // Clear list of cohorts to add after growth phase for later
             siteCohortsToAdd.Clear();
@@ -110,11 +110,11 @@ namespace Landis.Extension.Succession.ForC
             SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts);
             // Note: we need this both here and in SiteVars.Initialize()?
             SiteVars.soils[site] = new Soils(initialBiomass.soils);
-            SiteVars.SoilOrganicMatterC[site]   = initialBiomass.SoilOrganicMatterC;            
-            SiteVars.DeadWoodMass[site].Mass         = initialBiomass.DeadWoodMass;
-            SiteVars.LitterMass[site].Mass           = initialBiomass.LitterMass;
-            SiteVars.DeadWoodDecayRate[site]         = initialBiomass.DeadWoodDecayRate;
-            SiteVars.LitterDecayRate[site]           = initialBiomass.LitterDecayRate;
+            SiteVars.SoilOrganicMatterC[site] = initialBiomass.SoilOrganicMatterC;            
+            SiteVars.DeadWoodMass[site].Mass = initialBiomass.DeadWoodMass;
+            SiteVars.LitterMass[site].Mass = initialBiomass.LitterMass;
+            SiteVars.DeadWoodDecayRate[site] = initialBiomass.DeadWoodDecayRate;
+            SiteVars.LitterDecayRate[site] = initialBiomass.LitterDecayRate;
             SiteVars.soils[site].BiomassOutput(site, 1);
         }
 
@@ -181,9 +181,7 @@ namespace Landis.Extension.Succession.ForC
         /// Grows all cohorts at a site for a specified number of years.  The
         /// dead pools at the site also decompose for the given time period.
         /// </summary>
-        public static void GrowCohorts(ActiveSite site,
-                                       int years,
-                                       bool isSuccessionTimestep)
+        public static void GrowCohorts(ActiveSite site, int years, bool isSuccessionTimestep)
         {
             IEcoregion ecoregion = ModelCore.Ecoregion[site];
             double preGrowthBiomass = 0;
@@ -234,8 +232,7 @@ namespace Landis.Extension.Succession.ForC
         /// that is an ecoregion x spp property. Therefore, would better be 
         /// described as "SiteLevelDeterminantReproduction".
         /// </summary>
-        public bool SufficientLight(ISpecies species,
-                                    ActiveSite site)
+        public bool SufficientLight(ISpecies species, ActiveSite site)
         {
             byte siteShade = ModelCore.GetSiteVar<byte>("Shade")[site];            
             double lightProbability = 0.0;
