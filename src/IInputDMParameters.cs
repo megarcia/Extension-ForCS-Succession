@@ -7,7 +7,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// The parameters for Disturbance Matrices.
     /// </summary>
-    public interface IInputDMParameters
+    public interface IInputDisturbanceMatrixParams
     {
         IDictionary<int, IDOMPool> DOMPools { get; }
         /// <summary>

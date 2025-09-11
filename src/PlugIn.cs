@@ -13,7 +13,7 @@ namespace Landis.Extension.Succession.ForC
         private IInputParameters parameters;
         private IInputSnagParms paramSnag;
         private IInputClimateParms paramClimate;
-        private IInputDMParameters paramDM;
+        private IInputDisturbanceMatrixParams paramDM;
         public static bool CalibrateMode;
         public static double CurrentYearSiteMortality;
         public static int MaxLife;
@@ -34,7 +34,7 @@ namespace Landis.Extension.Succession.ForC
             InputClimateParser parser3 = new InputClimateParser();
             paramClimate = Landis.Data.Load<IInputClimateParms>(parameters.ClimateFile2, parser3);
             InputDMParser parser4 = new InputDMParser();
-            paramDM = Landis.Data.Load<IInputDMParameters>(parameters.DMFile, parser4);
+            paramDM = Landis.Data.Load<IInputDisturbanceMatrixParams>(parameters.DMFile, parser4);
             if (parameters.InitSnagFile != null)
             {
                 InputSnagParser parser2 = new InputSnagParser();
@@ -262,7 +262,6 @@ namespace Landis.Extension.Succession.ForC
             if(!found)
                 ModelCore.UI.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
             return ModelCore.GenerateUniform() < lightProbability;
-            
         }
 
         public override byte CalcShade(ActiveSite site)

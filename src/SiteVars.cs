@@ -40,7 +40,7 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Initializes the module.
         /// </summary>
-        public static void Initialize(IInputParameters iParams, IInputDMParameters iDMParams)
+        public static void Initialize(IInputParameters iParams, IInputDisturbanceMatrixParams iDMParams)
         {
             System.Diagnostics.Debug.Assert(iParams != null);
             universalCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<SiteCohorts>();        

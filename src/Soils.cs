@@ -84,7 +84,7 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// main constructor
         /// </summary>
-        public Soils(IInputParameters iParams, ActiveSite site, IInputDMParameters iDMParams)
+        public Soils(IInputParameters iParams, ActiveSite site, IInputDisturbanceMatrixParams iDMParams)
         {
             Debug.Assert(iParams != null);
             SoilVars.iParams = iParams;
@@ -136,7 +136,7 @@ namespace Landis.Extension.Succession.ForC
 
         /// <summary>
         /// calculate how much slow pool carbon moves from above ground pool to 
-        /// below ground pool                  *
+        /// below ground pool
         /// </summary>
         /// <param name="species"></param>
         /// <param name="slowAG_to_slowBG_transferRate"></param>
@@ -736,16 +736,16 @@ namespace Landis.Extension.Succession.ForC
             if ((PlugIn.ModelCore.CurrentTime % SoilVars.iParams.OutputBiomass != 0) && PlugIn.ModelCore.CurrentTime != 1 && Year0 != 1)
                 return;
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            // If it the year 0 pass (initialization), then also call the soil output.
+            // If the year0 pass (initialization), then also call the soil output.
             if (Year0 == 1)
             {
                 foreach (ISpecies species in PlugIn.ModelCore.Species)
                 {
-                    if (SpeciesPresent[(int)species.Index])    //Only print species that have once been on the site
+                    if (SpeciesPresent[(int)species.Index])    // Only print species that have once been on the site
                     {
                         for (int currPool = 0; currPool < Constants.NUMSOILPOOLS; currPool++)
                             totalDOMC[currPool] = soilC[currPool, species.Index];
-                        SoilOutput(site, species, 1);      //pool and flux output by species
+                        SoilOutput(site, species, 1);      // pool and flux output by species
                     }
                 }
             }
@@ -775,7 +775,8 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Description: Controlling routine to loop over all the species in the Model and call the soil dynamics routine
+        /// Description: Controlling routine to loop over all the species 
+        /// in the Model and call the soil dynamics routine
         /// (note: New routine - not part of CBM)
         /// </summary>
         /// <param name="site"></param>
@@ -974,7 +975,7 @@ namespace Landis.Extension.Succession.ForC
             catch (Exception err)
             {
                 string mesg = string.Format("{0}", err.Message);
-                throw new System.ApplicationException(mesg);
+                throw new ApplicationException(mesg);
             }
             logPools.AutoFlush = true;
             logFileName = "log_Flux.csv";
@@ -985,7 +986,7 @@ namespace Landis.Extension.Succession.ForC
             catch (Exception err)
             {
                 string mesg = string.Format("{0}", err.Message);
-                throw new System.ApplicationException(mesg);
+                throw new ApplicationException(mesg);
             }
             logFlux.AutoFlush = true;
             logFileName = "log_FluxDOM.csv";
@@ -1007,7 +1008,7 @@ namespace Landis.Extension.Succession.ForC
             catch (Exception err)
             {
                 string mesg = string.Format("{0}", err.Message);
-                throw new System.ApplicationException(mesg);
+                throw new ApplicationException(mesg);
             }
             logFluxBio.AutoFlush = true;
             logFileName = "log_BiomassC.csv";

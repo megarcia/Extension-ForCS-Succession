@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Landis.Extension.Succession.ForC
 {
-    public class InputDMParameters : IInputDMParameters
+    public class InputDisturbanceMatrixParams : IInputDisturbanceMatrixParams
     {
         private IDictionary<int, IDOMPool> m_dictDOMPools;
         private IDisturbTransferFromPools[] m_aDisturbFireFromDOMPools;
@@ -90,7 +90,7 @@ namespace Landis.Extension.Succession.ForC
             this.m_dictDOMPools.Add(pool.ID, pool);
         }
 
-        public InputDMParameters()
+        public InputDisturbanceMatrixParams()
         {
             this.m_dictDOMPools = new Dictionary<int, IDOMPool>();
         }

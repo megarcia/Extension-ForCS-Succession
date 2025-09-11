@@ -9,7 +9,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// A parser that reads biomass succession parameters from text input.
     /// </summary>
-    public class InputDMParser : Landis.Utilities.TextParser<IInputDMParameters>
+    public class InputDMParser : Landis.Utilities.TextParser<IInputDisturbanceMatrixParams>
     {
         private delegate void SetParmMethod<TParm>(ISpecies species,
                                                    IEcoregion ecoregion,
@@ -23,7 +23,7 @@ namespace Landis.Extension.Succession.ForC
         {
         }
 
-        protected override IInputDMParameters Parse()
+        protected override IInputDisturbanceMatrixParams Parse()
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
@@ -44,7 +44,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<int> nIntensity = new InputVar<int>("Intensity");
             InputVar<int> nBiomassPoolID = new InputVar<int>("Biomass Pool ID");
             int nread = 0;
-            InputDMParameters parameters = new InputDMParameters();
+            InputDisturbanceMatrixParams parameters = new InputDisturbanceMatrixParams();
             PlugIn.ModelCore.UI.WriteLine("Reading new DM input file.");
             //First set-up the DOM pools (This used to be done already, but we will do it manually now
             for (int n = 1; n < 11; n++)
