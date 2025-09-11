@@ -68,7 +68,7 @@ namespace Landis.Extension.Succession.ForC
 
         private static ushort successionTimestep;
 
-        private static uint ComputeKey(uint initCommunityMapCode,
+        private static uint CalcKey(uint initCommunityMapCode,
                                        ushort ecoregionMapCode)
         {
             return (uint)((initCommunityMapCode << 16) | ecoregionMapCode);
@@ -93,7 +93,7 @@ namespace Landis.Extension.Succession.ForC
 
 
         /// <summary>
-        /// Computes the initial biomass at a site.
+        /// Calculates the initial biomass at a site.
         /// </summary>
         /// <param name="site">
         /// The selected site.
@@ -101,11 +101,11 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="initialCommunity">
         /// The initial community of age cohorts at the site.
         /// </param>
-        public static InitialBiomass Compute(ActiveSite site,
-                                             ICommunity initialCommunity)
+        public static InitialBiomass CalcInitBiomass(ActiveSite site,
+                                                        ICommunity initialCommunity)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            uint key = ComputeKey(initialCommunity.MapCode, ecoregion.MapCode);
+            uint key = CalcKey(initialCommunity.MapCode, ecoregion.MapCode);
             InitialBiomass initialBiomass;
             if (initialSites.TryGetValue(key, out initialBiomass))
                 return initialBiomass;
@@ -149,7 +149,7 @@ namespace Landis.Extension.Succession.ForC
         /// A method that computes the initial biomass for a new cohort at a
         /// site based on the existing cohorts.
         /// </summary>
-        public delegate int ComputeMethod(ISpecies species,
+        public delegate int CalculationMethod(ISpecies species,
                                           SiteCohorts siteCohorts,
                                           ActiveSite  site);
 
@@ -169,7 +169,7 @@ namespace Landis.Extension.Succession.ForC
         /// </param>
         public static SiteCohorts MakeBiomassCohorts(List<ICohort> ageCohorts,
                                                      ActiveSite site,
-                                                     ComputeMethod initialBiomassMethod)
+                                                     CalculationMethod initialBiomassMethod)
         {
             SiteVars.Cohorts[site] = new SiteCohorts();
             if (ageCohorts.Count == 0)
@@ -200,12 +200,12 @@ namespace Landis.Extension.Succession.ForC
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             foreach (var cohort in SiteVars.Cohorts[site])
-                SiteVars.soilClass[site].CalculateDecayRates(ecoregion, cohort.Species, site);
+                SiteVars.soilClass[site].CalcDecayRates(ecoregion, cohort.Species, site);
         }
 
         private static void SpinUpBiomassCohorts(List<ICohort> ageCohorts,
                                                  ActiveSite site,
-                                                 ComputeMethod initialBiomassMethod)
+                                                 CalculationMethod initialBiomassMethod)
         {
             int indexNextAgeCohort = 0;
             //  The index in the list of sorted age cohorts of the next

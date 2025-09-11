@@ -57,31 +57,31 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Computes the change in a cohort's biomass due to Annual Net Primary
+        /// Calculates the change in a cohort's biomass due to Annual Net Primary
         /// Productivity (ANPP), age-related mortality (M_AGE), and development-
         /// related mortality (M_BIO).
         /// </summary>
-        public double ComputeChange(ICohort cohort,
-                                    ActiveSite site,
-                                    out double ANPP,
-                                    out ExpandoObject otherParams)
+        public double CalcBiomassChange(ICohort cohort,
+                                           ActiveSite site,
+                                           out double ANPP,
+                                           out ExpandoObject otherParams)
          {
             dynamic tempObject = new ExpandoObject();
             otherParams = tempObject;
             ecoregion = PlugIn.ModelCore.Ecoregion[site];
             int siteBiomass = SiteVars.TotalBiomass[site]; 
             // Save the pre-growth root biomass. This needs to be calculated BEFORE growth and mortality
-            double TotalRoots = Roots.CalculateRootBiomass(site, cohort.Species, cohort.Data.Biomass);
+            double TotalRoots = Roots.CalcRootBiomass(site, cohort.Species, cohort.Data.Biomass);
             SiteVars.soilClass[site].CollectRootBiomass(TotalRoots, 0);
             // First, calculate age-related mortality.
             // Age-related mortality will include woody and standing leaf biomass (=0 for deciduous trees).
-            double mortalityAge = ComputeAgeMortality(cohort);
-            double actualANPP = ComputeActualANPP(cohort, site, siteBiomass, SiteVars.PreviousYearMortality[site]);
+            double mortalityAge = CalcAgeMortality(cohort);
+            double actualANPP = CalcActualANPP(cohort, site, siteBiomass, SiteVars.PreviousYearMortality[site]);
             // Age mortality is discounted from ANPP to prevent the over-
             // estimation of mortality.  ANPP cannot be negative.
             actualANPP = Math.Max(1, actualANPP - mortalityAge);
             // Growth-related mortality
-            double mortalityGrowth = ComputeGrowthMortality(cohort, site, siteBiomass);
+            double mortalityGrowth = CalcGrowthMortality(cohort, site, siteBiomass);
             // Age-related mortality is discounted from growth-related
             // mortality to prevent the under-estimation of mortality.  Cannot be negative.
             mortalityGrowth = Math.Max(0, mortalityGrowth - mortalityAge);
@@ -96,7 +96,7 @@ namespace Landis.Extension.Succession.ForC
             double defoliationLoss = 0.0;
             if (defoliation > 0)
             {
-                double standing_nonwood = ComputeFractionANPPleaf(cohort.Species) * actualANPP;
+                double standing_nonwood = CalcFractionANPPleaf(cohort.Species) * actualANPP;
                 defoliationLoss = standing_nonwood * defoliation;
                 SiteVars.soilClass[site].DisturbanceImpactsDOM(site, "defol", 0);  //just soil impacts. Dist impacts are handled differently??
             }
@@ -133,17 +133,17 @@ namespace Landis.Extension.Succession.ForC
             {
                 // If we didn't kill this cohort to make a snag, then update the 
                 // post-growth root biomass.
-                TotalRoots = Roots.CalculateRootBiomass(site, cohort.Species, newBiomass);
+                TotalRoots = Roots.CalcRootBiomass(site, cohort.Species, newBiomass);
                 SiteVars.soilClass[site].CollectRootBiomass(TotalRoots, 1);
             }
             return deltaBiomass;
         }
 
         /// <summary>
-        /// Computes M_AGE_ij: the mortality caused by the aging of the cohort.
+        /// Calculates M_AGE_ij: the mortality caused by the aging of the cohort.
         /// See equation 6 in Scheller and Mladenoff, 2004.
         /// </summary>
-        private double ComputeAgeMortality(ICohort cohort)
+        private double CalcAgeMortality(ICohort cohort)
         {
             double max_age = (double)cohort.Species.Longevity;
             double d = SpeciesData.MortCurveShape[cohort.Species];
@@ -158,7 +158,7 @@ namespace Landis.Extension.Succession.ForC
             return M_AGE;
         }
 
-        private double ComputeActualANPP(ICohort cohort,
+        private double CalcActualANPP(ICohort cohort,
                                          ActiveSite site,
                                          int siteBiomass,
                                          int prevYearSiteMortality)
@@ -175,7 +175,7 @@ namespace Landis.Extension.Succession.ForC
                 if (PlugIn.CalibrateMode)
                     PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.", (PlugIn.ModelCore.CurrentTime + SubYear), capacityReduction, cohort.Species.Name, cohort.Data.Age, cohort.Data.Biomass);
             }
-            double indexC = CalculateCompetition(site, cohort);   // Biomass model
+            double indexC = CalcCompetition(site, cohort);   // Biomass model
             // Potential biomass, equation 3 in Scheller and Mladenoff, 2004   
             double potentialBiomass = Math.Max(1, maxBiomass - siteBiomass + cohortBiomass);  //Biomass model
             // Species can use new space immediately
@@ -205,7 +205,7 @@ namespace Landis.Extension.Succession.ForC
         /// including self-thinning and loss of branches, twigs, etc.
         /// See equation 5 in Scheller and Mladenoff, 2004.
         /// </summary>
-        private double ComputeGrowthMortality(ICohort cohort, ActiveSite site, int siteBiomass)
+        private double CalcGrowthMortality(ICohort cohort, ActiveSite site, int siteBiomass)
         {
             double M_BIO = 1.0;
             double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
@@ -230,7 +230,7 @@ namespace Landis.Extension.Succession.ForC
             ISpecies species = cohort.Species;
             double leafLongevity = SpeciesData.LeafLongevity[species];
             double cohortBiomass = newBiomass; // Mortality is for the current year's biomass.
-            double leafFraction = ComputeFractionANPPleaf(species);
+            double leafFraction = CalcFractionANPPleaf(species);
             // First, deposit the a portion of the leaf mass directly onto the forest floor.
             // In this way, the actual amount of leaf biomass is added for the year.
             // In addition, add the equivalent portion of fine roots to the surface layer.
@@ -258,15 +258,15 @@ namespace Landis.Extension.Succession.ForC
             M_noLeafLitter = (int)mortality_wood;
             SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, mortality_wood, mortality_nonwood + annualLeafANPP, 0);
             // add root biomass information - now calculated based on both woody and non-woody biomass
-            Roots.CalculateRootTurnover(site, species, cohortBiomass);
+            Roots.CalcRootTurnover(site, species, cohortBiomass);
             SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 1);
             // if biomass is going down, then we need to capture a decrease in the roots as well.
             if (cohortBiomass < cohort.Data.Biomass)
             {
-                double preMortRoots = Roots.CalculateRootBiomass(site, species, cohort.Data.Biomass);
+                double preMortRoots = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
                 double preMortCoarse = Roots.CoarseRoot;
                 double preMortFine = Roots.FineRoot;
-                double TotRoots = Roots.CalculateRootBiomass(site, species, cohortBiomass);
+                double TotRoots = Roots.CalcRootBiomass(site, species, cohortBiomass);
                 // if the root biomass went down, then we need to allocate that difference.
                 if (preMortRoots > TotRoots)
                 {
@@ -300,19 +300,19 @@ namespace Landis.Extension.Succession.ForC
             if (PlugIn.ModelCore.CurrentTime == 0)
             {
                 SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, standing_wood, standing_nonwood, 3);
-                Roots.CalculateRootTurnover(site, species, standing_wood + standing_nonwood);
+                Roots.CalcRootTurnover(site, species, standing_wood + standing_nonwood);
                 SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 4);
             }
             return annualLeafANPP + mortality_nonwood + mortality_wood;
         }
 
         /// <summary>
-        /// Computes the cohort's biomass that is leaf litter
+        /// Calculates the cohort's biomass that is leaf litter
         /// or other non-woody components.  Assumption is that remainder is woody.
         /// </summary>
-        public static double ComputeStandingLeafBiomass(double ANPPactual, ICohort cohort)
+        public static double CalcStandingLeafBiomass(double ANPPactual, ICohort cohort)
         {
-            double annualLeafFraction = ComputeFractionANPPleaf(cohort.Species);
+            double annualLeafFraction = CalcFractionANPPleaf(cohort.Species);
             double annualFoliar = ANPPactual * annualLeafFraction;
             double B_nonwoody = annualFoliar * SpeciesData.LeafLongevity[cohort.Species];
             //  Non-woody cannot be less than 2.5% or greater than leaf fraction of total
@@ -322,7 +322,7 @@ namespace Landis.Extension.Succession.ForC
             return B_nonwoody;
         }
 
-        public static double ComputeFractionANPPleaf(ISpecies species)
+        public static double CalcFractionANPPleaf(ISpecies species)
         {
             // A portion of growth goes to creating leaves (Niklas and Enquist 2002).
             // Approximate for angio and conifer:
@@ -335,11 +335,11 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Computes the percentage of a cohort's standing biomass that is non-woody.
+        /// Calculates the percentage of a cohort's standing biomass that is non-woody.
         /// April 2010: changed to be a constant percentage of foliage, so that the 
         /// calculations of turnover give reasonable numbers.
         /// </summary>
-        public Percentage ComputeNonWoodyPercentage(ICohort cohort,
+        public Percentage CalcNonWoodyPercentage(ICohort cohort,
                                                     ActiveSite site)
         {
             double leaf = 0.1;
@@ -348,7 +348,7 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Computes the initial biomass for a cohort at a site.
+        /// Calculates the initial biomass for a cohort at a site.
         /// </summary>
         public static int InitialBiomass(ISpecies species,
                                          SiteCohorts siteCohorts,
@@ -385,7 +385,7 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="site"></param>
         /// <param name="cohort"></param>
         /// <returns></returns>
-        private static double CalculateCompetition(ActiveSite site, ICohort cohort)
+        private static double CalcCompetition(ActiveSite site, ICohort cohort)
         {
 
             double competitionPower = 0.95;

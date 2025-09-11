@@ -20,7 +20,7 @@ namespace Landis.Extension.Succession.ForC
                                                ActiveSite site)
         {
 
-            double coarseRootBiomass = CalculateCoarseRoot(abovegroundWoodBiomass); // Ratio above to below
+            double coarseRootBiomass = CalcCoarseRoot(abovegroundWoodBiomass); // Ratio above to below
             if (coarseRootBiomass > 0)
                 SiteVars.SoilOrganicMatterC[site] += coarseRootBiomass * 0.47;  // = convert to g C / m2
         }
@@ -32,7 +32,7 @@ namespace Landis.Extension.Succession.ForC
                                              ISpecies species,
                                              ActiveSite site)
         {
-            double fineRootBiomass = CalculateFineRoot(abovegroundFoliarBiomass); 
+            double fineRootBiomass = CalcFineRoot(abovegroundFoliarBiomass); 
             if (fineRootBiomass > 0)
                 SiteVars.SoilOrganicMatterC[site] += fineRootBiomass * 0.47;  // = convert to g C / m2
         }
@@ -41,12 +41,12 @@ namespace Landis.Extension.Succession.ForC
         /// Calculate coarse and fine roots based on total aboveground biomass.
         /// Niklas & Enquist 2002: 25% of total stocks
         /// </summary>
-        public static double CalculateCoarseRoot(double abio)
+        public static double CalcCoarseRoot(double abio)
         {
             return abio * 0.24;
         }
 
-        public static double CalculateFineRoot(double abio)
+        public static double CalcFineRoot(double abio)
         {
             return abio * 0.06;
         }
@@ -56,7 +56,7 @@ namespace Landis.Extension.Succession.ForC
         /// Calculate coarse and fine roots based on woody biomass.
         /// These are no longer straight percentages.
         /// </summary>
-        public static double CalculateRootBiomass(ActiveSite site, ISpecies species, double abio)
+        public static double CalcRootBiomass(ActiveSite site, ISpecies species, double abio)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             int i = 0;
@@ -77,10 +77,10 @@ namespace Landis.Extension.Succession.ForC
             return totalroot;
         }
 
-        public static void CalculateRootTurnover(ActiveSite site, ISpecies species, double abio)
+        public static void CalcRootTurnover(ActiveSite site, ISpecies species, double abio)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            double totalroot = CalculateRootBiomass(site, species, abio);
+            double totalroot = CalcRootBiomass(site, species, abio);
             int i = 0;
             for (i = 0; i < 4; i++)
             {

@@ -188,7 +188,7 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="ecoregion"></param>
         /// <param name="species"></param>
         /// <param name="site"></param>
-        public void CalculateDecayRates(IEcoregion ecoregion, ISpecies species, ActiveSite site)
+        public void CalcDecayRates(IEcoregion ecoregion, ISpecies species, ActiveSite site)
         {
             int currPool;                                     // A loop counter of the current soil pool.
 
@@ -568,7 +568,7 @@ namespace Landis.Extension.Succession.ForC
             byte severity = 0;
             string TransferName = "null";
             double PropStem;
-            double totroot = Roots.CalculateRootBiomass(site, species, wood + nonwood);
+            double totroot = Roots.CalcRootBiomass(site, species, wood + nonwood);
             double crsRoot = Roots.CoarseRoot * Constants.BIOTOC;
             double fineRoot = Roots.FineRoot * Constants.BIOTOC;
             double nonwoodC = nonwood * Constants.BIOTOC;   // turns biomass into C
@@ -830,7 +830,7 @@ namespace Landis.Extension.Succession.ForC
                     double wood = (double)cohort.Data.Biomass - foliar;
                     double crsRoot = 0.0;
                     double fineRoot = 0.0;
-                    double bbio = Roots.CalculateRootBiomass(site, cohort.Species, cohort.Data.Biomass);
+                    double bbio = Roots.CalcRootBiomass(site, cohort.Species, cohort.Data.Biomass);
                     // now change everything to C
                     foliar *= Constants.BIOTOC;
                     wood *= Constants.BIOTOC;
@@ -881,7 +881,7 @@ namespace Landis.Extension.Succession.ForC
                 // Modify the decay rates by year and weather    
                 // NOTE: this does not need to be done for every site, and could be moved outside this routine. 
                 // (Decay rates no longer need to vary by site)
-                CalculateDecayRates(ecoregion, species, site);
+                CalcDecayRates(ecoregion, species, site);
                 // Initialize C transferred to air, C transferred to the slow pool.
                 for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                 {

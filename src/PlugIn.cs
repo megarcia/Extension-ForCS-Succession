@@ -106,7 +106,7 @@ namespace Landis.Extension.Succession.ForC
 
         protected override void InitializeSite(ActiveSite site)
         {
-            InitialBiomass initialBiomass = InitialBiomass.Compute(site, initialCommunity);
+            InitialBiomass initialBiomass = InitialBiomass.CalcInitBiomass(site, initialCommunity);
             SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts);
             // Note: we need this both here and in SiteVars.Initialize()?
             SiteVars.soilClass[site] = new SoilClass(initialBiomass.soilClass);
@@ -130,7 +130,7 @@ namespace Landis.Extension.Succession.ForC
             {
                 if (disturbanceType == null)
                 {
-                    double totalRoot = Roots.CalculateRootBiomass(site, species, cohort.Data.Biomass);
+                    double totalRoot = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
                     SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, wood, foliar, 0);
                     SiteVars.soilClass[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRoot, Roots.FineRoot, 1);
                     if (site.DataIndex == 1)
@@ -222,7 +222,7 @@ namespace Landis.Extension.Succession.ForC
                 int newBiomass = CohortBiomass.InitialBiomass(cohort.species, SiteVars.Cohorts[site], site);
                 SiteVars.Cohorts[site].AddNewCohort(cohort.species, 1, newBiomass, new System.Dynamic.ExpandoObject());
                 SiteVars.soilClass[site].CollectBiomassMortality(cohort.species, 0, 0, 0, 0);
-                double TotalRoots = Roots.CalculateRootBiomass(site, cohort.species, newBiomass);
+                double TotalRoots = Roots.CalcRootBiomass(site, cohort.species, newBiomass);
                 SiteVars.soilClass[site].CollectRootBiomass(TotalRoots, 1);
             }
         }
@@ -265,7 +265,7 @@ namespace Landis.Extension.Succession.ForC
             
         }
 
-        public override byte ComputeShade(ActiveSite site)
+        public override byte CalcShade(ActiveSite site)
         {
             IEcoregion ecoregion = ModelCore.Ecoregion[site];
             double B_MAX = (double) EcoregionData.B_MAX[ecoregion];

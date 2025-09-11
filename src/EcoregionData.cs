@@ -94,8 +94,8 @@ namespace Landis.Extension.Succession.ForC
             {
                 // PlugIn.ModelCore.UI.WriteLine("  SETTING ANNAUL CLIMATE:  Yr={0}, SimYr={1}, Eco={2}.", year, actualYear, ecoregion.Name);
                 AnnualWeather[ecoregion] = AnnualClimateArray[ecoregion][year];
-                AET[ecoregion] = AnnualClimate_Monthly.CalculateAnnualActualEvapotranspiration(AnnualWeather[ecoregion], FieldCapacity[ecoregion]); //Climate Library v2.0
-                // AET[ecoregion] = AnnualClimate.CalculateAnnualActualEvapotranspiration(AnnualWeather[ecoregion], FieldCapacity[ecoregion]);  //Climate Library on GitHub
+                AET[ecoregion] = AnnualClimate_Monthly.CalcAnnualActualEvapotranspiration(AnnualWeather[ecoregion], FieldCapacity[ecoregion]); //Climate Library v2.0
+                // AET[ecoregion] = AnnualClimate.CalcAnnualActualEvapotranspiration(AnnualWeather[ecoregion], FieldCapacity[ecoregion]);  //Climate Library on GitHub
                 // string weatherWrite = AnnualWeather[ecoregion].Write();
                 // PlugIn.ModelCore.UI.WriteLine("{0}", weatherWrite);
             }
