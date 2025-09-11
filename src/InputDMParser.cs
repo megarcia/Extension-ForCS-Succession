@@ -9,17 +9,17 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// A parser that reads biomass succession parameters from text input.
     /// </summary>
-    public class InputDMParser : Landis.Utilities.TextParser<IInputDisturbanceMatrixParams>
+    public class InputDisturbanceMatrixParser : Landis.Utilities.TextParser<IInputDisturbanceMatrixParams>
     {
         private delegate void SetParmMethod<TParm>(ISpecies species,
                                                    IEcoregion ecoregion,
                                                    InputValue<TParm> newValue);
 
-        static InputDMParser()
+        static InputDisturbanceMatrixParser()
         {
         }
 
-        public InputDMParser()
+        public InputDisturbanceMatrixParser()
         {
         }
 

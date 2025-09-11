@@ -33,7 +33,7 @@ namespace Landis.Extension.Succession.ForC
             parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
             InputClimateParser parser3 = new InputClimateParser();
             paramClimate = Landis.Data.Load<IInputClimateParms>(parameters.ClimateFile2, parser3);
-            InputDMParser parser4 = new InputDMParser();
+            InputDisturbanceMatrixParser parser4 = new InputDisturbanceMatrixParser();
             paramDM = Landis.Data.Load<IInputDisturbanceMatrixParams>(parameters.DMFile, parser4);
             if (parameters.InitSnagFile != null)
             {
