@@ -72,7 +72,7 @@ namespace Landis.Extension.Succession.ForC
                     break;
             }
             double totalroot = abio * SpeciesData.Ratio[species][ecoregion][i];
-            FineRoot = totalroot * SpeciesData.PropFine[species][ecoregion][i];
+            FineRoot = totalroot * SpeciesData.FracFine[species][ecoregion][i];
             CoarseRoot = totalroot - FineRoot;
             return totalroot;
         }

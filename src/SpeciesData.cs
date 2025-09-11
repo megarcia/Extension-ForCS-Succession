@@ -47,7 +47,7 @@ namespace Landis.Extension.Succession.ForC
             MerchStemsMinAge = parameters.MerchStemsMinAge;
             MerchCurveParmA = parameters.MerchCurveParmA;
             MerchCurveParmB = parameters.MerchCurveParmB;
-            PropNonMerch = parameters.PropNonMerch;
+            FracNonMerch = parameters.FracNonMerch;
             GrowthCurveShapeParm = parameters.GrowthCurveShapeParm;
             FireTolerance = parameters.FireTolerance;
             ShadeTolerance = parameters.ShadeTolerance;
@@ -69,7 +69,7 @@ namespace Landis.Extension.Succession.ForC
                     {
                         Ratio[species][ecoregion][i] = parameters.Ratio[ecoregion][species][i];
                         MinWoodyBio[species][ecoregion][i] = parameters.MinWoodyBio[ecoregion][species][i];
-                        PropFine[species][ecoregion][i] = parameters.PropFine[ecoregion][species][i];
+                        PropFine[species][ecoregion][i] = parameters.FracFine[ecoregion][species][i];
                         FineTurnover[species][ecoregion][i] = parameters.FineTurnover[ecoregion][species][i];
                         CoarseTurnover[species][ecoregion][i] = parameters.CoarseTurnover[ecoregion][species][i];
                     }

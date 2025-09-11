@@ -301,11 +301,11 @@ namespace Landis.Extension.Succession.ForC
                 // A proportion of the total carbon lost from the very fast pool is
                 // released into the atmosphere.  The rest is given to the slow soil
                 // pool.
-                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastAG].PropAir;
+                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastAG].FracAir;
                 carbonToAir[(int)SoilPoolType.VERYFASTAG] += toAir;
                 carbonToABG_SlowPool[aboveSlowPool] += totalLostC_AS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.VERYFASTAG] += totalLostC_AS - toAir;
-                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastBG].PropAir;
+                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastBG].FracAir;
                 carbonToAir[(int)SoilPoolType.VERYFASTBG] += toAir;
                 carbonToABG_SlowPool[belowSlowPool] += totalLostC_BS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.VERYFASTBG] += totalLostC_BS - toAir;
@@ -330,7 +330,7 @@ namespace Landis.Extension.Succession.ForC
                 // to the user.
                 //
                 // Branch snags go to fast soil pool.
-                branchSnagToFastPool = soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] * SoilVars.iParams.PropDOMBranchSnagToFastAG;
+                branchSnagToFastPool = soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] * SoilVars.iParams.FracDOMBranchSnagToFastAG;
                 soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] -= branchSnagToFastPool;
                 // Next, the amount of above and belowground carbon added to the 
                 // fast soil pool by the species' branches (i.e. submerchantable 
@@ -341,8 +341,8 @@ namespace Landis.Extension.Succession.ForC
                 aboveC = netCLoss[(int)ComponentType.SUBMERCHANTABLE, species.Index] + netCLoss[(int)ComponentType.OTHER, species.Index];
                 belowC = netCLoss[(int)ComponentType.COARSEROOT, species.Index];
                 totalC = aboveC + belowC;
-                snagPools[species.Index, (int)SnagType.OTHERSNAG] = aboveC * (1.0 - SpeciesData.PropNonMerch[species]);
-                fastCAG = (aboveC * SpeciesData.PropNonMerch[species]) + Constants.COARSEROOTABOVERATIO * belowC + branchSnagToFastPool;
+                snagPools[species.Index, (int)SnagType.OTHERSNAG] = aboveC * (1.0 - SpeciesData.FracNonMerch[species]);
+                fastCAG = (aboveC * SpeciesData.FracNonMerch[species]) + Constants.COARSEROOTABOVERATIO * belowC + branchSnagToFastPool;
                 fastCBG = (1 - Constants.COARSEROOTABOVERATIO) * belowC;
                 // We determine the new carbon in the fast soil pool by adding 
                 // in the biomass carbon turned over and subtracting out the 
@@ -361,11 +361,11 @@ namespace Landis.Extension.Succession.ForC
                 // A proportion of the total carbon lost from the fast pool is 
                 // released into the atmosphere.  The rest is given to the slow 
                 // soil pool.
-                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastAG].PropAir;
+                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastAG].FracAir;
                 carbonToAir[(int)SoilPoolType.FASTAG] += toAir;
                 carbonToABG_SlowPool[aboveSlowPool] += totalLostC_AS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.FASTAG] += totalLostC_AS - toAir;
-                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastBG].PropAir;
+                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastBG].FracAir;
                 carbonToAir[(int)SoilPoolType.FASTBG] += toAir;
                 carbonToABG_SlowPool[belowSlowPool] += totalLostC_BS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.FASTBG] += totalLostC_BS - toAir;
@@ -388,7 +388,7 @@ namespace Landis.Extension.Succession.ForC
                 )
             {
                 // calculate how much snag goes to medium soil pool
-                snagToMedium = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.iParams.PropDOMStemSnagToMedium;
+                snagToMedium = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
                 soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= snagToMedium;
                 snagPools[species.Index, (int)SnagType.STEMSNAGS] = netCLoss[(int)ComponentType.MERCHANTABLE, species.Index];
                 soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] += snagPools[species.Index, (int)SnagType.STEMSNAGS];
@@ -400,11 +400,11 @@ namespace Landis.Extension.Succession.ForC
                 soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] -= BranSnagLost;
                 totalBranSnagLost += BranSnagLost;
                 // collect information into variables for output
-                snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftStemSnag].PropAir;
+                snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftStemSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SSTEMSNAG] += snagToAir;
                 carbonToABG_SlowPool[aboveSlowPool] += StemSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SSTEMSNAG] += StemSnagLost - snagToAir;
-                snagToAir = BranSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftBranchSnag].PropAir;
+                snagToAir = BranSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftBranchSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SOTHERSNAG] += snagToAir;
                 carbonToABG_SlowPool[aboveSlowPool] += BranSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SOTHERSNAG] += BranSnagLost - snagToAir;
@@ -429,7 +429,7 @@ namespace Landis.Extension.Succession.ForC
                 // A proportion of the total carbon lost from the medium pool is 
                 // released into the atmosphere.  The rest is given to the slow 
                 // soil pool.
-                toAir = totalLostC * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.Medium].PropAir;
+                toAir = totalLostC * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.Medium].FracAir;
                 carbonToAir[(int)SoilPoolType.MEDIUM] += toAir;
                 carbonToABG_SlowPool[aboveSlowPool] += totalLostC - toAir;
                 carbonToSlowPool[(int)SoilPoolType.MEDIUM] += totalLostC - toAir;
@@ -441,9 +441,9 @@ namespace Landis.Extension.Succession.ForC
                 double blackC_lost;
                 blackC_lost = soilC[(int)SoilPoolType.BLACKCARBON, species.Index] * SoilVars.decayRates[(int)SoilPoolType.BLACKCARBON, species.Index];
                 soilC[(int)SoilPoolType.BLACKCARBON, species.Index] -= blackC_lost;
-                carbonToAir[(int)SoilPoolType.BLACKCARBON] += blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].PropAir;
-                carbonToABG_SlowPool[aboveSlowPool] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].PropAir;
-                carbonToSlowPool[(int)SoilPoolType.BLACKCARBON] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].PropAir;
+                carbonToAir[(int)SoilPoolType.BLACKCARBON] += blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
+                carbonToABG_SlowPool[aboveSlowPool] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
+                carbonToSlowPool[(int)SoilPoolType.BLACKCARBON] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
             }
             // Do the slow soil pool dynamics.
             // First we calculate the carbon input to the soil pool 
@@ -470,7 +470,7 @@ namespace Landis.Extension.Succession.ForC
                 carbonToAir[(int)SoilPoolType.SLOWBG] = totalLostC_BS;
             }
             // Method to do biomixing
-            DoPoolBioMixing(species, SoilVars.iParams.PropDOMSlowAGToSlowBG);
+            DoPoolBioMixing(species, SoilVars.iParams.FracDOMSlowAGToSlowBG);
             // total the soil pools for output purposes
             for (currPool = 0; currPool < Constants.NUMSOILPOOLS; currPool++)
                 totalDOMC[currPool] += soilC[currPool, species.Index];
@@ -653,17 +653,17 @@ namespace Landis.Extension.Succession.ForC
                 else if (ipool == 5)         // fine roots
                     amtC = fineRoot;
                 oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPoolsBiomass.GetDisturbTransfer(ipool + 1);
-                netCLoss[ipool, idxSpecies] += amtC * oDisturbTransfer.PropToDOM;
-                totToFPS += amtC * oDisturbTransfer.PropToFPS;
+                netCLoss[ipool, idxSpecies] += amtC * oDisturbTransfer.FracToDOM;
+                totToFPS += amtC * oDisturbTransfer.FracToFPS;
                 // totals for the flux summary table
-                TotTransfer[1, 0] += amtC * oDisturbTransfer.PropToDOM;     // 0=to DOM, 1=toAir, 2=toFPS
-                TotTransfer[1, 1] += amtC * oDisturbTransfer.PropToAir;     // 0=to DOM, 1=toAir, 2=toFPS
-                TotTransfer[1, 2] += amtC * oDisturbTransfer.PropToFPS;     // 0=to DOM, 1=toAir, 2=toFPS
+                TotTransfer[1, 0] += amtC * oDisturbTransfer.FracToDOM;     // 0=to DOM, 1=toAir, 2=toFPS
+                TotTransfer[1, 1] += amtC * oDisturbTransfer.FracToAir;     // 0=to DOM, 1=toAir, 2=toFPS
+                TotTransfer[1, 2] += amtC * oDisturbTransfer.FracToFPS;     // 0=to DOM, 1=toAir, 2=toFPS
                 if (PlugIn.ModelCore.CurrentTime > 0)
                 {
                     //Flux output
-                    logFluxBio.Write("{0:0.000},", amtC * oDisturbTransfer.PropToDOM);
-                    logFluxBio.Write("{0:0.000},", amtC * oDisturbTransfer.PropToAir);
+                    logFluxBio.Write("{0:0.000},", amtC * oDisturbTransfer.FracToDOM);
+                    logFluxBio.Write("{0:0.000},", amtC * oDisturbTransfer.FracToAir);
                 }
             }
             if (PlugIn.ModelCore.CurrentTime > 0)
@@ -758,8 +758,8 @@ namespace Landis.Extension.Succession.ForC
                         tofps = 0;
                         tofloor = 0;
                         oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPoolsDOM.GetDisturbTransfer(ipool + 1);
-                        loss = soilC[ipool, species.Index] * oDisturbTransfer.PropToAir;
-                        tofps = soilC[ipool, species.Index] * oDisturbTransfer.PropToFPS;
+                        loss = soilC[ipool, species.Index] * oDisturbTransfer.FracToAir;
+                        tofps = soilC[ipool, species.Index] * oDisturbTransfer.FracToFPS;
                         if (ipool == (int)SoilPoolType.SSTEMSNAG || ipool == (int)SoilPoolType.SOTHERSNAG)
                             FPSsnag += tofps;
                         else
@@ -773,13 +773,13 @@ namespace Landis.Extension.Succession.ForC
                         // stem snag goes to the ground in medium
                         if (ipool == (int)SoilPoolType.SSTEMSNAG)
                         {
-                            tofloor = soilC[ipool, species.Index] * oDisturbTransfer.PropToDOM;
+                            tofloor = soilC[ipool, species.Index] * oDisturbTransfer.FracToDOM;
                             soilC[(int)SoilPoolType.MEDIUM, species.Index] += tofloor;
                         }
                         // branch snag goes to the ground in fast
                         else if (ipool == (int)SoilPoolType.SOTHERSNAG)
                         {
-                            tofloor = soilC[ipool, species.Index] * oDisturbTransfer.PropToDOM;
+                            tofloor = soilC[ipool, species.Index] * oDisturbTransfer.FracToDOM;
                             soilC[(int)SoilPoolType.FASTAG, species.Index] += tofloor;
                         }
                         if (ipool == (int)SoilPoolType.SSTEMSNAG || ipool == (int)SoilPoolType.SOTHERSNAG)

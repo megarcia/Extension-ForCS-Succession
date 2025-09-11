@@ -40,7 +40,7 @@ namespace Landis.Extension.Succession.ForC
             this.ID = nID;
             this.Name = sName;
             this.Q10 = dQ10;
-            this.PropAir = dFracAir;
+            this.FracAir = dFracAir;
         }
 
         public int ID

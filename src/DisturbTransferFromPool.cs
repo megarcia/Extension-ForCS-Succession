@@ -31,10 +31,10 @@ namespace Landis.Extension.Succession.ForC
             if ((dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM) > 1.0)
                 throw new InputValueException("Proportions",
                                               "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM);
-            this.PropToAir = dFracToAir;
-            this.PropToFloor = dFracToFloor;
-            this.PropToFPS = dFracToFPS;
-            this.PropToDOM = dFracToDOM;
+            this.FracToAir = dFracToAir;
+            this.FracToFloor = dFracToFloor;
+            this.FracToFPS = dFracToFPS;
+            this.FracToDOM = dFracToDOM;
         }
 
         public DisturbTransferFromPool(int nID, string sName, double dFracToAir, double dFracToFloor, double dFracToFPS, double dFracToDOM)
@@ -45,10 +45,10 @@ namespace Landis.Extension.Succession.ForC
             if ((dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM) > 1.0)
                 throw new InputValueException("Proportions",
                                               "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM);
-            this.PropToAir = dFracToAir;
-            this.PropToFloor = dFracToFloor;
-            this.PropToFPS = dFracToFPS;
-            this.PropToDOM = dFracToDOM;
+            this.FracToAir = dFracToAir;
+            this.FracToFloor = dFracToFloor;
+            this.FracToFPS = dFracToFPS;
+            this.FracToDOM = dFracToDOM;
         }
 
         public int ID
