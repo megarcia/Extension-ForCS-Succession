@@ -142,34 +142,6 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Calculate the temperature modifier on decay rate.                                                 *
-        /// </summary>
-        /// <param name="temperature"></param>
-        /// <param name="q10Rate"></param>
-        /// <returns></returns>
-        public double TempModifier(double temperature,
-                                  double q10Rate)
-        {
-            // Ensure that the q10 value greater than 0.  Values below 1 will 
-            // terminate the program.
-            const double decayTempRef = 10.0;
-            // Calculate and return the temperature modifier.
-            return Math.Exp((temperature - decayTempRef) * Math.Log(q10Rate) * 0.1);
-        }
-
-        /// <summary>
-        /// Calculate the precipitation modifier on decay rate.                                               *
-        /// </summary>
-        /// <param name="precipitation"></param>
-        /// <returns></returns>
-        public float PrecModifier(double precipitation)
-        {
-            // Currently, precipitation does not influence the decay rates, 
-            // so 1.0 is returned.
-            return 1F;
-        }
-
-        /// <summary>
         /// calculate how much slow pool carbon moves from above ground pool to 
         /// below ground pool                  *
         /// </summary>
@@ -180,45 +152,6 @@ namespace Landis.Extension.Succession.ForC
             carbonToSlowPool[(int)SoilPoolType.SLOWAG] += soilC[(int)SoilPoolType.SLOWAG, species.Index] * slowAG_to_slowBG_transferRate;
             soilC[(int)SoilPoolType.SLOWBG, species.Index] += soilC[(int)SoilPoolType.SLOWAG, species.Index] * slowAG_to_slowBG_transferRate;
             soilC[(int)SoilPoolType.SLOWAG, species.Index] = soilC[(int)SoilPoolType.SLOWAG, species.Index] * (1 - slowAG_to_slowBG_transferRate);
-        }
-
-        /// <summary>
-        /// Calculates the decay rates of each pool and species.                                               *
-        /// </summary>
-        /// <param name="ecoregion"></param>
-        /// <param name="species"></param>
-        /// <param name="site"></param>
-        public void CalcDecayRates(IEcoregion ecoregion, ISpecies species, ActiveSite site)
-        {
-            int currPool;                                     // A loop counter of the current soil pool.
-
-            /* CODE RELATED TO THE USE OF ONE OF THE BIGGER LANDIS CLIMATE LIBRARIES
-            int year = PlugIn.ModelCore.CurrentTime;
-            AnnualClimate_Monthly ecoClimate = EcoregionData.AnnualWeather[ecoregion]; //Climate Library v2.0
-            //AnnualClimate ecoClimate = EcoregionData.AnnualWeather[ecoregion];  //Climate Library on GitHub
-            double MeanAnnualTemperature = (double)ecoClimate.CalculateMeanAnnualTemp(year); //Climate Library v2.0
-            //double MeanAnnualTemperature = (double)ecoClimate.MeanAnnualTemp(year);  //Climate Library on GitHub
-            double AnnualPrecipitation = ecoClimate.TotalAnnualPrecip; //Climate Library v2.0
-            //double AnnualPrecipitation = ecoClimate.TotalAnnualPrecip();  //Climate Library on GitHub
-            //logFluxSum.WriteLine("{0},{1},{2},{3:0.000},", year, site.DataIndex, ecoregion.Index, MeanAnnualTemperature);
-            */
-
-            double MeanAnnualTemperature = EcoregionData.AnnualTemperature[ecoregion];
-            double AnnualPrecipitation = 1.0;           // not actually used
-            // First we assign precipitation and temperature effects to the 
-            // decay rates.  The very fast, fast, medium, and slow pools are 
-            // all influenced by these effects.  Note that decay rates can 
-            // vary by species now
-            for (currPool = 0; currPool < Constants.NUMSOILPOOLS - 1; currPool++)
-            {
-                // DEVNOTE: DOMSoilVars.decayRates use a 0-based index into an array,
-                // whereas DOMPools requires a key that is 1-based.
-                Debug.Assert(SoilVars.iParams.DOMPools.ContainsKey(currPool + 1));
-                SoilVars.decayRates[currPool, species.Index] = SoilVars.iParams.DOMDecayRates[ecoregion][species][currPool] *
-                    TempModifier(MeanAnnualTemperature, SoilVars.iParams.DOMPoolQ10[ecoregion][species][currPool]) *
-                    PrecModifier(AnnualPrecipitation);
-            }
-            return;            
         }
 
         /// <summary>
@@ -878,10 +811,9 @@ namespace Landis.Extension.Succession.ForC
                 else if (PlugIn.ModelCore.CurrentTime == 0 && lastAge == 0)
                     for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                         SoilVars.BioLive[i, (int)species.Index] = 0.0;   // zero out the live biomass component, unless the last year of spin-up
-                // Modify the decay rates by year and weather    
-                // NOTE: this does not need to be done for every site, and could be moved outside this routine. 
-                // (Decay rates no longer need to vary by site)
-                CalcDecayRates(ecoregion, species, site);
+                // Calculate soil carbon pool decay rates as a function of 
+                // temperature and weather    
+                SoilDecay.CalcDecayRates(ecoregion, species);  // MG 20250911 updated procedure removes site argument
                 // Initialize C transferred to air, C transferred to the slow pool.
                 for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                 {
