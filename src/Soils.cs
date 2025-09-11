@@ -22,12 +22,6 @@ namespace Landis.Extension.Succession.ForC
             BLACKCARBON
         };
 
-        public enum SnagType
-        {
-            STEMSNAGS = 0,
-            OTHERSNAG
-        };
-
         public enum ComponentType  // The biomass component type.
         {
             MERCHANTABLE = 0,  // The merchantable biomass component.
@@ -273,7 +267,7 @@ namespace Landis.Extension.Succession.ForC
                 aboveC = netCLoss[(int)ComponentType.SUBMERCHANTABLE, species.Index] + netCLoss[(int)ComponentType.OTHER, species.Index];
                 belowC = netCLoss[(int)ComponentType.COARSEROOT, species.Index];
                 totalC = aboveC + belowC;
-                snagPools[species.Index, (int)SnagType.OTHERSNAG] = aboveC * (1.0 - SpeciesData.FracNonMerch[species]);
+                snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG] = aboveC * (1.0 - SpeciesData.FracNonMerch[species]);
                 fastCAG = (aboveC * SpeciesData.FracNonMerch[species]) + Constants.COARSEROOTABOVERATIO * belowC + branchSnagToFastPool;
                 fastCBG = (1 - Constants.COARSEROOTABOVERATIO) * belowC;
                 // We determine the new carbon in the fast soil pool by adding 
@@ -315,16 +309,16 @@ namespace Landis.Extension.Succession.ForC
             if (netCLoss[(int)ComponentType.MERCHANTABLE, species.Index] > 0
                 || soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] > 0
                 || soilC[(int)SoilPoolType.SOTHERSNAG, 0] > 0 
-                || snagPools[species.Index, (int)SnagType.STEMSNAGS] > 0
-                || snagPools[species.Index, (int)SnagType.OTHERSNAG] > 0
+                || snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS] > 0
+                || snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG] > 0
                 )
             {
                 // calculate how much snag goes to medium soil pool
                 snagToMedium = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
                 soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= snagToMedium;
-                snagPools[species.Index, (int)SnagType.STEMSNAGS] = netCLoss[(int)ComponentType.MERCHANTABLE, species.Index];
-                soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] += snagPools[species.Index, (int)SnagType.STEMSNAGS];
-                soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] += snagPools[species.Index, (int)SnagType.OTHERSNAG];
+                snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS] = netCLoss[(int)ComponentType.MERCHANTABLE, species.Index];
+                soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS];
+                soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG];
                 StemSnagLost = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SSTEMSNAG, species.Index];
                 soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= StemSnagLost;
                 totalStemSnagLost += StemSnagLost;

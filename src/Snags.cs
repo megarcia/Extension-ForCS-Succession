@@ -12,6 +12,12 @@ namespace Landis.Extension.Succession.ForC
         public static bool[] bSnagsUsed = new bool[Constants.NUMSNAGS];     // flag for if this site contained this snag type.
         private double[,] BioSnag = new double[2, PlugIn.ModelCore.Species.Count];
 
+        public enum SnagType
+        {
+            STEMSNAGS = 0,
+            OTHERSNAG
+        };
+
         public static void Initialize(IInputSnagParms parameters)
         {
             if (parameters != null)
