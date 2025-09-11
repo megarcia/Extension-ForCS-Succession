@@ -2,12 +2,12 @@
 
 namespace Landis.Extension.Succession.ForC
 {
-    public class InputClimateParms : IInputClimateParms
+    public class InputClimateParams : IInputClimateParams
     {
         private Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>> m_ClimateAnnualCollection; 
         private IEcoregionDataset m_dsEcoregion;
 
-        public InputClimateParms()
+        public InputClimateParams()
         {
             this.m_dsEcoregion = PlugIn.ModelCore.Ecoregions;
             this.m_ClimateAnnualCollection = new Library.Parameters.Ecoregions.AuxParm<ITimeCollection<IClimateAnnual>>(m_dsEcoregion);

@@ -9,7 +9,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// A parser that reads ForCS specific climate parameters from text input.
     /// </summary>
-    public class InputClimateParser : Landis.Utilities.TextParser<IInputClimateParms>
+    public class InputClimateParser : Landis.Utilities.TextParser<IInputClimateParams>
     {
         private delegate void SetParmMethod<TParm>(ISpecies species,
                                                    IEcoregion ecoregion,
@@ -27,7 +27,7 @@ namespace Landis.Extension.Succession.ForC
            this.ecoregionDataset = PlugIn.ModelCore.Ecoregions;
         }
 
-        protected override IInputClimateParms Parse()
+        protected override IInputClimateParams Parse()
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
@@ -39,7 +39,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<int> nYear = new InputVar<int>("Time Step");
             InputVar<string> sEcoregion = new InputVar<string>("Eco");
             InputVar<double> dAvgT = new InputVar<double>("AvgT");
-            InputClimateParms parameters = new InputClimateParms();  
+            InputClimateParams parameters = new InputClimateParams();  
             ReadName(Names.ClimateTable);
             int nread = 0;            
             while (!AtEndOfInput && (CurrentName != "No Section To Follow"))

@@ -23,11 +23,11 @@ namespace Landis.Extension.Succession.ForC
         */
 
         //New ForCs Climate (April 2018)
-        private static IInputClimateParms m_iCParams;
+        private static IInputClimateParams m_iCParams;
         public static Library.Parameters.Ecoregions.AuxParm<double> AnnualTemperature;
         private static bool bWroteMsg1;
 
-        public static void Initialize(IInputParams parameters, IInputClimateParms paramClimate)
+        public static void Initialize(IInputParams parameters, IInputClimateParams paramClimate)
         {
             m_iCParams = paramClimate;
             ShadeBiomass = parameters.MinRelativeBiomass;

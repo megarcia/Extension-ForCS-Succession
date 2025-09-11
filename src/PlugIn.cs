@@ -12,7 +12,7 @@ namespace Landis.Extension.Succession.ForC
         private static ICore modelCore;
         private IInputParams parameters;
         private IInputSnagParams paramSnag;
-        private IInputClimateParms paramClimate;
+        private IInputClimateParams paramClimate;
         private IInputDisturbanceMatrixParams paramDM;
         public static bool CalibrateMode;
         public static double CurrentYearSiteMortality;
@@ -32,7 +32,7 @@ namespace Landis.Extension.Succession.ForC
             InputParamsParser parser = new InputParamsParser();
             parameters = Landis.Data.Load<IInputParams>(dataFile, parser);
             InputClimateParser parser3 = new InputClimateParser();
-            paramClimate = Landis.Data.Load<IInputClimateParms>(parameters.ClimateFile2, parser3);
+            paramClimate = Landis.Data.Load<IInputClimateParams>(parameters.ClimateFile2, parser3);
             InputDisturbanceMatrixParser parser4 = new InputDisturbanceMatrixParser();
             paramDM = Landis.Data.Load<IInputDisturbanceMatrixParams>(parameters.DMFile, parser4);
             if (parameters.InitSnagFile != null)
