@@ -2,7 +2,7 @@
 
 namespace Landis.Extension.Succession.ForC
 {
-    public class InputSnagParms : IInputSnagParms
+    public class InputSnagParams : IInputSnagParams
     {
         /// <summary>
         /// Initial Snag variables
@@ -12,7 +12,7 @@ namespace Landis.Extension.Succession.ForC
         private int[] m_SnagTimeSinceDeath;
         private string[] m_SnagDisturb;
 
-        public InputSnagParms()
+        public InputSnagParams()
         {
             m_SnagAgeAtDeath = new int[Constants.NUMSNAGS];
             m_SnagTimeSinceDeath = new int[Constants.NUMSNAGS];

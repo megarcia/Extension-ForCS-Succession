@@ -18,7 +18,7 @@ namespace Landis.Extension.Succession.ForC
             OTHERSNAG
         };
 
-        public static void Initialize(IInputSnagParms parameters)
+        public static void Initialize(IInputSnagParams parameters)
         {
             if (parameters != null)
             {

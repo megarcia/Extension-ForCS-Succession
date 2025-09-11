@@ -5,7 +5,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// The parameters for ForC snag initialization.
     /// </summary>
-    public interface IInputSnagParms
+    public interface IInputSnagParams
     {
         int[] SnagSpecies { get; } 
         int[] SnagAgeAtDeath { get; }

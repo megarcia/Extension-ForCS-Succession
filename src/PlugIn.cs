@@ -11,7 +11,7 @@ namespace Landis.Extension.Succession.ForC
         public static readonly string ExtensionName = "ForC Succession";
         private static ICore modelCore;
         private IInputParams parameters;
-        private IInputSnagParms paramSnag;
+        private IInputSnagParams paramSnag;
         private IInputClimateParms paramClimate;
         private IInputDisturbanceMatrixParams paramDM;
         public static bool CalibrateMode;
@@ -38,7 +38,7 @@ namespace Landis.Extension.Succession.ForC
             if (parameters.InitSnagFile != null)
             {
                 InputSnagParser parser2 = new InputSnagParser();
-                paramSnag = Landis.Data.Load<IInputSnagParms>(parameters.InitSnagFile, parser2);
+                paramSnag = Landis.Data.Load<IInputSnagParams>(parameters.InitSnagFile, parser2);
             }
             MaxLife = 0;
             foreach (ISpecies species in modelCore.Species)

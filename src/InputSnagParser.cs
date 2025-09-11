@@ -9,7 +9,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// A parser that reads biomass succession parameters from text input.
     /// </summary>
-    public class InputSnagParser : Landis.Utilities.TextParser<IInputSnagParms>
+    public class InputSnagParser : Landis.Utilities.TextParser<IInputSnagParams>
     {
         private delegate void SetParmMethod<TParm>(ISpecies species,
                                                    IEcoregion ecoregion,
@@ -30,7 +30,7 @@ namespace Landis.Extension.Succession.ForC
             speciesName = new InputVar<string>("Species");
         }
 
-        protected override IInputSnagParms Parse()
+        protected override IInputSnagParams Parse()
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
@@ -42,7 +42,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<int> dAgeAtDeath = new InputVar<int>("Age At Death");
             InputVar<int> dTimeSinceDeath = new InputVar<int>("Time Since Death");
             InputVar<string> sDisturbType = new InputVar<string>("Disturbance Type");
-            InputSnagParms parameters = new InputSnagParms();  
+            InputSnagParams parameters = new InputSnagParams();  
             ReadName(Names.SnagData);
             int nread = 0;            
             while (!AtEndOfInput && (CurrentName != "No Section To Follow"))
