@@ -4,8 +4,6 @@ namespace Landis.Extension.Succession.ForC
 {
     public class FireEffects
     {
-        public const int mk_nIntensityCount = 5;
-
         /// <summary>
         /// Crown scorching, when a cohort loses its foliage but is not killed.
         /// </summary>

@@ -112,7 +112,7 @@ namespace Landis.Extension.Succession.ForC
                 // to loop through them. However, the user has been asked to put the 
                 // ages in order from smallest to largest, so we can stop looking
                 // as soon as we reach an age that is older than the cohort's age.
-                for (int idx = 0; idx < Snags.NUMSNAGS; idx++)
+                for (int idx = 0; idx < Constants.NUMSNAGS; idx++)
                 {
                     if (cohort.Data.Age == Snags.DiedAt[idx] && Snags.initSpecIdx[idx] == cohort.Species.Index)
                     {

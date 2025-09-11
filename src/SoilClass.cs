@@ -84,7 +84,7 @@ namespace Landis.Extension.Succession.ForC
         private bool LastSoilPass = false;
         // For snags: 
         public bool bKillNow = false;
-        private double[,] BioSnag = new double[2, Snags.NUMSNAGS];
+        private double[,] BioSnag = new double[2, Constants.NUMSNAGS];
         public bool binitSnagPresent = false;
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace Landis.Extension.Succession.ForC
                 }
                 else
                     severity = (byte)tmpFireSeverity; // called during spin-up
-                Debug.Assert((severity >= 0) && (severity <= FireEffects.mk_nIntensityCount));
+                Debug.Assert((severity >= 0) && (severity <= Constants.FireIntensityCount));
                 oDisturbTransferPoolsBiomass = (DisturbTransferFromPools)SoilVars.iParamsDM.DisturbFireFromBiomassPools[severity - 1];
             }
             else
@@ -720,7 +720,7 @@ namespace Landis.Extension.Succession.ForC
                 }
                 else
                     severity = (byte)tmpFireSeverity; // called during spin-up
-                Debug.Assert((severity >= 0) && (severity <= FireEffects.mk_nIntensityCount));
+                Debug.Assert((severity >= 0) && (severity <= Constants.FireIntensityCount));
                 oDisturbTransferPoolsDOM = (DisturbTransferFromPools)SoilVars.iParamsDM.DisturbFireFromDOMPools[severity - 1];
                 oDisturbTransferPoolsBiomass = (DisturbTransferFromPools)SoilVars.iParamsDM.DisturbFireFromBiomassPools[severity - 1];
             }
@@ -1372,7 +1372,7 @@ namespace Landis.Extension.Succession.ForC
                         // been around.
                         if (binitSnagPresent)
                         {
-                            for (int jdx = 0; jdx < Snags.NUMSNAGS; jdx++)
+                            for (int jdx = 0; jdx < Constants.NUMSNAGS; jdx++)
                             {
                                 if (Snags.bSnagsUsed[jdx])
                                 {
@@ -1403,7 +1403,7 @@ namespace Landis.Extension.Succession.ForC
             }
             BioSnag = null;
             LastSoilPass = false;
-            for (int jdx = 0; jdx < Snags.NUMSNAGS; jdx++)
+            for (int jdx = 0; jdx < Constants.NUMSNAGS; jdx++)
                 Snags.bSnagsUsed[jdx] = false;
             return;
         }

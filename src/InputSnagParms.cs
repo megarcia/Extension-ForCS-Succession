@@ -14,10 +14,10 @@ namespace Landis.Extension.Succession.ForC
 
         public InputSnagParms()
         {
-            m_SnagAgeAtDeath = new int[Snags.NUMSNAGS];
-            m_SnagTimeSinceDeath = new int[Snags.NUMSNAGS];
-            m_SnagSpecies = new int[Snags.NUMSNAGS];
-            m_SnagDisturb = new string[Snags.NUMSNAGS];            
+            m_SnagAgeAtDeath = new int[Constants.NUMSNAGS];
+            m_SnagTimeSinceDeath = new int[Constants.NUMSNAGS];
+            m_SnagSpecies = new int[Constants.NUMSNAGS];
+            m_SnagDisturb = new string[Constants.NUMSNAGS];            
         }
 
         /// <summary>

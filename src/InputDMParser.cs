@@ -51,8 +51,8 @@ namespace Landis.Extension.Succession.ForC
                 parameters.SetDOMPool(n, "not specified");
             //  DisturbFireTransferDOM Parameters
             ReadName(Names.DisturbFireTransferDOM);
-            aDisturbTransferPools = new DisturbTransferFromPools[FireEffects.mk_nIntensityCount];
-            for (int n = 0; n < FireEffects.mk_nIntensityCount; n++)
+            aDisturbTransferPools = new DisturbTransferFromPools[Constants.FireIntensityCount];
+            for (int n = 0; n < Constants.FireIntensityCount; n++)
             {
                 aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeDOMPools(parameters.DOMPools);
@@ -63,8 +63,8 @@ namespace Landis.Extension.Succession.ForC
             {
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(nIntensity, currentLine);
-                // Validate input, as Intensity value is 1-based in range [1, FireEffects.mk_nIntensityCount]/
-                if ((nIntensity.Value < 1) || (nIntensity.Value > FireEffects.mk_nIntensityCount))
+                // Validate input, as Intensity value is 1-based in range [1, Constants.FireIntensityCount]/
+                if ((nIntensity.Value < 1) || (nIntensity.Value > Constants.FireIntensityCount))
                     throw new InputValueException(nIntensity.Name,
                                                   "DisturbFireTransferDOM: {0} is not a valid Intensity value.", nIntensity.Value.Actual);
                 ReadValue(nDOMPoolID, currentLine);
@@ -88,7 +88,7 @@ namespace Landis.Extension.Succession.ForC
                 GetNextLine();
             }
             parameters.SetDisturbFireFromDOMPools(aDisturbTransferPools);
-            if (nread < FireEffects.mk_nIntensityCount * (SoilClass.NUMSOILPOOLS - 1))
+            if (nread < Constants.FireIntensityCount * (SoilClass.NUMSOILPOOLS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferDOM: Some rows are missing. C in these DOM pools will not be affected by the fire.");
             //  DisturbOtherTransferDOM Parameters
             ReadName(Names.DisturbOtherTransferDOM);
@@ -132,8 +132,8 @@ namespace Landis.Extension.Succession.ForC
                 PlugIn.ModelCore.UI.WriteLine("DisturbOtherFromDOMPools: Some rows are missing. C in these DOM pools will not be affected by the disturbance.");
             //  DisturbFireTransferBiomass Parameters
             ReadName(Names.DisturbFireTransferBiomass);
-            aDisturbTransferPools = new DisturbTransferFromPools[FireEffects.mk_nIntensityCount];
-            for (int n = 0; n < FireEffects.mk_nIntensityCount; n++)
+            aDisturbTransferPools = new DisturbTransferFromPools[Constants.FireIntensityCount];
+            for (int n = 0; n < Constants.FireIntensityCount; n++)
             {
                 aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeBiomassPools();
@@ -144,8 +144,8 @@ namespace Landis.Extension.Succession.ForC
             {
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(nIntensity, currentLine);
-                // Validate input, as Intensity value is 1-based in range [1, FireEffects.mk_nIntensityCount]/
-                if ((nIntensity.Value < 1) || (nIntensity.Value > FireEffects.mk_nIntensityCount))
+                // Validate input, as Intensity value is 1-based in range [1, Constants.FireIntensityCount]/
+                if ((nIntensity.Value < 1) || (nIntensity.Value > Constants.FireIntensityCount))
                     throw new InputValueException(nIntensity.Name,
                                                   "DisturbFireTransferBiomass: {0} is not a valid Intensity value.", nIntensity.Value.Actual);
                 ReadValue(nBiomassPoolID, currentLine);
@@ -169,7 +169,7 @@ namespace Landis.Extension.Succession.ForC
                 GetNextLine();
             }
             parameters.SetDisturbFireFromBiomassPools(aDisturbTransferPools);
-            if (nread < FireEffects.mk_nIntensityCount * (SoilClass.NUMBIOMASSCOMPONENTS - 1))
+            if (nread < Constants.FireIntensityCount * (SoilClass.NUMBIOMASSCOMPONENTS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferBiomass: Some combinations of Fire Intensity and biomass type are missing. When these biomass components are killed, C loss will not be captured.");
             //  DisturbOtherTransferBiomass Parameters
             ReadName(Names.DisturbOtherTransferBiomass);

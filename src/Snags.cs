@@ -5,12 +5,11 @@ namespace Landis.Extension.Succession.ForC
     public class Snags
     {
         public static bool bSnagsPresent = false;
-        public const int NUMSNAGS = 1000;
-        public static int[] DiedAt = new int[NUMSNAGS];
-        public static int[] initSpecIdx = new int[NUMSNAGS];
-        public static int[] initSnagAge = new int[NUMSNAGS];
-        public static string[] initSnagDist = new string[NUMSNAGS];
-        public static bool[] bSnagsUsed = new bool[NUMSNAGS];     // flag for if this site contained this snag type.
+        public static int[] DiedAt = new int[Constants.NUMSNAGS];
+        public static int[] initSpecIdx = new int[Constants.NUMSNAGS];
+        public static int[] initSnagAge = new int[Constants.NUMSNAGS];
+        public static string[] initSnagDist = new string[Constants.NUMSNAGS];
+        public static bool[] bSnagsUsed = new bool[Constants.NUMSNAGS];     // flag for if this site contained this snag type.
         private double[,] BioSnag = new double[2, PlugIn.ModelCore.Species.Count];
 
         public static void Initialize(IInputSnagParms parameters)
@@ -18,7 +17,7 @@ namespace Landis.Extension.Succession.ForC
             if (parameters != null)
             {
                 bSnagsPresent = true;
-                for (int i = 0; i < NUMSNAGS; i++)
+                for (int i = 0; i < Constants.NUMSNAGS; i++)
                 {
                     DiedAt[i] = parameters.SnagAgeAtDeath[i];
                     initSnagAge[i] = parameters.SnagTimeSinceDeath[i];
