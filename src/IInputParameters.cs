@@ -57,11 +57,11 @@ namespace Landis.Extension.Succession.ForC
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMDecayRates { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMPoolAmountT0 { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMPoolQ10 { get; }
-        double PropBiomassFine { get; }
-        double PropBiomassCoarse { get; }
-        double PropDOMSlowAGToSlowBG { get; }
-        double PropDOMStemSnagToMedium { get; }
-        double PropDOMBranchSnagToFastAG { get; }
+        double FracBiomassFine { get; }
+        double FracBiomassCoarse { get; }
+        double FracDOMSlowAGToSlowBG { get; }
+        double FracDOMStemSnagToMedium { get; }
+        double FracDOMBranchSnagToFastAG { get; }
         //root parameters
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBio { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get; }

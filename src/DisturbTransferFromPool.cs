@@ -81,7 +81,7 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        public double PropToAir
+        public double FracToAir
         {
             get
             {
@@ -96,7 +96,7 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        public double PropToFloor
+        public double FracToFloor
         {
             get
             {
@@ -111,7 +111,7 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        public double PropToFPS
+        public double FracToFPS
         {
             get
             {
@@ -126,7 +126,7 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        public double PropToDOM
+        public double FracToDOM
         {
             get
             {

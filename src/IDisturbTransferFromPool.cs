@@ -4,9 +4,9 @@ namespace Landis.Extension.Succession.ForC
     {
         int ID { get; }
         string Name { get; }
-        double PropToAir { get; }
-        double PropToFloor { get; }
-        double PropToFPS { get; }
-        double PropToDOM { get; }
+        double FracToAir { get; }
+        double FracToFloor { get; }
+        double FracToFPS { get; }
+        double FracToDOM { get; }
     }
 }

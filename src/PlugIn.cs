@@ -163,7 +163,7 @@ namespace Landis.Extension.Succession.ForC
         /// Add a new cohort to a site. Cohort will not be officially added to site until after growth phase
         /// This is a Delegate method to base succession.
         /// </summary>
-        public void AddNewCohort(ISpecies species, ActiveSite site, string reproductionType, double propBiomass = 1.0)
+        public void AddNewCohort(ISpecies species, ActiveSite site, string reproductionType, double fracBiomass = 1.0)
         {
             int newBiomass = CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site);
             // Cohorts will be officially added after growth phase

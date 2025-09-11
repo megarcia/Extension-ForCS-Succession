@@ -499,7 +499,7 @@ namespace Landis.Extension.Succession.ForC
             double woodC_mort = mortality_wood * Constants.BIOTOC;
             if (PlugIn.ModelCore.CurrentTime == 0)
                 idxAge = age;               // set to the age in spin-up years (works as it did before)
-            double PropStem = 0;
+            double FracStem = 0;
             if (mortality_wood > 0)
                 PropStem = DeadStemToSnagRates(species, age, woodC_mort);
             if (AboveBelow == 0)        // aboveground wood
@@ -567,7 +567,7 @@ namespace Landis.Extension.Succession.ForC
             DisturbTransferFromPool oDisturbTransfer;
             byte severity = 0;
             string TransferName = "null";
-            double PropStem;
+            double FracStem;
             double totroot = Roots.CalcRootBiomass(site, species, wood + nonwood);
             double crsRoot = Roots.CoarseRoot * Constants.BIOTOC;
             double fineRoot = Roots.FineRoot * Constants.BIOTOC;
@@ -1279,7 +1279,7 @@ namespace Landis.Extension.Succession.ForC
             double initSlowPool = 0.0;
             double newSlowPool = 0.0;
             double diff = 0.0;
-            double prop = 0.0;
+            double frac = 0.0;
             int maxage = lastAge;
             if (SoilVars.iParams.SoilSpinUpFlag == 0)
                 return;

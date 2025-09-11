@@ -5,6 +5,6 @@ namespace Landis.Extension.Succession.ForC
         int ID { get; }
         string Name { get; }
         double Q10 { get; }
-        double PropAir { get; }
+        double FracAir { get; }
     }
 }

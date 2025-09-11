@@ -89,7 +89,7 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        public double PropAir
+        public double FracAir
         {
             get
             {

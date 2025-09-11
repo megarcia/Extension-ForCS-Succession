@@ -322,11 +322,11 @@ namespace Landis.Extension.Succession.ForC
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMDecayRates { get { return m_aDOMDecayRates; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMPoolAmountT0 { get { return m_aDOMPoolAmountT0; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMPoolQ10 { get { return m_aDOMPoolQ10; } }
-        public double PropBiomassFine { get { return m_dFracBiomassFine; } }
-        public double PropBiomassCoarse { get { return m_dFracBiomassCoarse; } }
-        public double PropDOMSlowAGToSlowBG { get { return m_dFracDOMSlowAGToSlowBG; } }
-        public double PropDOMStemSnagToMedium { get { return m_dFracDOMStemSnagToMedium; } }
-        public double PropDOMBranchSnagToFastAG { get { return m_dFracDOMBranchSnagToFastAG; } }
+        public double FracBiomassFine { get { return m_dFracBiomassFine; } }
+        public double FracBiomassCoarse { get { return m_dFracBiomassCoarse; } }
+        public double FracDOMSlowAGToSlowBG { get { return m_dFracDOMSlowAGToSlowBG; } }
+        public double FracDOMStemSnagToMedium { get { return m_dFracDOMStemSnagToMedium; } }
+        public double FracDOMBranchSnagToFastAG { get { return m_dFracDOMBranchSnagToFastAG; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseTurnover { get { return m_CoarseTurnover; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineTurnover { get { return m_FineTurnover; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get { return m_Ratio; } }
