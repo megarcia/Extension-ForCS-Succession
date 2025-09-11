@@ -25,7 +25,7 @@ namespace Landis.Extension.Succession.ForC
         private int m_nID;
         private string m_sName;
         private double m_dQ10 = 0.0;
-        private double m_dPropAir = 0.0;
+        private double m_dFracAir = 0.0;
 
         public DOMPool(int nID, string sName)
         {
@@ -34,13 +34,13 @@ namespace Landis.Extension.Succession.ForC
             this.Name = sName;
         }
 
-        public DOMPool(int nID, string sName, double dQ10, double dPropAir)
+        public DOMPool(int nID, string sName, double dQ10, double dFracAir)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
             this.ID = nID;
             this.Name = sName;
             this.Q10 = dQ10;
-            this.PropAir = dPropAir;
+            this.PropAir = dFracAir;
         }
 
         public int ID
@@ -93,14 +93,14 @@ namespace Landis.Extension.Succession.ForC
         {
             get
             {
-                return m_dPropAir;
+                return m_dFracAir;
             }
             set
             {
                 if ((value < 0.0) || (value > 1.0))
                     throw new InputValueException(value.ToString(),
                                                   "Proportion to Air must be in the range [0.0, 1.0].");
-                m_dPropAir = value;
+                m_dFracAir = value;
             }
         }
     }

@@ -34,10 +34,10 @@ namespace Landis.Extension.Succession.ForC
             Dictionary<string, int> lineNumbers = new Dictionary<string, int>();
             // InputVars common to different read routines.
             InputVar<int> nDOMPoolID = new InputVar<int>("DOMPoolID");
-            InputVar<double> dPropAir = new InputVar<double>("Prop to Air");
-            InputVar<double> dPropFloor = new InputVar<double>("Prop to Floor");
-            InputVar<double> dPropFPS = new InputVar<double>("Prop to FPS");
-            InputVar<double> dPropDOM = new InputVar<double>("Prop to DOM");
+            InputVar<double> dFracAir = new InputVar<double>("Prop to Air");
+            InputVar<double> dFracFloor = new InputVar<double>("Prop to Floor");
+            InputVar<double> dFracFPS = new InputVar<double>("Prop to FPS");
+            InputVar<double> dFracDOM = new InputVar<double>("Prop to DOM");
             DisturbTransferFromPools[] aDisturbTransferPools;
             Dictionary<string, IDisturbTransferFromPools> dictDisturbTransfer;
             InputVar<string> sDisturbType = new InputVar<string>("Disturbance Type");
@@ -57,7 +57,7 @@ namespace Landis.Extension.Succession.ForC
                 aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeDOMPools(parameters.DOMPools);
             }
-            string lastColumn = "the " + dPropFPS.Name + " column";
+            string lastColumn = "the " + dFracFPS.Name + " column";
             nread = 0;
             while (!AtEndOfInput && (CurrentName != Names.DisturbOtherTransferDOM))
             {
@@ -73,15 +73,15 @@ namespace Landis.Extension.Succession.ForC
                                                   "DisturbFireTransferDOM: {0} is not a valid DOM pool ID.", nDOMPoolID.Value.Actual);
                 // Convert Intensity from 1-based in input file to 0-based simple array.
                 DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)((aDisturbTransferPools[nIntensity.Value - 1]).GetDisturbTransfer(nDOMPoolID.Value));
-                ReadValue(dPropAir, currentLine);
-                oDisturbTransfer.PropToAir = dPropAir.Value;
-                ReadValue(dPropDOM, currentLine);
-                oDisturbTransfer.PropToDOM = dPropDOM.Value;
-                ReadValue(dPropFPS, currentLine);
-                oDisturbTransfer.PropToFPS = dPropFPS.Value;
-                if ((nDOMPoolID.Value == 2 || nDOMPoolID.Value == 4 || nDOMPoolID.Value == 7) && dPropFPS.Value > 0)
+                ReadValue(dFracAir, currentLine);
+                oDisturbTransfer.PropToAir = dFracAir.Value;
+                ReadValue(dFracDOM, currentLine);
+                oDisturbTransfer.PropToDOM = dFracDOM.Value;
+                ReadValue(dFracFPS, currentLine);
+                oDisturbTransfer.PropToFPS = dFracFPS.Value;
+                if ((nDOMPoolID.Value == 2 || nDOMPoolID.Value == 4 || nDOMPoolID.Value == 7) && dFracFPS.Value > 0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferDOM: You have asked for belowground DOM pools to be transfered to the FPS after a fire. Please check.");
-                if ((dPropAir.Value + dPropDOM.Value + dPropFPS.Value) > 1.0)
+                if ((dFracAir.Value + dFracDOM.Value + dFracFPS.Value) > 1.0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferDOM: Proportions must not be greater than 1.");
                 nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);
@@ -93,7 +93,7 @@ namespace Landis.Extension.Succession.ForC
             //  DisturbOtherTransferDOM Parameters
             ReadName(Names.DisturbOtherTransferDOM);
             dictDisturbTransfer = new Dictionary<string, IDisturbTransferFromPools>();
-            lastColumn = "the " + dPropFPS.Name + " column";
+            lastColumn = "the " + dFracFPS.Name + " column";
             nread = 0;
             while (!AtEndOfInput && (CurrentName != Names.DisturbFireTransferBiomass))
             {
@@ -113,15 +113,15 @@ namespace Landis.Extension.Succession.ForC
                     throw new InputValueException(nDOMPoolID.Name,
                                                   "DisturbOtherTransferDOM: {0} is not a valid DOM pool ID.", nDOMPoolID.Value.Actual);
                 DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPools.GetDisturbTransfer(nDOMPoolID.Value);
-                ReadValue(dPropAir, currentLine);
-                oDisturbTransfer.PropToAir = dPropAir.Value;
-                ReadValue(dPropDOM, currentLine);
-                oDisturbTransfer.PropToDOM = dPropDOM.Value;
-                ReadValue(dPropFPS, currentLine);
-                oDisturbTransfer.PropToFPS = dPropFPS.Value;
-                if ((nDOMPoolID.Value == 2 || nDOMPoolID.Value == 4 || nDOMPoolID.Value == 7) && dPropFPS.Value > 0)
+                ReadValue(dFracAir, currentLine);
+                oDisturbTransfer.PropToAir = dFracAir.Value;
+                ReadValue(dFracDOM, currentLine);
+                oDisturbTransfer.PropToDOM = dFracDOM.Value;
+                ReadValue(dFracFPS, currentLine);
+                oDisturbTransfer.PropToFPS = dFracFPS.Value;
+                if ((nDOMPoolID.Value == 2 || nDOMPoolID.Value == 4 || nDOMPoolID.Value == 7) && dFracFPS.Value > 0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbOtherTransferDOM: You have asked for belowground DOM pools to be transfered to the FPS after a disturbance. Please check.");
-                if ((dPropAir.Value + dPropDOM.Value + dPropFPS.Value) > 1.0)
+                if ((dFracAir.Value + dFracDOM.Value + dFracFPS.Value) > 1.0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbOtherTransferDOM: Proportions must not be greater than 1.");
                 nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);
@@ -138,7 +138,7 @@ namespace Landis.Extension.Succession.ForC
                 aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeBiomassPools();
             }
-            lastColumn = "the " + dPropFPS.Name + " column";
+            lastColumn = "the " + dFracFPS.Name + " column";
             nread = 0;
             while (!AtEndOfInput && (CurrentName != Names.DisturbOtherTransferBiomass))
             {
@@ -154,15 +154,15 @@ namespace Landis.Extension.Succession.ForC
                                                   "DisturbFireTransferBiomass: {0} is not a valid biomass pool ID.", nBiomassPoolID.Value.Actual);
                 // Convert Intensity from 1-based in input file to 0-based simple array.
                 DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)((aDisturbTransferPools[nIntensity.Value - 1]).GetDisturbTransfer(nBiomassPoolID.Value));
-                ReadValue(dPropAir, currentLine);
-                oDisturbTransfer.PropToAir = dPropAir.Value;
-                ReadValue(dPropFPS, currentLine);
-                oDisturbTransfer.PropToFPS = dPropFPS.Value;
-                if (dPropFPS.Value > 0)
+                ReadValue(dFracAir, currentLine);
+                oDisturbTransfer.PropToAir = dFracAir.Value;
+                ReadValue(dFracFPS, currentLine);
+                oDisturbTransfer.PropToFPS = dFracFPS.Value;
+                if (dFracFPS.Value > 0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferBiomass: Warning: you have asked for C to go to the FPS after a fire. Is this correct?");
-                ReadValue(dPropDOM, currentLine);
-                oDisturbTransfer.PropToDOM = dPropDOM.Value;
-                if ((dPropAir.Value + dPropDOM.Value + dPropFPS.Value) != 1.0)
+                ReadValue(dFracDOM, currentLine);
+                oDisturbTransfer.PropToDOM = dFracDOM.Value;
+                if ((dFracAir.Value + dFracDOM.Value + dFracFPS.Value) != 1.0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferBiomass: Proportions must add to 1.");
                 nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);
@@ -174,7 +174,7 @@ namespace Landis.Extension.Succession.ForC
             //  DisturbOtherTransferBiomass Parameters
             ReadName(Names.DisturbOtherTransferBiomass);
             dictDisturbTransfer = new Dictionary<string, IDisturbTransferFromPools>();
-            lastColumn = "the " + dPropFPS.Name + " column";
+            lastColumn = "the " + dFracFPS.Name + " column";
             nread = 0;
             while (!AtEndOfInput && (CurrentName != "No Section To Follow"))
             {
@@ -194,15 +194,15 @@ namespace Landis.Extension.Succession.ForC
                     throw new InputValueException(nBiomassPoolID.Name,
                                                   "DisturbOtherTransferBiomass: {0} is not a valid biomass pool ID.", nBiomassPoolID.ToString());
                 DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPools.GetDisturbTransfer(nBiomassPoolID.Value);
-                ReadValue(dPropAir, currentLine);
-                oDisturbTransfer.PropToAir = dPropAir.Value;
-                ReadValue(dPropFPS, currentLine);
-                oDisturbTransfer.PropToFPS = dPropFPS.Value;
-                if (nBiomassPoolID.Value >= 5 && dPropFPS.Value > 0)
+                ReadValue(dFracAir, currentLine);
+                oDisturbTransfer.PropToAir = dFracAir.Value;
+                ReadValue(dFracFPS, currentLine);
+                oDisturbTransfer.PropToFPS = dFracFPS.Value;
+                if (nBiomassPoolID.Value >= 5 && dFracFPS.Value > 0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbOtherTransferBiomass: Warning: you have asked for root C to go to the FPS. Is this correct?");
-                ReadValue(dPropDOM, currentLine);
-                oDisturbTransfer.PropToDOM = dPropDOM.Value;
-                if ((dPropAir.Value + dPropDOM.Value + dPropFPS.Value) != 1.0)
+                ReadValue(dFracDOM, currentLine);
+                oDisturbTransfer.PropToDOM = dFracDOM.Value;
+                if ((dFracAir.Value + dFracDOM.Value + dFracFPS.Value) != 1.0)
                     PlugIn.ModelCore.UI.WriteLine("DisturbOtherTransferBiomass: Proportions must add to 1.");
                 nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);

@@ -930,16 +930,16 @@ namespace Landis.Extension.Succession.ForC
         /// <returns></returns>
         public double DeadStemToSnagRates(ISpecies species, int age, double StemBio)
         {
-            double dPropStem = 0.0;
+            double dFracStem = 0.0;
             if (age >= SoilVars.iParams.MerchStemsMinAge[species])
             {
-                dPropStem = SoilVars.iParams.MerchCurveParmA[species] * (1 - Math.Pow(SoilVars.iParams.MerchCurveParmB[species], age));
+                dFracStem = SoilVars.iParams.MerchCurveParmA[species] * (1 - Math.Pow(SoilVars.iParams.MerchCurveParmB[species], age));
                 // Throw an assertion first so that if debugging, this can be examined.
-                Debug.Assert((dPropStem >= 0.0) && (dPropStem <= 1.0));
-                if (dPropStem < 0.0 || dPropStem > 1.0)
+                Debug.Assert((dFracStem >= 0.0) && (dFracStem <= 1.0));
+                if (dFracStem < 0.0 || dFracStem > 1.0)
                     throw new ApplicationException("Error: Proportion Stem Biomass to Snag Stem is not between 0 and 1");
             }
-            return dPropStem;
+            return dFracStem;
         }
         
         /// <summary>

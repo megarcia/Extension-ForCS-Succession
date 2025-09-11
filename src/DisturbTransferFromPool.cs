@@ -6,10 +6,10 @@ namespace Landis.Extension.Succession.ForC
     {
         private int m_nID;
         private string m_sName;
-        private double m_dPropToAir = 0.0;
-        private double m_dPropToFloor = 0.0;
-        private double m_dPropToFPS = 0.0;
-        private double m_dPropToDOM = 0.0;
+        private double m_dFracToAir = 0.0;
+        private double m_dFracToFloor = 0.0;
+        private double m_dFracToFPS = 0.0;
+        private double m_dFracToDOM = 0.0;
 
         public DisturbTransferFromPool(int nID)
         {
@@ -24,31 +24,31 @@ namespace Landis.Extension.Succession.ForC
             this.Name = sName;
         }
 
-        public DisturbTransferFromPool(int nID, double dPropToAir, double dPropToFloor, double dPropToFPS, double dPropToDOM)
+        public DisturbTransferFromPool(int nID, double dFracToAir, double dFracToFloor, double dFracToFPS, double dFracToDOM)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
             this.ID = nID;
-            if ((dPropToAir + dPropToFloor + dPropToFPS + dPropToDOM) > 1.0)
+            if ((dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM) > 1.0)
                 throw new InputValueException("Proportions",
-                                              "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dPropToAir + dPropToFloor + dPropToFPS + dPropToDOM);
-            this.PropToAir = dPropToAir;
-            this.PropToFloor = dPropToFloor;
-            this.PropToFPS = dPropToFPS;
-            this.PropToDOM = dPropToDOM;
+                                              "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM);
+            this.PropToAir = dFracToAir;
+            this.PropToFloor = dFracToFloor;
+            this.PropToFPS = dFracToFPS;
+            this.PropToDOM = dFracToDOM;
         }
 
-        public DisturbTransferFromPool(int nID, string sName, double dPropToAir, double dPropToFloor, double dPropToFPS, double dPropToDOM)
+        public DisturbTransferFromPool(int nID, string sName, double dFracToAir, double dFracToFloor, double dFracToFPS, double dFracToDOM)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
             this.ID = nID;
             this.Name = sName;
-            if ((dPropToAir + dPropToFloor + dPropToFPS + dPropToDOM) > 1.0)
+            if ((dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM) > 1.0)
                 throw new InputValueException("Proportions",
-                                              "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dPropToAir + dPropToFloor + dPropToFPS + dPropToDOM);
-            this.PropToAir = dPropToAir;
-            this.PropToFloor = dPropToFloor;
-            this.PropToFPS = dPropToFPS;
-            this.PropToDOM = dPropToDOM;
+                                              "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM);
+            this.PropToAir = dFracToAir;
+            this.PropToFloor = dFracToFloor;
+            this.PropToFPS = dFracToFPS;
+            this.PropToDOM = dFracToDOM;
         }
 
         public int ID
@@ -85,14 +85,14 @@ namespace Landis.Extension.Succession.ForC
         {
             get
             {
-                return m_dPropToAir;
+                return m_dFracToAir;
             }
             set
             {
                 if ((value < 0.0) || (value > 1.0))
                     throw new InputValueException(value.ToString(),
                                                   "Proportion to Air must be in the range [0.0, 1.0].");
-                m_dPropToAir = value;
+                m_dFracToAir = value;
             }
         }
 
@@ -100,14 +100,14 @@ namespace Landis.Extension.Succession.ForC
         {
             get
             {
-                return m_dPropToFloor;
+                return m_dFracToFloor;
             }
             set
             {
                 if ((value < 0.0) || (value > 1.0))
                     throw new InputValueException(value.ToString(),
                                                   "Proportion to Floor must be in the range [0.0, 1.0].");
-                m_dPropToFloor = value;
+                m_dFracToFloor = value;
             }
         }
 
@@ -115,14 +115,14 @@ namespace Landis.Extension.Succession.ForC
         {
             get
             {
-                return m_dPropToFPS;
+                return m_dFracToFPS;
             }
             set
             {
                 if ((value < 0.0) || (value > 1.0))
                     throw new InputValueException(value.ToString(),
                                                   "Proportion to FPS must be in the range [0.0, 1.0].");
-                m_dPropToFPS = value;
+                m_dFracToFPS = value;
             }
         }
 
@@ -130,14 +130,14 @@ namespace Landis.Extension.Succession.ForC
         {
             get
             {
-                return m_dPropToDOM;
+                return m_dFracToDOM;
             }
             set
             {
                 if ((value < 0.0) || (value > 1.0))
                     throw new InputValueException(value.ToString(),
                                                   "Proportion to DOM must be in the range [0.0, 1.0].");
-                m_dPropToDOM = value;
+                m_dFracToDOM = value;
             }
         }
     }

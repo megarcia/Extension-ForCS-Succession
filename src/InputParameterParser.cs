@@ -49,10 +49,10 @@ namespace Landis.Extension.Succession.ForC
             Dictionary<string, int> lineNumbers = new Dictionary<string, int>();
             // InputVars common to different read routines.
             InputVar<int> nDOMPoolID = new InputVar<int>("DOMPoolID");
-            InputVar<double> dPropAir = new InputVar<double>("Prop to Air");
-            InputVar<double> dPropFloor = new InputVar<double>("Prop to Floor");
-            InputVar<double> dPropFPS = new InputVar<double>("Prop to FPS");
-            InputVar<double> dPropDOM = new InputVar<double>("Prop to DOM");
+            InputVar<double> dFracAir = new InputVar<double>("Prop to Air");
+            InputVar<double> dFracFloor = new InputVar<double>("Prop to Floor");
+            InputVar<double> dFracFPS = new InputVar<double>("Prop to FPS");
+            InputVar<double> dFracDOM = new InputVar<double>("Prop to DOM");
             InputVar<string> sDisturbType = new InputVar<string>("Disturbance Type");
             InputVar<int> nIntensity = new InputVar<int>("Intensity");
             InputVar<int> nBiomassPoolID = new InputVar<int>("Biomass Pool ID");
@@ -249,7 +249,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<int> nMerchStemsMinAge = new InputVar<int>("Merch. Stems Min Age");
             InputVar<double> dMerchCurveParmA = new InputVar<double>("Merch. Curve Parm A");
             InputVar<double> dMerchCurveParmB = new InputVar<double>("Merch. Curve Parm B");
-            InputVar<double> dPropNonMerch = new InputVar<double>("Proportion Non-Merchantible");
+            InputVar<double> dFracNonMerch = new InputVar<double>("Proportion Non-Merchantible");
             InputVar<double> growthCurveShapeParm = new InputVar<double>("Growth Curve Shape Parameter");
             string lastColumn = "the " + mbm.Name + " column";
             nread = 0;
@@ -267,8 +267,8 @@ namespace Landis.Extension.Succession.ForC
                 parameters.SetMerchCurveParmA(species, dMerchCurveParmA.Value);
                 ReadValue(dMerchCurveParmB, currentLine);
                 parameters.SetMerchCurveParmB(species, dMerchCurveParmB.Value);
-                ReadValue(dPropNonMerch, currentLine);
-                parameters.SetPropNonMerch(species, dPropNonMerch.Value);
+                ReadValue(dFracNonMerch, currentLine);
+                parameters.SetPropNonMerch(species, dFracNonMerch.Value);
                 ReadValue(growthCurveShapeParm, currentLine);
                 parameters.SetGrowthCurveShape(species, growthCurveShapeParm.Value);
                 ReadValue(shadeTolerance, currentLine);
@@ -299,12 +299,12 @@ namespace Landis.Extension.Succession.ForC
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(nDOMPoolID, currentLine);
                 ReadValue(sDOMPool, currentLine);
-                ReadValue(dPropAir, currentLine);
+                ReadValue(dFracAir, currentLine);
                 if (nDOMPoolID.Value.Actual != (byte)previousNumber + 1)
                     throw new InputValueException(nDOMPoolID.Value.String,
                                                   "DOMPools: Expected the pool ID {0}",
                                                   previousNumber + 1);
-                parameters.SetDOMPool(nDOMPoolID.Value, sDOMPool.Value, 0, dPropAir.Value);
+                parameters.SetDOMPool(nDOMPoolID.Value, sDOMPool.Value, 0, dFracAir.Value);
                 previousNumber = nDOMPoolID.Value;
                 nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);
@@ -345,21 +345,21 @@ namespace Landis.Extension.Succession.ForC
             //  ForCSProportions
             ReadName(Names.ForCSProportions);
             currentLine = new StringReader(CurrentLine);
-            InputVar<double> dPropBiomassFine = new InputVar<double>("Biomass Fine Roots");
-            ReadValue(dPropBiomassFine, currentLine);
-            parameters.SetPropBiomassFine(dPropBiomassFine.Value);   
-            InputVar<double> dPropBiomassCoarse = new InputVar<double>("Biomass Coarse Roots");
-            ReadValue(dPropBiomassCoarse, currentLine);
-            parameters.SetPropBiomassCoarse(dPropBiomassCoarse.Value);
-            InputVar<double> dPropDOMSlowAGToSlowBG = new InputVar<double>("DOM SlowAG to SlowBG");
-            ReadValue(dPropDOMSlowAGToSlowBG, currentLine);
-            parameters.SetPropDOMSlowAGToSlowBG(dPropDOMSlowAGToSlowBG.Value);
-            InputVar<double> dPropDOMStemSnagToMedium = new InputVar<double>("DOM Stem Snag to Medium");
-            ReadValue(dPropDOMStemSnagToMedium, currentLine);
-            parameters.SetPropDOMStemSnagToMedium(dPropDOMStemSnagToMedium.Value);
-            InputVar<double> dPropDOMBranchSnagToFastAG = new InputVar<double>("DOM Branch Snag to FastAG");
-            ReadValue(dPropDOMBranchSnagToFastAG, currentLine);
-            parameters.SetPropDOMBranchSnagToFastAG(dPropDOMBranchSnagToFastAG.Value);
+            InputVar<double> dFracBiomassFine = new InputVar<double>("Biomass Fine Roots");
+            ReadValue(dFracBiomassFine, currentLine);
+            parameters.SetPropBiomassFine(dFracBiomassFine.Value);   
+            InputVar<double> dFracBiomassCoarse = new InputVar<double>("Biomass Coarse Roots");
+            ReadValue(dFracBiomassCoarse, currentLine);
+            parameters.SetPropBiomassCoarse(dFracBiomassCoarse.Value);
+            InputVar<double> dFracDOMSlowAGToSlowBG = new InputVar<double>("DOM SlowAG to SlowBG");
+            ReadValue(dFracDOMSlowAGToSlowBG, currentLine);
+            parameters.SetPropDOMSlowAGToSlowBG(dFracDOMSlowAGToSlowBG.Value);
+            InputVar<double> dFracDOMStemSnagToMedium = new InputVar<double>("DOM Stem Snag to Medium");
+            ReadValue(dFracDOMStemSnagToMedium, currentLine);
+            parameters.SetPropDOMStemSnagToMedium(dFracDOMStemSnagToMedium.Value);
+            InputVar<double> dFracDOMBranchSnagToFastAG = new InputVar<double>("DOM Branch Snag to FastAG");
+            ReadValue(dFracDOMBranchSnagToFastAG, currentLine);
+            parameters.SetPropDOMBranchSnagToFastAG(dFracDOMBranchSnagToFastAG.Value);
             GetNextLine();
             //  ANPPTimeSeries
             InputVar<string> ANPPTimeSeriesInputFile = new InputVar<string>(Names.ANPPTimeSeries);
@@ -463,7 +463,7 @@ namespace Landis.Extension.Succession.ForC
             ReadName(Names.RootDynamics);
             InputVar<double> dMinWoody = new InputVar<double>("Min Woody Biomass");
             InputVar<double> dRatio = new InputVar<double>("Wood:Root Ratio");
-            InputVar<double> dPropFine = new InputVar<double>("Prop Fine");
+            InputVar<double> dFracFine = new InputVar<double>("Prop Fine");
             InputVar<double> dFineTurnover = new InputVar<double>("Fine Turnover");
             InputVar<double> dCoarseTurnover = new InputVar<double>("Coarse Turnover");
             nread = 0;
@@ -482,8 +482,8 @@ namespace Landis.Extension.Succession.ForC
                     PlugIn.ModelCore.UI.WriteLine("Root Parameters: The first MinBiomass value entered for an eco-spp combo was not 0.  Roots may not be calculated correctly");
                 ReadValue(dRatio, currentLine);
                 parameters.SetRootRatio(ecoregion, species, dRatio.Value, idxval);
-                ReadValue(dPropFine, currentLine);
-                parameters.SetPropFine(ecoregion, species, dPropFine.Value, idxval);
+                ReadValue(dFracFine, currentLine);
+                parameters.SetPropFine(ecoregion, species, dFracFine.Value, idxval);
                 ReadValue(dFineTurnover, currentLine);
                 parameters.SetFineTurnover(ecoregion, species, dFineTurnover.Value, idxval);
                 ReadValue(dCoarseTurnover, currentLine);

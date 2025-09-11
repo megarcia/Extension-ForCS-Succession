@@ -49,7 +49,7 @@ namespace Landis.Extension.Succession.ForC
         private Library.Parameters.Species.AuxParm<int> m_anMerchStemsMinAge;
         private Library.Parameters.Species.AuxParm<double> m_adMerchCurveParmA;
         private Library.Parameters.Species.AuxParm<double> m_adMerchCurveParmB;
-        private Library.Parameters.Species.AuxParm<double> m_adPropNonMerch;
+        private Library.Parameters.Species.AuxParm<double> m_adFracNonMerch;
         private Library.Parameters.Species.AuxParm<double> growthCurveShape;
         private Library.Parameters.Ecoregions.AuxParm<double> fieldCapacity;
         private Library.Parameters.Ecoregions.AuxParm<double> latitude;
@@ -63,11 +63,11 @@ namespace Landis.Extension.Succession.ForC
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double>> m_DOMInitialVFastAG;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_aDOMPoolAmountT0;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_aDOMPoolQ10;
-        private double m_dPropBiomassFine;
-        private double m_dPropBiomassCoarse;
-        private double m_dPropDOMSlowAGToSlowBG;
-        private double m_dPropDOMStemSnagToMedium;
-        private double m_dPropDOMBranchSnagToFastAG;
+        private double m_dFracBiomassFine;
+        private double m_dFracBiomassCoarse;
+        private double m_dFracDOMSlowAGToSlowBG;
+        private double m_dFracDOMStemSnagToMedium;
+        private double m_dFracDOMBranchSnagToFastAG;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> m_ANPPTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> m_MaxBiomassTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IEstabProb>>> m_EstabProbTimeCollection;
@@ -316,17 +316,17 @@ namespace Landis.Extension.Succession.ForC
         public Library.Parameters.Species.AuxParm<int> MerchStemsMinAge { get { return m_anMerchStemsMinAge; } }
         public Library.Parameters.Species.AuxParm<double> MerchCurveParmA { get { return m_adMerchCurveParmA; } }
         public Library.Parameters.Species.AuxParm<double> MerchCurveParmB { get { return m_adMerchCurveParmB; } }
-        public Library.Parameters.Species.AuxParm<double> PropNonMerch { get { return m_adPropNonMerch; } }
+        public Library.Parameters.Species.AuxParm<double> PropNonMerch { get { return m_adFracNonMerch; } }
         public Library.Parameters.Species.AuxParm<double> GrowthCurveShapeParm { get { return growthCurveShape; } }
         public IDictionary<int, IDOMPool> DOMPools { get { return m_dictDOMPools; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMDecayRates { get { return m_aDOMDecayRates; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMPoolAmountT0 { get { return m_aDOMPoolAmountT0; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMPoolQ10 { get { return m_aDOMPoolQ10; } }
-        public double PropBiomassFine { get { return m_dPropBiomassFine; } }
-        public double PropBiomassCoarse { get { return m_dPropBiomassCoarse; } }
-        public double PropDOMSlowAGToSlowBG { get { return m_dPropDOMSlowAGToSlowBG; } }
-        public double PropDOMStemSnagToMedium { get { return m_dPropDOMStemSnagToMedium; } }
-        public double PropDOMBranchSnagToFastAG { get { return m_dPropDOMBranchSnagToFastAG; } }
+        public double PropBiomassFine { get { return m_dFracBiomassFine; } }
+        public double PropBiomassCoarse { get { return m_dFracBiomassCoarse; } }
+        public double PropDOMSlowAGToSlowBG { get { return m_dFracDOMSlowAGToSlowBG; } }
+        public double PropDOMStemSnagToMedium { get { return m_dFracDOMStemSnagToMedium; } }
+        public double PropDOMBranchSnagToFastAG { get { return m_dFracDOMBranchSnagToFastAG; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseTurnover { get { return m_CoarseTurnover; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineTurnover { get { return m_FineTurnover; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get { return m_Ratio; } }
@@ -487,7 +487,7 @@ namespace Landis.Extension.Succession.ForC
 
         public void SetPropNonMerch(ISpecies species, InputValue<double> newValue)
         {
-            m_adPropNonMerch[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            m_adFracNonMerch[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
         public void SetFieldCapacity(IEcoregion ecoregion, InputValue<double> newValue)
@@ -510,9 +510,9 @@ namespace Landis.Extension.Succession.ForC
             latitude[ecoregion] = newValue;
         }
 
-        public void SetDOMPool(int nID, string sName, double dQ10, double dPropAtm)
+        public void SetDOMPool(int nID, string sName, double dQ10, double dFracAtm)
         {
-            DOMPool pool = new DOMPool(nID, sName, dQ10, dPropAtm);
+            DOMPool pool = new DOMPool(nID, sName, dQ10, dFracAtm);
             this.m_dictDOMPools.Add(pool.ID, pool);
         }
 
@@ -607,29 +607,29 @@ namespace Landis.Extension.Succession.ForC
             ShadeTolerance[species] = VerifyByteRange(newValue, 0, 5);
         }
 
-        public void SetPropBiomassFine(InputValue<double> dProp)
+        public void SetPropBiomassFine(InputValue<double> dFrac)
         {
-            m_dPropBiomassFine = CheckBiomassParm(dProp, 0.0, 1.0);
+            m_dFracBiomassFine = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
-        public void SetPropBiomassCoarse(InputValue<double> dProp)
+        public void SetPropBiomassCoarse(InputValue<double> dFrac)
         {
-            m_dPropBiomassCoarse = CheckBiomassParm(dProp, 0.0, 1.0);
+            m_dFracBiomassCoarse = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
-        public void SetPropDOMSlowAGToSlowBG(InputValue<double> dProp)
+        public void SetPropDOMSlowAGToSlowBG(InputValue<double> dFrac)
         {
-            m_dPropDOMSlowAGToSlowBG = CheckBiomassParm(dProp, 0.0, 1.0);
+            m_dFracDOMSlowAGToSlowBG = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
-        public void SetPropDOMStemSnagToMedium(InputValue<double> dProp)
+        public void SetPropDOMStemSnagToMedium(InputValue<double> dFrac)
         {
-            m_dPropDOMStemSnagToMedium = CheckBiomassParm(dProp, 0.0, 1.0);
+            m_dFracDOMStemSnagToMedium = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
-        public void SetPropDOMBranchSnagToFastAG(InputValue<double> dProp)
+        public void SetPropDOMBranchSnagToFastAG(InputValue<double> dFrac)
         {
-            m_dPropDOMBranchSnagToFastAG = CheckBiomassParm(dProp, 0.0, 1.0);
+            m_dFracDOMBranchSnagToFastAG = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
         /// <summary>
@@ -686,9 +686,9 @@ namespace Landis.Extension.Succession.ForC
             this.m_MaxBiomassTimeCollection[ecoregion][species] = oCollection;
         }
 
-        public void SetEstablishProbability(IEcoregion ecoregion, ISpecies species, InputValue<double> dProp)
+        public void SetEstablishProbability(IEcoregion ecoregion, ISpecies species, InputValue<double> dFrac)
         {
-            this.m_dEstablishProbability[species][ecoregion] = CheckBiomassParm(dProp, 0.0, 1.0);
+            this.m_dEstablishProbability[species][ecoregion] = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
         public InputParameters()
@@ -706,7 +706,7 @@ namespace Landis.Extension.Succession.ForC
             m_anMerchStemsMinAge = new Library.Parameters.Species.AuxParm<int>(PlugIn.ModelCore.Species);
             m_adMerchCurveParmA = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             m_adMerchCurveParmB = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            m_adPropNonMerch = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            m_adFracNonMerch = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             growthCurveShape = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             fieldCapacity = new Library.Parameters.Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
             latitude = new Library.Parameters.Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
@@ -717,11 +717,11 @@ namespace Landis.Extension.Succession.ForC
             this.m_aDOMPoolAmountT0 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
             this.m_aDOMPoolQ10 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
             this.m_DOMInitialVFastAG = CreateEcoregionSpeciesParm<double>(); //  CreateSpeciesEcoregionParm<double>();
-            this.m_dPropBiomassFine = 0.0;
-            this.m_dPropBiomassCoarse = 0.0;
-            this.m_dPropDOMSlowAGToSlowBG = 0.0;
-            this.m_dPropDOMStemSnagToMedium = 0.0;
-            this.m_dPropDOMBranchSnagToFastAG = 0.0;
+            this.m_dFracBiomassFine = 0.0;
+            this.m_dFracBiomassCoarse = 0.0;
+            this.m_dFracDOMSlowAGToSlowBG = 0.0;
+            this.m_dFracDOMStemSnagToMedium = 0.0;
+            this.m_dFracDOMBranchSnagToFastAG = 0.0;
             // Roots
             this.m_MinWoodyBio = CreateEcoregionSpeciesPoolParm<double>(5);
             this.m_Ratio = CreateEcoregionSpeciesPoolParm<double>(5);
