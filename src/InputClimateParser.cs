@@ -11,11 +11,6 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public class InputClimateParser : Landis.Utilities.TextParser<IInputClimateParms>
     {
-        public static class Names
-        {
-            public const string ClimateTable = "ClimateTable";
-        }
-
         private delegate void SetParmMethod<TParm>(ISpecies species,
                                                    IEcoregion ecoregion,
                                                    InputValue<TParm> newValue);

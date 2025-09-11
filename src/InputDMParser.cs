@@ -11,14 +11,6 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public class InputDMParser : Landis.Utilities.TextParser<IInputDMParameters>
     {
-        public static class Names
-        {
-            public const string DisturbFireTransferDOM = "DisturbFireTransferDOM";
-            public const string DisturbOtherTransferDOM = "DisturbOtherTransferDOM";
-            public const string DisturbFireTransferBiomass = "DisturbFireTransferBiomass";
-            public const string DisturbOtherTransferBiomass = "DisturbOtherTransferBiomass";
-        }
-
         private delegate void SetParmMethod<TParm>(ISpecies species,
                                                    IEcoregion ecoregion,
                                                    InputValue<TParm> newValue);

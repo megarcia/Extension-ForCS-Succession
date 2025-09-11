@@ -11,11 +11,6 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public class InputSnagParser : Landis.Utilities.TextParser<IInputSnagParms>
     {
-        public static class Names
-        {
-            public const string SnagData = "SnagData";
-        }
-
         private delegate void SetParmMethod<TParm>(ISpecies species,
                                                    IEcoregion ecoregion,
                                                    InputValue<TParm> newValue);
