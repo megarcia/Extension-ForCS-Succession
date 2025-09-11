@@ -586,7 +586,7 @@ namespace Landis.Extension.Succession.ForC
             int start = DistTypeName.IndexOf(":") + 1;
             if (start < DistTypeName.Length)
                 DistTypeName = DistTypeName.Substring(start);
-            if (DistTypeName.Equals(DisturbTransferFromPool.mk_sDisturbTypeFire, StringComparison.OrdinalIgnoreCase))
+            if (DistTypeName.Equals(Names.DisturbTypeFire, StringComparison.OrdinalIgnoreCase))
             {
                 if (tmpFireSeverity == 0)   // usual case
                 {
@@ -605,7 +605,7 @@ namespace Landis.Extension.Succession.ForC
             else
             {
                 TransferName = DistTypeName;
-                if (DistTypeName.Equals(DisturbTransferFromPool.mk_sDisturbTypeHarvest, StringComparison.OrdinalIgnoreCase))
+                if (DistTypeName.Equals(Names.DisturbTypeHarvest, StringComparison.OrdinalIgnoreCase))
                 {
                     SiteVars.HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
                     TransferName = SiteVars.HarvestPrescriptionName[site];
@@ -706,7 +706,7 @@ namespace Landis.Extension.Succession.ForC
                 DistTypeName = DistTypeName.Substring(start);
             DisturbTransferFromPools oDisturbTransferPoolsDOM;
             DisturbTransferFromPools oDisturbTransferPoolsBiomass;
-            if (DistTypeName.Equals(DisturbTransferFromPool.mk_sDisturbTypeFire, StringComparison.OrdinalIgnoreCase))
+            if (DistTypeName.Equals(Names.DisturbTypeFire, StringComparison.OrdinalIgnoreCase))
             {
                 if (tmpFireSeverity == 0)   //usual case
                 {
@@ -727,7 +727,7 @@ namespace Landis.Extension.Succession.ForC
             else
             {
                 TransferName = DistTypeName;
-                if (DistTypeName.Equals(DisturbTransferFromPool.mk_sDisturbTypeHarvest, StringComparison.OrdinalIgnoreCase))
+                if (DistTypeName.Equals(Names.DisturbTypeHarvest, StringComparison.OrdinalIgnoreCase))
                 {
                     SiteVars.HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
                     TransferName = SiteVars.HarvestPrescriptionName[site];

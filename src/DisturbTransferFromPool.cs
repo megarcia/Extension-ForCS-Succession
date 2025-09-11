@@ -4,8 +4,6 @@ namespace Landis.Extension.Succession.ForC
 {
     class DisturbTransferFromPool : IDisturbTransferFromPool
     {
-        public const string mk_sDisturbTypeFire = "Fire";
-        public const string mk_sDisturbTypeHarvest = "Harvest";
         private int m_nID;
         private string m_sName;
         private double m_dPropToAir = 0.0;

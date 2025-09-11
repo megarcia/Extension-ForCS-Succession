@@ -54,7 +54,7 @@ namespace Landis.Extension.Succession.ForC
             aDisturbTransferPools = new DisturbTransferFromPools[FireEffects.mk_nIntensityCount];
             for (int n = 0; n < FireEffects.mk_nIntensityCount; n++)
             {
-                aDisturbTransferPools[n] = new DisturbTransferFromPools(DisturbTransferFromPool.mk_sDisturbTypeFire);
+                aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeDOMPools(parameters.DOMPools);
             }
             string lastColumn = "the " + dPropFPS.Name + " column";
@@ -135,7 +135,7 @@ namespace Landis.Extension.Succession.ForC
             aDisturbTransferPools = new DisturbTransferFromPools[FireEffects.mk_nIntensityCount];
             for (int n = 0; n < FireEffects.mk_nIntensityCount; n++)
             {
-                aDisturbTransferPools[n] = new DisturbTransferFromPools(DisturbTransferFromPool.mk_sDisturbTypeFire);
+                aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeBiomassPools();
             }
             lastColumn = "the " + dPropFPS.Name + " column";
