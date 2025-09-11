@@ -51,8 +51,8 @@ namespace Landis.Extension.Succession.ForC
                 parameters.SetDOMPool(n, "not specified");
             //  DisturbFireTransferDOM Parameters
             ReadName(Names.DisturbFireTransferDOM);
-            aDisturbTransferPools = new DisturbTransferFromPools[Constants.FireIntensityCount];
-            for (int n = 0; n < Constants.FireIntensityCount; n++)
+            aDisturbTransferPools = new DisturbTransferFromPools[Constants.FIREINTENSITYCOUNT];
+            for (int n = 0; n < Constants.FIREINTENSITYCOUNT; n++)
             {
                 aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeDOMPools(parameters.DOMPools);
@@ -63,12 +63,12 @@ namespace Landis.Extension.Succession.ForC
             {
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(nIntensity, currentLine);
-                // Validate input, as Intensity value is 1-based in range [1, Constants.FireIntensityCount]/
-                if ((nIntensity.Value < 1) || (nIntensity.Value > Constants.FireIntensityCount))
+                // Validate input, as Intensity value is 1-based in range [1, Constants.FIREINTENSITYCOUNT]/
+                if ((nIntensity.Value < 1) || (nIntensity.Value > Constants.FIREINTENSITYCOUNT))
                     throw new InputValueException(nIntensity.Name,
                                                   "DisturbFireTransferDOM: {0} is not a valid Intensity value.", nIntensity.Value.Actual);
                 ReadValue(nDOMPoolID, currentLine);
-                if ((nDOMPoolID.Value < 1) || (nDOMPoolID.Value > SoilClass.NUMSOILPOOLS))
+                if ((nDOMPoolID.Value < 1) || (nDOMPoolID.Value > Constants.NUMSOILPOOLS))
                     throw new InputValueException(nDOMPoolID.Name,
                                                   "DisturbFireTransferDOM: {0} is not a valid DOM pool ID.", nDOMPoolID.Value.Actual);
                 // Convert Intensity from 1-based in input file to 0-based simple array.
@@ -88,7 +88,7 @@ namespace Landis.Extension.Succession.ForC
                 GetNextLine();
             }
             parameters.SetDisturbFireFromDOMPools(aDisturbTransferPools);
-            if (nread < Constants.FireIntensityCount * (SoilClass.NUMSOILPOOLS - 1))
+            if (nread < Constants.FIREINTENSITYCOUNT * (Constants.NUMSOILPOOLS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferDOM: Some rows are missing. C in these DOM pools will not be affected by the fire.");
             //  DisturbOtherTransferDOM Parameters
             ReadName(Names.DisturbOtherTransferDOM);
@@ -109,7 +109,7 @@ namespace Landis.Extension.Succession.ForC
                     dictDisturbTransfer.Add(sDisturbType.Value, oDisturbTransferPools);
                 }
                 ReadValue(nDOMPoolID, currentLine);
-                if ((nDOMPoolID.Value < 1) || (nDOMPoolID.Value > SoilClass.NUMSOILPOOLS))
+                if ((nDOMPoolID.Value < 1) || (nDOMPoolID.Value > Constants.NUMSOILPOOLS))
                     throw new InputValueException(nDOMPoolID.Name,
                                                   "DisturbOtherTransferDOM: {0} is not a valid DOM pool ID.", nDOMPoolID.Value.Actual);
                 DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPools.GetDisturbTransfer(nDOMPoolID.Value);
@@ -128,12 +128,12 @@ namespace Landis.Extension.Succession.ForC
                 GetNextLine();
             }
             parameters.SetDisturbOtherFromDOMPools(dictDisturbTransfer);
-            if (nread < 3 * (SoilClass.NUMSOILPOOLS - 1))
+            if (nread < 3 * (Constants.NUMSOILPOOLS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbOtherFromDOMPools: Some rows are missing. C in these DOM pools will not be affected by the disturbance.");
             //  DisturbFireTransferBiomass Parameters
             ReadName(Names.DisturbFireTransferBiomass);
-            aDisturbTransferPools = new DisturbTransferFromPools[Constants.FireIntensityCount];
-            for (int n = 0; n < Constants.FireIntensityCount; n++)
+            aDisturbTransferPools = new DisturbTransferFromPools[Constants.FIREINTENSITYCOUNT];
+            for (int n = 0; n < Constants.FIREINTENSITYCOUNT; n++)
             {
                 aDisturbTransferPools[n] = new DisturbTransferFromPools(Names.DisturbTypeFire);
                 aDisturbTransferPools[n].InitializeBiomassPools();
@@ -144,12 +144,12 @@ namespace Landis.Extension.Succession.ForC
             {
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(nIntensity, currentLine);
-                // Validate input, as Intensity value is 1-based in range [1, Constants.FireIntensityCount]/
-                if ((nIntensity.Value < 1) || (nIntensity.Value > Constants.FireIntensityCount))
+                // Validate input, as Intensity value is 1-based in range [1, Constants.FIREINTENSITYCOUNT]/
+                if ((nIntensity.Value < 1) || (nIntensity.Value > Constants.FIREINTENSITYCOUNT))
                     throw new InputValueException(nIntensity.Name,
                                                   "DisturbFireTransferBiomass: {0} is not a valid Intensity value.", nIntensity.Value.Actual);
                 ReadValue(nBiomassPoolID, currentLine);
-                if ((nBiomassPoolID.Value < 1) || (nBiomassPoolID.Value > SoilClass.NUMBIOMASSCOMPONENTS))
+                if ((nBiomassPoolID.Value < 1) || (nBiomassPoolID.Value > Constants.NUMBIOMASSCOMPONENTS))
                     throw new InputValueException(nBiomassPoolID.Name,
                                                   "DisturbFireTransferBiomass: {0} is not a valid biomass pool ID.", nBiomassPoolID.Value.Actual);
                 // Convert Intensity from 1-based in input file to 0-based simple array.
@@ -169,7 +169,7 @@ namespace Landis.Extension.Succession.ForC
                 GetNextLine();
             }
             parameters.SetDisturbFireFromBiomassPools(aDisturbTransferPools);
-            if (nread < Constants.FireIntensityCount * (SoilClass.NUMBIOMASSCOMPONENTS - 1))
+            if (nread < Constants.FIREINTENSITYCOUNT * (Constants.NUMBIOMASSCOMPONENTS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferBiomass: Some combinations of Fire Intensity and biomass type are missing. When these biomass components are killed, C loss will not be captured.");
             //  DisturbOtherTransferBiomass Parameters
             ReadName(Names.DisturbOtherTransferBiomass);
@@ -190,7 +190,7 @@ namespace Landis.Extension.Succession.ForC
                     dictDisturbTransfer.Add(sDisturbType.Value, oDisturbTransferPools);
                 }
                 ReadValue(nBiomassPoolID, currentLine);
-                if ((nBiomassPoolID.Value < 1) || (nBiomassPoolID.Value > SoilClass.NUMSOILPOOLS))
+                if ((nBiomassPoolID.Value < 1) || (nBiomassPoolID.Value > Constants.NUMSOILPOOLS))
                     throw new InputValueException(nBiomassPoolID.Name,
                                                   "DisturbOtherTransferBiomass: {0} is not a valid biomass pool ID.", nBiomassPoolID.ToString());
                 DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPools.GetDisturbTransfer(nBiomassPoolID.Value);
@@ -209,7 +209,7 @@ namespace Landis.Extension.Succession.ForC
                 GetNextLine();
             }
             parameters.SetDisturbOtherFromBiomassPools(dictDisturbTransfer);
-            if (nread < 3 * (SoilClass.NUMBIOMASSCOMPONENTS - 1))
+            if (nread < 3 * (Constants.NUMBIOMASSCOMPONENTS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbOtherTransferBiomass: Some biomass components are missing. When these biomass components are killed, C loss will not be captured.");
             return parameters; 
         }

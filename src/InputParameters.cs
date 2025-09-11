@@ -713,9 +713,9 @@ namespace Landis.Extension.Succession.ForC
             this.m_dsSpecies = PlugIn.ModelCore.Species;
             this.m_dsEcoregion = PlugIn.ModelCore.Ecoregions;
             this.m_dictDOMPools = new Dictionary<int, IDOMPool>();
-            this.m_aDOMDecayRates = CreateEcoregionSpeciesPoolParm<double>(SoilClass.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
-            this.m_aDOMPoolAmountT0 = CreateEcoregionSpeciesPoolParm<double>(SoilClass.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
-            this.m_aDOMPoolQ10 = CreateEcoregionSpeciesPoolParm<double>(SoilClass.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            this.m_aDOMDecayRates = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            this.m_aDOMPoolAmountT0 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            this.m_aDOMPoolQ10 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
             this.m_DOMInitialVFastAG = CreateEcoregionSpeciesParm<double>(); //  CreateSpeciesEcoregionParm<double>();
             this.m_dPropBiomassFine = 0.0;
             this.m_dPropBiomassCoarse = 0.0;

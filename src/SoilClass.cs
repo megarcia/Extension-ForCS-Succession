@@ -52,15 +52,8 @@ namespace Landis.Extension.Succession.ForC
             FineRoot
         };
 
-        public const int NUMBIOMASSCOMPONENTS = 6;  // ComponentType.FINEROOT + 1, The total number of biomass components.
-        private const double BIOTOC = 0.5;
-        public const int NUMSOILPOOLS = 10; // SoilPoolType.BLACKCARBON + 1;
-        private const int NUMSNAGPOOLS = 2; // SnagType.OTHERSNAG + 1 i.e., stem and branches snag pool
-        private const double FINEROOTSABOVERATION = 0.5;
-        private const double COARSEROOTABOVERATIO = 0.5;
         private ActiveSite m_ActiveSite;
-        private const int NUMDISTS = 9;  // note, if add more dists, then increase this
-        private bool[] DistOccurred = new bool[NUMDISTS];      
+        private bool[] DistOccurred = new bool[Constants.NUMDISTURBANCES];      
         private bool[] SpeciesPresent = new bool[PlugIn.ModelCore.Species.Count]; // true if a species is or was ever present on the site
         // Variables collected or used for output purposes.
         private static StreamWriter logPools;
@@ -69,11 +62,11 @@ namespace Landis.Extension.Succession.ForC
         private static StreamWriter logFluxSum;
         private static StreamWriter logFluxDist;
         private static StreamWriter logFluxBio;
-        private double[,] netCLoss = new double[NUMBIOMASSCOMPONENTS, PlugIn.ModelCore.Species.Count];
-        private double[,] soilC = new double[NUMSOILPOOLS, PlugIn.ModelCore.Species.Count];      // The carbon in each soil pool attributable to each species.
-        private double[] carbonToAir = new double[NUMSOILPOOLS];
-        private double[] carbonToSlowPool = new double[NUMSOILPOOLS];
-        private double[] totalDOMC = new double[NUMSOILPOOLS];
+        private double[,] netCLoss = new double[Constants.NUMBIOMASSCOMPONENTS, PlugIn.ModelCore.Species.Count];
+        private double[,] soilC = new double[Constants.NUMSOILPOOLS, PlugIn.ModelCore.Species.Count];      // The carbon in each soil pool attributable to each species.
+        private double[] carbonToAir = new double[Constants.NUMSOILPOOLS];
+        private double[] carbonToSlowPool = new double[Constants.NUMSOILPOOLS];
+        private double[] totalDOMC = new double[Constants.NUMSOILPOOLS];
         private double[,] TotTransfer = new double[2, 3];   // first: 0=no dist,1=dist; second: 0=to DOM, 1=to Air, 3=to FPS
         private double snagToMedium;
         private double branchSnagToFastPool;
@@ -105,7 +98,7 @@ namespace Landis.Extension.Succession.ForC
             m_ActiveSite = site;
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[m_ActiveSite];
             foreach (ISpecies species in PlugIn.ModelCore.Species)
-                for (int idxDOMPool = 0; idxDOMPool < NUMSOILPOOLS; idxDOMPool++)
+                for (int idxDOMPool = 0; idxDOMPool < Constants.NUMSOILPOOLS; idxDOMPool++)
                     soilC[idxDOMPool, species.Index] = SoilVars.iParams.DOMPoolAmountT0[ecoregion][species][idxDOMPool];
             InitializeOutput();  // note that this will actually only be done for the first site.
         }
@@ -123,9 +116,9 @@ namespace Landis.Extension.Succession.ForC
             int i;
             for (int j = 0; j < PlugIn.ModelCore.Species.Count; j++)
             {
-                for (i = 0; i < NUMBIOMASSCOMPONENTS; i++)
+                for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                     netCLoss[i, j] = oSrc.netCLoss[i, j];
-                for (i = 0; i < NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                 {
                     soilC[i, j] = oSrc.soilC[i, j];
                     if (j == 0)
@@ -216,7 +209,7 @@ namespace Landis.Extension.Succession.ForC
             // decay rates.  The very fast, fast, medium, and slow pools are 
             // all influenced by these effects.  Note that decay rates can 
             // vary by species now
-            for (currPool = 0; currPool < NUMSOILPOOLS - 1; currPool++)
+            for (currPool = 0; currPool < Constants.NUMSOILPOOLS - 1; currPool++)
             {
                 // DEVNOTE: DOMSoilVars.decayRates use a 0-based index into an array,
                 // whereas DOMPools requires a key that is 1-based.
@@ -254,18 +247,18 @@ namespace Landis.Extension.Succession.ForC
             double lostCB;
             double toAir;
             // Variable definitions: (Used exclusively by very fast soil pool dynamics code.)
-            const int numberABSlowPool = 2;  // number of above and below ground slow soil carbon pool
-            const int aboveSlowPool = 0;     // above ground slow carbon pool 
-            const int belowSlowPool = 1;     // below ground slow soil carnon pool
+            const int numberABSlowPool = 2;  // number of above- and below-ground slow soil carbon pool
+            const int aboveSlowPool = 0;     // above-ground slow carbon pool 
+            const int belowSlowPool = 1;     // below-ground slow soil carbon pool
             double[] carbonToABG_SlowPool = new double[numberABSlowPool]; // to store the slow carbon from different sources
             double totalLostC_AS;
             double totalLostC_BS;
-            double[,] snagPools = new double[PlugIn.ModelCore.Species.Count, NUMSNAGPOOLS];
+            double[,] snagPools = new double[PlugIn.ModelCore.Species.Count, Constants.NUMSNAGPOOLS];
             branchSnagToFastPool = 0.0;
             snagToMedium = 0.0;
             for (int i = 0; i < PlugIn.ModelCore.Species.Count; i++)
             {
-                for (int j = 0; j < NUMSNAGPOOLS; j++)
+                for (int j = 0; j < Constants.NUMSNAGPOOLS; j++)
                     snagPools[i, j] = 0F;
             }
             // initialize the slow pool array
@@ -287,8 +280,8 @@ namespace Landis.Extension.Succession.ForC
                 aboveC = netCLoss[(int)ComponentType.FOLIAGE, species.Index];
                 belowC = netCLoss[(int)ComponentType.FINEROOT, species.Index];
                 totalC = aboveC + belowC;
-                veryfastAGC = aboveC + FINEROOTSABOVERATION * belowC;
-                veryfastBGC = (1 - FINEROOTSABOVERATION) * belowC;
+                veryfastAGC = aboveC + Constants.FINEROOTSABOVERATIO * belowC;
+                veryfastBGC = (1 - Constants.FINEROOTSABOVERATIO) * belowC;
                 // We determine the new carbon in the very fast soil pool by adding 
                 // in the biomass carbon turned over and subtracting out the carbon 
                 // lost due to decay attributable to the current species.
@@ -349,8 +342,8 @@ namespace Landis.Extension.Succession.ForC
                 belowC = netCLoss[(int)ComponentType.COARSEROOT, species.Index];
                 totalC = aboveC + belowC;
                 snagPools[species.Index, (int)SnagType.OTHERSNAG] = aboveC * (1.0 - SpeciesData.PropNonMerch[species]);
-                fastCAG = (aboveC * SpeciesData.PropNonMerch[species]) + COARSEROOTABOVERATIO * belowC + branchSnagToFastPool;
-                fastCBG = (1 - COARSEROOTABOVERATIO) * belowC;
+                fastCAG = (aboveC * SpeciesData.PropNonMerch[species]) + Constants.COARSEROOTABOVERATIO * belowC + branchSnagToFastPool;
+                fastCBG = (1 - Constants.COARSEROOTABOVERATIO) * belowC;
                 // We determine the new carbon in the fast soil pool by adding 
                 // in the biomass carbon turned over and subtracting out the 
                 // carbon lost due to decay attributable to the current species.
@@ -479,7 +472,7 @@ namespace Landis.Extension.Succession.ForC
             // Method to do biomixing
             DoPoolBioMixing(species, SoilVars.iParams.PropDOMSlowAGToSlowBG);
             // total the soil pools for output purposes
-            for (currPool = 0; currPool < NUMSOILPOOLS; currPool++)
+            for (currPool = 0; currPool < Constants.NUMSOILPOOLS; currPool++)
                 totalDOMC[currPool] += soilC[currPool, species.Index];
             return;
         }
@@ -502,8 +495,8 @@ namespace Landis.Extension.Succession.ForC
                 SpeciesPresent[idxSpecies] = true;
             if (mortality_wood == 0 && mortality_nonwood == 0)  // this should only happen during initialization
                 return;
-            double nonwoodC_mort = mortality_nonwood * BIOTOC;   // turns biomass into C
-            double woodC_mort = mortality_wood * BIOTOC;
+            double nonwoodC_mort = mortality_nonwood * Constants.BIOTOC;   // turns biomass into C
+            double woodC_mort = mortality_wood * Constants.BIOTOC;
             if (PlugIn.ModelCore.CurrentTime == 0)
                 idxAge = age;               // set to the age in spin-up years (works as it did before)
             double PropStem = 0;
@@ -576,10 +569,10 @@ namespace Landis.Extension.Succession.ForC
             string TransferName = "null";
             double PropStem;
             double totroot = Roots.CalculateRootBiomass(site, species, wood + nonwood);
-            double crsRoot = Roots.CoarseRoot * BIOTOC;
-            double fineRoot = Roots.FineRoot * BIOTOC;
-            double nonwoodC = nonwood * BIOTOC;   // turns biomass into C
-            double woodC = wood * BIOTOC;
+            double crsRoot = Roots.CoarseRoot * Constants.BIOTOC;
+            double fineRoot = Roots.FineRoot * Constants.BIOTOC;
+            double nonwoodC = nonwood * Constants.BIOTOC;   // turns biomass into C
+            double woodC = wood * Constants.BIOTOC;
             DistOccurred[idxDist] = true;
             if (!SpeciesPresent[idxSpecies])
                 SpeciesPresent[idxSpecies] = true;
@@ -599,7 +592,7 @@ namespace Landis.Extension.Succession.ForC
                 }
                 else
                     severity = (byte)tmpFireSeverity; // called during spin-up
-                Debug.Assert((severity >= 0) && (severity <= Constants.FireIntensityCount));
+                Debug.Assert((severity >= 0) && (severity <= Constants.FIREINTENSITYCOUNT));
                 oDisturbTransferPoolsBiomass = (DisturbTransferFromPools)SoilVars.iParamsDM.DisturbFireFromBiomassPools[severity - 1];
             }
             else
@@ -720,7 +713,7 @@ namespace Landis.Extension.Succession.ForC
                 }
                 else
                     severity = (byte)tmpFireSeverity; // called during spin-up
-                Debug.Assert((severity >= 0) && (severity <= Constants.FireIntensityCount));
+                Debug.Assert((severity >= 0) && (severity <= Constants.FIREINTENSITYCOUNT));
                 oDisturbTransferPoolsDOM = (DisturbTransferFromPools)SoilVars.iParamsDM.DisturbFireFromDOMPools[severity - 1];
                 oDisturbTransferPoolsBiomass = (DisturbTransferFromPools)SoilVars.iParamsDM.DisturbFireFromBiomassPools[severity - 1];
             }
@@ -758,7 +751,7 @@ namespace Landis.Extension.Succession.ForC
                     logFluxDist.Write("{0},", idxDist);
                     double FPSsnag = 0;
                     double FPSdom = 0;
-                    for (int ipool = 0; ipool < NUMSOILPOOLS; ipool++)
+                    for (int ipool = 0; ipool < Constants.NUMSOILPOOLS; ipool++)
                     {
                         // Do all reductions to air and fps
                         loss = 0;
@@ -824,7 +817,7 @@ namespace Landis.Extension.Succession.ForC
                 {
                     if (SpeciesPresent[(int)species.Index])    //Only print species that have once been on the site
                     {
-                        for (int currPool = 0; currPool < NUMSOILPOOLS; currPool++)
+                        for (int currPool = 0; currPool < Constants.NUMSOILPOOLS; currPool++)
                             totalDOMC[currPool] = soilC[currPool, species.Index];
                         SoilOutput(site, species, 1);      //pool and flux output by species
                     }
@@ -839,10 +832,10 @@ namespace Landis.Extension.Succession.ForC
                     double fineRoot = 0.0;
                     double bbio = Roots.CalculateRootBiomass(site, cohort.Species, cohort.Data.Biomass);
                     // now change everything to C
-                    foliar *= BIOTOC;
-                    wood *= BIOTOC;
-                    crsRoot = Roots.CoarseRoot * BIOTOC;
-                    fineRoot = Roots.FineRoot * BIOTOC;
+                    foliar *= Constants.BIOTOC;
+                    wood *= Constants.BIOTOC;
+                    crsRoot = Roots.CoarseRoot * Constants.BIOTOC;
+                    fineRoot = Roots.FineRoot * Constants.BIOTOC;
                     logBioPools.Write("{0},{1},{2},", PlugIn.ModelCore.CurrentTime, site.Location.Row, site.Location.Column);
                     logBioPools.Write("{0},{1},{2},", ecoregion.MapCode, cohort.Species.Name, cohort.Data.Age);
                     logBioPools.Write("{0:0.0},", wood);
@@ -878,19 +871,19 @@ namespace Landis.Extension.Succession.ForC
                 if (!SpeciesPresent[(int)species.Index])    // if the species has never been on the site, we don't want to bother processing it
                 {
                     if (PlugIn.ModelCore.CurrentTime == 1 || LastPass == 1)
-                        for (i = 0; i < NUMSOILPOOLS; i++)
+                        for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                             soilC[i, (int)species.Index] = 0.0;     // zero out the pools for species that have never been present at the beginning of the projection
                     continue;
                 }
                 else if (PlugIn.ModelCore.CurrentTime == 0 && lastAge == 0)
-                    for (i = 0; i < NUMBIOMASSCOMPONENTS; i++)
+                    for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                         SoilVars.BioLive[i, (int)species.Index] = 0.0;   // zero out the live biomass component, unless the last year of spin-up
                 // Modify the decay rates by year and weather    
                 // NOTE: this does not need to be done for every site, and could be moved outside this routine. 
                 // (Decay rates no longer need to vary by site)
                 CalculateDecayRates(ecoregion, species, site);
                 // Initialize C transferred to air, C transferred to the slow pool.
-                for (i = 0; i < NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                 {
                     carbonToAir[i] = 0.0;
                     carbonToSlowPool[i] = 0.0;
@@ -903,7 +896,7 @@ namespace Landis.Extension.Succession.ForC
                 SiteVars.LitterMass[site].Mass += totalDOMC[0] + totalDOMC[1]; //litter = very fast above and below ground
                 if (totalDOMC[0] <= 0.01)
                     i = 0;
-                for (i = 0; i < NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                 {
                     // totals for the flux summary table
                     TotTransfer[0, 1] += carbonToAir[i];     // 0=no dist, 1=toAir
@@ -973,7 +966,7 @@ namespace Landis.Extension.Succession.ForC
                 for (int j = 0; j < 5; j++)
                 {
                     DistOccurred[j] = false;      // reset, ready for next year 
-                    for (i = 0; i < NUMBIOMASSCOMPONENTS; i++)
+                    for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                     {
                         netCLoss[i, species.Index] = 0.0;     
                         SoilVars.BioInput[i, species.Index, 0] = 0.0;
@@ -1001,7 +994,7 @@ namespace Landis.Extension.Succession.ForC
                          PlugIn.ModelCore.CurrentTime, site.Location.Row, site.Location.Column, PlugIn.ModelCore.Ecoregion[site].MapCode, species.Name);
                     logFlux.Write("{0},", j);
                 }
-                for (i = 0; i < NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                 {
                     if (j == 0)
                     {
@@ -1020,7 +1013,7 @@ namespace Landis.Extension.Succession.ForC
                 }
                 if (bPrintFlux)
                 {
-                    for (i = 0; i < NUMBIOMASSCOMPONENTS; i++)
+                    for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                     {
                         if (i != 3)     // (don't print out the sub-merch, since we aren't using it)
                         {
@@ -1124,7 +1117,7 @@ namespace Landis.Extension.Succession.ForC
             logFluxSum.Write("Time,row,column,ecoregion,ABio,BBio,TotalDOM,DelBio,Turnover,NetGrowth,NPP,Rh,NEP,NBP,ToFPS");
             string[] colSoil = new string[] { "VF_A", "VF_B", "Fast_A", "Fast_B", "MED", "Slow_A", "Slow_B", "Sng_Stem", "Sng_Oth", "Extra" };
             string[] colLitter = new string[] { "MERCH", "FOL", "OtherWoody", "CrsRt", "FRt" };
-            for (i = 0; i < NUMSOILPOOLS; i++)
+            for (i = 0; i < Constants.NUMSOILPOOLS; i++)
             {
                 logFlux.Write("{0}_toAir, ", colSoil[i]);
                 logFlux.Write("{0}_toSlow, ", colSoil[i]);
@@ -1140,7 +1133,7 @@ namespace Landis.Extension.Succession.ForC
                 logPools.Write("{0},", colSoil[i]);
             }
             logFluxDist.Write("SnagsToFPS, DOMtoFPS");
-            for (i = 0; i < NUMBIOMASSCOMPONENTS - 1; i++)
+            for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS - 1; i++)
             {
                 logFlux.Write("{0}_ToDOM, ", colLitter[i]);
                 logFluxBio.Write("{0}_ToDOM, ", colLitter[i]);
@@ -1176,13 +1169,13 @@ namespace Landis.Extension.Succession.ForC
             bool bPrint;
             double totalBiomass = TotBiomass;
             //add in the belowground biomass to the total biomass value
-            bbio = RootBiomass * BIOTOC;
-            totalBiomass *= BIOTOC;         //change to C
+            bbio = RootBiomass * Constants.BIOTOC;
+            totalBiomass *= Constants.BIOTOC;         //change to C
             abio = totalBiomass;            //total biomass is currently only aboveground
             totalBiomass += bbio;           //add in the belowground
             //preGrowthBiomass is aboveground only, so calculate additional root component
             preGrowthBiomass += PreGrowthRootBiomass;
-            preGrowthBiomass *= BIOTOC;     //change to C
+            preGrowthBiomass *= Constants.BIOTOC;     //change to C
             //update the site variables (used for printing maps)
             //so also move the calculations here, where needed
             //allBiomass = totalBiomass + TotTransfer[1, 0] + TotTransfer[1, 1] + TotTransfer[1, 2];        //add in any biomass that was removed this year from disturbance
@@ -1306,7 +1299,7 @@ namespace Landis.Extension.Succession.ForC
                         {
                             wood = 0.0;
                             nonwood = 0.0;
-                            for (int i = 0; i < NUMBIOMASSCOMPONENTS; i++)
+                            for (int i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                             {
                                 netCLoss[i, idxSpecies] = SoilVars.BioInput[i, idxSpecies, iage];
                                 if (i == 0)
@@ -1317,7 +1310,7 @@ namespace Landis.Extension.Succession.ForC
                             // simulate the input from a stand-replacing event.
                             // NOTE: we are assuming a severity 4 fire.
                             if (iage == maxage)
-                                DisturbanceImpactsBiomass(site, species, iage, wood / BIOTOC, nonwood / BIOTOC, ":fire", 4);
+                                DisturbanceImpactsBiomass(site, species, iage, wood / Constants.BIOTOC, nonwood / Constants.BIOTOC, ":fire", 4);
                         }
                     }
                     if (iage == maxage)
@@ -1362,7 +1355,7 @@ namespace Landis.Extension.Succession.ForC
                     idxSpecies = (int)species.Index;
                     if (SpeciesPresent[idxSpecies])
                     {
-                        for (int i = 0; i < NUMBIOMASSCOMPONENTS; i++)
+                        for (int i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                         {
                             netCLoss[i, idxSpecies] = SoilVars.BioInput[i, idxSpecies, iage];
                             SoilVars.BioInput[i, idxSpecies, iage] = 0.0;

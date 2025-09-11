@@ -310,7 +310,7 @@ namespace Landis.Extension.Succession.ForC
                 CheckNoDataAfter(lastColumn, currentLine);
                 GetNextLine();
             }
-            if (nread < SoilClass.NUMSOILPOOLS)
+            if (nread < Constants.NUMSOILPOOLS)
                 throw NewParseException("DOMPools: Parameters were not entered for all DOM pools!");
             // Eco-Spp-DOM Pool Parameters
             InputVar<string> ecoSppDOMInputFile = new InputVar<string>(Names.EcoSppDOMParms);
@@ -324,7 +324,7 @@ namespace Landis.Extension.Succession.ForC
                 IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
                 ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
                 int nDOMPID = System.Convert.ToInt32(row["DOMPool"]);
-                if ((nDOMPID <= 0) || (nDOMPID > SoilClass.NUMSOILPOOLS))
+                if ((nDOMPID <= 0) || (nDOMPID > Constants.NUMSOILPOOLS))
                     throw new InputValueException("nDOMPoolID",
                                                   "EcoSppDOMParamters: {0} is not a valid DOM pool ID.", nDOMPID);
                 double decayRate = System.Convert.ToDouble(row["DecayRate"]);
@@ -336,9 +336,9 @@ namespace Landis.Extension.Succession.ForC
                 parameters.SetDOMPoolQ10(ecoregion, species, nDOMPID - 1, q10);
                 nread += 1;
             }
-            if (nread < neco * speciesDataset.Count * SoilClass.NUMSOILPOOLS)
+            if (nread < neco * speciesDataset.Count * Constants.NUMSOILPOOLS)
             {
-                int missrow = neco * speciesDataset.Count * SoilClass.NUMSOILPOOLS - nread;
+                int missrow = neco * speciesDataset.Count * Constants.NUMSOILPOOLS - nread;
                 throw new InputValueException(nDOMPoolID.Name,
                                               "{0} rows were missing from the EcoSppDOMParamters table.", missrow);
             }
