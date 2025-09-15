@@ -1,4 +1,8 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: CohortDefoliation --> Landis.Library.UniversalCohorts
+// NOTE: CohortGrowthReduction --> Landis.Library.UniversalCohorts
+// NOTE: Percentage --> Landis.Utilities
 
 using System;
 using System.Dynamic;
@@ -62,9 +66,9 @@ namespace Landis.Extension.Succession.ForC
         /// related mortality (M_BIO).
         /// </summary>
         public double CalcBiomassChange(ICohort cohort,
-                                           ActiveSite site,
-                                           out double ANPP,
-                                           out ExpandoObject otherParams)
+                                        ActiveSite site,
+                                        out double ANPP,
+                                        out ExpandoObject otherParams)
          {
             dynamic tempObject = new ExpandoObject();
             otherParams = tempObject;
@@ -116,7 +120,7 @@ namespace Landis.Extension.Succession.ForC
                 {
                     if (cohort.Data.Age == Snags.DiedAt[idx] && Snags.initSpecIdx[idx] == cohort.Species.Index)
                     {
-                        deltaBiomass = -cohort.Data.Biomass; //set biomass to 0 to make core remove this from the list
+                        deltaBiomass = -cohort.Data.Biomass; // set biomass to 0 to make core remove this from the list
                         // When this cohort gets passed to the cohort died event, 
                         // there is no longer any biomass present, so we have to 
                         // capture the biomass information here, while we still can.
@@ -159,9 +163,9 @@ namespace Landis.Extension.Succession.ForC
         }
 
         private double CalcActualANPP(ICohort cohort,
-                                         ActiveSite site,
-                                         int siteBiomass,
-                                         int prevYearSiteMortality)
+                                      ActiveSite site,
+                                      int siteBiomass,
+                                      int prevYearSiteMortality)
         {
             growthReduction = CohortGrowthReduction.Compute(cohort, site);
             double cohortBiomass = cohort.Data.Biomass;
@@ -205,7 +209,9 @@ namespace Landis.Extension.Succession.ForC
         /// including self-thinning and loss of branches, twigs, etc.
         /// See equation 5 in Scheller and Mladenoff, 2004.
         /// </summary>
-        private double CalcGrowthMortality(ICohort cohort, ActiveSite site, int siteBiomass)
+        private double CalcGrowthMortality(ICohort cohort,
+                                           ActiveSite site,
+                                           int siteBiomass)
         {
             double M_BIO = 1.0;
             double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
@@ -310,7 +316,8 @@ namespace Landis.Extension.Succession.ForC
         /// Calculates the cohort's biomass that is leaf litter
         /// or other non-woody components.  Assumption is that remainder is woody.
         /// </summary>
-        public static double CalcStandingLeafBiomass(double ANPPactual, ICohort cohort)
+        public static double CalcStandingLeafBiomass(double ANPPactual,
+                                                     ICohort cohort)
         {
             double annualLeafFraction = CalcFractionANPPleaf(cohort.Species);
             double annualFoliar = ANPPactual * annualLeafFraction;
@@ -340,7 +347,7 @@ namespace Landis.Extension.Succession.ForC
         /// calculations of turnover give reasonable numbers.
         /// </summary>
         public Percentage CalcNonWoodyPercentage(ICohort cohort,
-                                                    ActiveSite site)
+                                                 ActiveSite site)
         {
             double leaf = 0.1;
             Percentage temp = new Percentage(leaf);
