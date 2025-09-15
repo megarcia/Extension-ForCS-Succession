@@ -1,4 +1,7 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: SeedingAlgorithms --> Landis.Library.Succession
+// NOTE: Percentage --> Landis.Utilities
 
 using System.Collections.Generic;
 
@@ -36,9 +39,7 @@ namespace Landis.Extension.Succession.ForC
         int BiomassSpinUpFlag { get; }
         double SpinUpTolerance { get; }
         int SpinUpIterations { get; }
-        /// The maximum relative biomass for each shade class.
         Library.Parameters.Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass { get; }
-        /// Definitions of sufficient light probabilities.
         List<ISufficientLight> LightClassProbabilities { get; }
         Library.Parameters.Species.AuxParm<int> SppFunctionalType { get; }
         Library.Parameters.Species.AuxParm<double> LeafLongevity { get; }
@@ -62,13 +63,11 @@ namespace Landis.Extension.Succession.ForC
         double FracDOMSlowAGToSlowBG { get; }
         double FracDOMStemSnagToMedium { get; }
         double FracDOMBranchSnagToFastAG { get; }
-        //root parameters
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBio { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> PropFine { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineTurnover { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseTurnover { get; }
-
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> MaxBiomassTimeCollection { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> ProbEstablishmentTimeCollection { get; }
