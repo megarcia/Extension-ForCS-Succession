@@ -1,4 +1,7 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: InputValue --> Landis.Utilities
+// NOTE: ISpecies --> Landis.Core
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -17,7 +20,7 @@ namespace Landis.Extension.Succession.ForC
             m_SnagAgeAtDeath = new int[Constants.NUMSNAGS];
             m_SnagTimeSinceDeath = new int[Constants.NUMSNAGS];
             m_SnagSpecies = new int[Constants.NUMSNAGS];
-            m_SnagDisturb = new string[Constants.NUMSNAGS];            
+            m_SnagDisturb = new string[Constants.NUMSNAGS];
         }
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace Landis.Extension.Succession.ForC
             m_SnagDisturb[i] = sDisturbType;
         }
 
-        public int[] SnagSpecies 
+        public int[] SnagSpecies
         {
             get
             {
@@ -52,15 +55,15 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        public int[] SnagTimeSinceDeath 
+        public int[] SnagTimeSinceDeath
         {
             get
             {
                 return m_SnagTimeSinceDeath;
             }
         }
-        
-        public string[] SnagDisturb 
+
+        public string[] SnagDisturb
         {
             get
             {

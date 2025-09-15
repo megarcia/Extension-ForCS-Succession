@@ -1,4 +1,9 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
+// NOTE: Percentage --> Landis.Utilities
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -37,7 +42,7 @@ namespace Landis.Extension.Succession.ForC
             AET = new Library.Parameters.Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
-                IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];                
+                IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
                 ActiveSiteCount[ecoregion]++;
             }
             // NEW ForCS specific Climate
@@ -139,11 +144,16 @@ namespace Landis.Extension.Succession.ForC
         }
         */
 
-        // Generates new annual temperature value
+        /// <summary>
+        /// Generates new annual temperature value
+        /// </summary>
+        /// <param name="years"></param>
+        /// <param name="spinupyear"></param>
         public static void GetAnnualTemperature(int years, int spinupyear)
         {
             int usetime = PlugIn.ModelCore.CurrentTime;
-            if (spinupyear < 0) usetime = spinupyear;
+            if (spinupyear < 0)
+                usetime = spinupyear;
             IClimateAnnual climatetemperature;
             for (int y = 0; y < years; ++y)
             {

@@ -1,6 +1,12 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
 
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: IEcoregionDataset --> Landis.Core
+// NOTE: InputValue --> Landis.Utilities
 // NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: ISpecies --> Landis.Core
+// NOTE: Percentage --> Landis.Utilities
+// NOTE: StringReader --> Landis.Utilities
 
 using System.Collections.Generic;
 
@@ -24,7 +30,7 @@ namespace Landis.Extension.Succession.ForC
 
         public InputClimateParser()
         {
-           this.ecoregionDataset = PlugIn.ModelCore.Ecoregions;
+           ecoregionDataset = PlugIn.ModelCore.Ecoregions;
         }
 
         protected override IInputClimateParams Parse()

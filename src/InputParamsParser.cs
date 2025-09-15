@@ -1,6 +1,17 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: IEcoregionDataset --> Landis.Core
+// NOTE: InputValue --> Landis.Utilities
 // NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputVar --> Landis.Utilities
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesDataset --> Landis.Core
+// NOTE: NewParseException --> Landis.Utilities
+// NOTE: Percentage --> Landis.Utilities
+// NOTE: SeedingAlgorithms --> Landis.Library.Succession
+// NOTE: SeedingAlgorithmsUtil --> Landis.Library.Succession
+// NOTE: StringReader --> Landis.Utilities
 
 using System.Collections.Generic;
 using System.Data;
@@ -12,8 +23,8 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public class InputParamsParser : Landis.Utilities.TextParser<IInputParams>
     {
-        private delegate void SetParmMethod<TParm>(ISpecies          species,
-                                                   IEcoregion        ecoregion,
+        private delegate void SetParmMethod<TParm>(ISpecies species,
+                                                   IEcoregion ecoregion,
                                                    InputValue<TParm> newValue);
 
         private IEcoregionDataset ecoregionDataset;
@@ -32,10 +43,10 @@ namespace Landis.Extension.Succession.ForC
 
         public InputParamsParser()
         {
-            this.ecoregionDataset = PlugIn.ModelCore.Ecoregions;
-            this.speciesDataset = PlugIn.ModelCore.Species;
-            this.speciesLineNums = new Dictionary<string, int>();
-            this.speciesName = new InputVar<string>("Species");
+            ecoregionDataset = PlugIn.ModelCore.Ecoregions;
+            speciesDataset = PlugIn.ModelCore.Species;
+            speciesLineNums = new Dictionary<string, int>();
+            speciesName = new InputVar<string>("Species");
         }
 
         protected override IInputParams Parse()

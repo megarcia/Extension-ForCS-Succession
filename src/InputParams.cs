@@ -1,6 +1,13 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
 
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: IEcoregionDataset --> Landis.Core
+// NOTE: InputValue --> Landis.Utilities
 // NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesDataset --> Landis.Core
+// NOTE: Percentage --> Landis.Utilities
+// NOTE: SeedingAlgorithms --> Landis.Library.Succession
 
 using System.Collections.Generic;
 using System.Diagnostics;

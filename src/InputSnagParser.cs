@@ -1,6 +1,13 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
 
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: InputValue --> Landis.Utilities
 // NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputVar --> Landis.Utilities
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesDataset --> Landis.Core
+// NOTE: Percentage --> Landis.Utilities
+// NOTE: StringReader --> Landis.Utilities
 
 using System.Collections.Generic;
 

@@ -1,8 +1,14 @@
 // Authors: Caren Dymond, Sarah Beukema
 
+// NOTE: ActiveSite --> Landis.SpatialModeling
 // NOTE: CohortDefoliation --> Landis.Library.UniversalCohorts
 // NOTE: CohortGrowthReduction --> Landis.Library.UniversalCohorts
+// NOTE: ICohort --> Landis.Library.UniversalCohorts
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesCohorts --> Landis.Library.UniversalCohorts
 // NOTE: Percentage --> Landis.Utilities
+// NOTE: SiteCohorts --> Landis.Library.UniversalCohorts
 
 using System;
 using System.Dynamic;
@@ -392,13 +398,14 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="site"></param>
         /// <param name="cohort"></param>
         /// <returns></returns>
-        private static double CalcCompetition(ActiveSite site, ICohort cohort)
+        private static double CalcCompetition(ActiveSite site,
+                                              ICohort cohort)
         {
-
             double competitionPower = 0.95;
             double CMultiplier = Math.Max(Math.Pow(cohort.Data.Biomass, competitionPower), 1.0);
             double CMultTotal = CMultiplier;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+            {
                 foreach (ICohort xcohort in speciesCohorts)
                 {
                     if (xcohort.Data.Age + 1 != cohort.Data.Age || xcohort.Species.Index != cohort.Species.Index)
@@ -407,6 +414,7 @@ namespace Landis.Extension.Succession.ForC
                         CMultTotal += tempCMultiplier;
                     }
                 }
+            }
             double Cfraction = CMultiplier / CMultTotal;
             return Cfraction;
         }

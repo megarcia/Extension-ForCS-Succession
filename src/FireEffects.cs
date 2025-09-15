@@ -1,4 +1,6 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: ICohort --> Landis.Library.UniversalCohorts
 
 namespace Landis.Extension.Succession.ForC
 {

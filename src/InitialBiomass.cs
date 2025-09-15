@@ -1,5 +1,11 @@
 // Authors: Robert M. Scheller, James B. Domingo
 
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: ICohort --> Landis.Library.UniversalCohorts
+// NOTE: ICommunity --> Landis.Library.InitialCommunities.Universal
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesCohorts --> Landis.Library.UniversalCohorts
 // NOTE: SiteCohorts --> Landis.Library.UniversalCohorts
 
 using System.Collections.Generic;
@@ -72,7 +78,7 @@ namespace Landis.Extension.Succession.ForC
         private static uint CalcKey(uint initCommunityMapCode,
                                        ushort ecoregionMapCode)
         {
-            return (uint)((initCommunityMapCode << 16) | ecoregionMapCode);
+            return (initCommunityMapCode << 16) | ecoregionMapCode;
         }
 
         static InitialBiomass()
