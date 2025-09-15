@@ -411,9 +411,9 @@ namespace Landis.Extension.Succession.ForC
             double woodC_mort = mortality_wood * Constants.BIOTOC;
             if (PlugIn.ModelCore.CurrentTime == 0)
                 idxAge = age;               // set to the age in spin-up years (works as it did before)
-            double FracStem = 0;
+            double FracStem;
             if (mortality_wood > 0)
-                PropStem = DeadStemToSnagRates(species, age, woodC_mort);
+                FracStem = DeadStemToSnagRates(species, age, woodC_mort);
             if (AboveBelow == 0)        // aboveground wood
             {
                 netCLoss[(int)ComponentType.FOLIAGE, idxSpecies] += nonwoodC_mort;
@@ -421,17 +421,17 @@ namespace Landis.Extension.Succession.ForC
                 // determine the amount of this that is merchantable
                 if (mortality_wood > 0)
                 {
-                    PropStem = DeadStemToSnagRates(species, age, woodC_mort);
-                    netCLoss[(int)ComponentType.MERCHANTABLE, idxSpecies] += woodC_mort * PropStem;
-                    netCLoss[(int)ComponentType.OTHER, idxSpecies] += woodC_mort * (1 - PropStem);
-                    SoilVars.BioInput[(int)ComponentType.MERCHANTABLE, idxSpecies, idxAge] += woodC_mort * PropStem;
-                    SoilVars.BioInput[(int)ComponentType.OTHER, idxSpecies, idxAge] += woodC_mort * (1 - PropStem);
+                    FracStem = DeadStemToSnagRates(species, age, woodC_mort);
+                    netCLoss[(int)ComponentType.MERCHANTABLE, idxSpecies] += woodC_mort * FracStem;
+                    netCLoss[(int)ComponentType.OTHER, idxSpecies] += woodC_mort * (1 - FracStem);
+                    SoilVars.BioInput[(int)ComponentType.MERCHANTABLE, idxSpecies, idxAge] += woodC_mort * FracStem;
+                    SoilVars.BioInput[(int)ComponentType.OTHER, idxSpecies, idxAge] += woodC_mort * (1 - FracStem);
                 }
             }
             else if (PlugIn.ModelCore.CurrentTime == 0 && AboveBelow == 3)
             {
-                SoilVars.BioLive[(int)ComponentType.MERCHANTABLE, idxSpecies] += woodC_mort * PropStem;
-                SoilVars.BioLive[(int)ComponentType.OTHER, idxSpecies] += woodC_mort * (1 - PropStem);
+                SoilVars.BioLive[(int)ComponentType.MERCHANTABLE, idxSpecies] += woodC_mort * FracStem;
+                SoilVars.BioLive[(int)ComponentType.OTHER, idxSpecies] += woodC_mort * (1 - FracStem);
             }
             else if (PlugIn.ModelCore.CurrentTime == 0 && AboveBelow == 4)
             {
@@ -456,7 +456,7 @@ namespace Landis.Extension.Succession.ForC
             }
             // totals for the flux summary table
             if (AboveBelow < 3)
-                TotTransfer[0, 0] += nonwoodC_mort + woodC_mort;     //0=no dist, 0=to DOM
+                TotTransfer[0, 0] += nonwoodC_mort + woodC_mort;     // 0=no dist, 0=to DOM
             return;
         }
 
@@ -541,9 +541,9 @@ namespace Landis.Extension.Succession.ForC
                 logFluxBio.Write("{0},", idxDist);
             }
             // before we start, determine the amount of this that is merchantable
-            PropStem = 0;
+            FracStem = 0;
             if (woodC > 0)
-                PropStem = DeadStemToSnagRates(species, age, woodC);
+                FracStem = DeadStemToSnagRates(species, age, woodC);
             double amtC;
             double totToFPS = 0;
             for (int ipool = 0; ipool < 6; ipool++)
@@ -552,9 +552,9 @@ namespace Landis.Extension.Succession.ForC
                 if (ipool == 1)              // foliage
                     amtC = nonwoodC;
                 else if (ipool == 0)         // merchantable
-                    amtC = woodC * PropStem;
+                    amtC = woodC * FracStem;
                 else if (ipool == 2)         // other
-                    amtC = woodC * (1 - PropStem);
+                    amtC = woodC * (1 - FracStem);
                 else if (ipool == 3)         // sub merch - not being used
                 {
                     amtC = 0;
