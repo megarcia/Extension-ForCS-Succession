@@ -705,7 +705,6 @@ namespace Landis.Extension.Succession.ForC
                     logFluxDist.WriteLine("");
                 }
             }
-
         }
 
         /// <summary>
@@ -818,7 +817,7 @@ namespace Landis.Extension.Succession.ForC
                 SoilOutput(site, species, 0);      // pool and flux output by species
             }
             if (LastPass == 0)  // Don't call the summary output if it is the last pass - we get the wrong root biomass values (or if it is soil spin-up)
-                SummaryOutput(site, totalBiomass, (SiteVars.LitterMass[site].Mass + SiteVars.DeadWoodMass[site].Mass), preGrowthBiomass);
+                SummaryOutput(site, totalBiomass, SiteVars.LitterMass[site].Mass + SiteVars.DeadWoodMass[site].Mass, preGrowthBiomass);
             for (i = 0; i < 5; i++)     // loop over disturbance types
             {
                 DistOccurred[i] = false;      // reset, ready for next year. Note that this must be done here, because it is not species specific
@@ -1080,24 +1079,24 @@ namespace Landis.Extension.Succession.ForC
             double NetGrowth;
             bool bPrint;
             double totalBiomass = TotBiomass;
-            //add in the belowground biomass to the total biomass value
+            // add in the belowground biomass to the total biomass value
             bbio = RootBiomass * Constants.BIOTOC;
-            totalBiomass *= Constants.BIOTOC;         //change to C
-            abio = totalBiomass;            //total biomass is currently only aboveground
-            totalBiomass += bbio;           //add in the belowground
-            //preGrowthBiomass is aboveground only, so calculate additional root component
+            totalBiomass *= Constants.BIOTOC;         // change to C
+            abio = totalBiomass;            // total biomass is currently only aboveground
+            totalBiomass += bbio;           // add in the belowground
+            // preGrowthBiomass is aboveground only, so calculate additional root component
             preGrowthBiomass += PreGrowthRootBiomass;
-            preGrowthBiomass *= Constants.BIOTOC;     //change to C
-            //update the site variables (used for printing maps)
-            //so also move the calculations here, where needed
-            //allBiomass = totalBiomass + TotTransfer[1, 0] + TotTransfer[1, 1] + TotTransfer[1, 2];        //add in any biomass that was removed this year from disturbance
+            preGrowthBiomass *= Constants.BIOTOC;     // change to C
+            // update the site variables (used for printing maps)
+            // so also move the calculations here, where needed
+            // allBiomass = totalBiomass + TotTransfer[1, 0] + TotTransfer[1, 1] + TotTransfer[1, 2];        // add in any biomass that was removed this year from disturbance
             delBio = totalBiomass - oldBiomass;
-            NetGrowth = totalBiomass - preGrowthBiomass;         //change in biomass from growth only
-            totNPP = NetGrowth + TotTransfer[0, 0];                //change in biomass + input to DOM not from disturances
+            NetGrowth = totalBiomass - preGrowthBiomass;         // change in biomass from growth only
+            totNPP = NetGrowth + TotTransfer[0, 0];              // change in biomass + input to DOM not from disturances
             if (totNPP < 0)
                 totNPP = 0.0;
-            NEP = totNPP - TotTransfer[0, 1];                   //NPP - to air from decomp (Rh)
-            NBP = NEP - TotTransfer[1, 2] - TotTransfer[1, 1];   //NEP - toFPS (from disturbances) - toAir from disturbances
+            NEP = totNPP - TotTransfer[0, 1];                    // NPP - to air from decomp (Rh)
+            NBP = NEP - TotTransfer[1, 2] - TotTransfer[1, 1];   // NEP - toFPS (from disturbances) - toAir from disturbances
             SiteVars.NPP[site] = totNPP;
             SiteVars.RH[site] = TotTransfer[0, 1];
             SiteVars.NEP[site] = NEP;
@@ -1105,11 +1104,11 @@ namespace Landis.Extension.Succession.ForC
             SiteVars.TotBiomassC[site] = totalBiomass;
             SiteVars.SoilOrganicMatterC[site] = totalSoil;
             SiteVars.ToFPSC[site] = TotTransfer[1, 2];
-            //set up the printing flags
+            // set up the printing flags
             bPrint = false;
             if ((PlugIn.ModelCore.CurrentTime % SoilVars.iParams.OutputSummary == 0) || PlugIn.ModelCore.CurrentTime == 1)
                 bPrint = true;
-            if (!bPrint || PlugIn.ModelCore.CurrentTime == 0)    //we aren't printing the summary, so make sure to 0 out the applicable arrays
+            if (!bPrint || PlugIn.ModelCore.CurrentTime == 0)    // we aren't printing the summary, so make sure to 0 out the applicable arrays
             {
                 for (i = 0; i <= 2; i++)
                 {
@@ -1132,13 +1131,13 @@ namespace Landis.Extension.Succession.ForC
                 logFluxSum.Write("{0:0.0},", bbio);
                 logFluxSum.Write("{0:0.0},", totalSoil);
                 logFluxSum.Write("{0:0.0},", delBio);
-                logFluxSum.Write("{0:0.0},", TotTransfer[0, 0]);    //input to DOM not from disturbance
+                logFluxSum.Write("{0:0.0},", TotTransfer[0, 0]);    // input to DOM not from disturbance
                 logFluxSum.Write("{0:0.0},", NetGrowth);
                 logFluxSum.Write("{0:0.0},", totNPP);             
-                logFluxSum.Write("{0:0.0},", TotTransfer[0, 1]);    //sum of emissions to air with no disturbance = Rh
+                logFluxSum.Write("{0:0.0},", TotTransfer[0, 1]);    // sum of emissions to air with no disturbance = Rh
                 logFluxSum.Write("{0:0.0},", NEP);                  
                 logFluxSum.Write("{0:0.0},", NBP);
-                logFluxSum.Write("{0:0.0}", TotTransfer[1, 2]);     //To FPS
+                logFluxSum.Write("{0:0.0}", TotTransfer[1, 2]);     // to FPS
                 logFluxSum.WriteLine("");
                 for (i = 0; i <= 2; i++)
                 {
@@ -1236,7 +1235,7 @@ namespace Landis.Extension.Succession.ForC
                     newSlowPool += soilC[5, idxSpecies] + soilC[6, idxSpecies];
                 }
                 diff = newSlowPool - initSlowPool;
-                prop = 100 * diff / initSlowPool;
+                frac = 100 * diff / initSlowPool;
                 initSlowPool = newSlowPool;
                 newSlowPool = 0.0;
                 icnt++;
