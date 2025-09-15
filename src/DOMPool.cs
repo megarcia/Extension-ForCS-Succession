@@ -30,17 +30,17 @@ namespace Landis.Extension.Succession.ForC
         public DOMPool(int nID, string sName)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
-            this.ID = nID;
-            this.Name = sName;
+            ID = nID;
+            Name = sName;
         }
 
         public DOMPool(int nID, string sName, double dQ10, double dFracAir)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
-            this.ID = nID;
-            this.Name = sName;
-            this.Q10 = dQ10;
-            this.FracAir = dFracAir;
+            ID = nID;
+            Name = sName;
+            Q10 = dQ10;
+            FracAir = dFracAir;
         }
 
         public int ID
@@ -67,7 +67,7 @@ namespace Landis.Extension.Succession.ForC
             set
             {
                 string sName = value.Trim();
-                if (System.String.IsNullOrEmpty(sName))
+                if (string.IsNullOrEmpty(sName))
                     throw new InputValueException(sName,
                                                   "A DOM pool must have a valid name.");
                 m_sName = value;

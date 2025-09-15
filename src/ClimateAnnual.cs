@@ -13,8 +13,8 @@ namespace Landis.Extension.Succession.ForC
 
         public ClimateAnnual(int nYear, double dMeanAnnualTemp)
         {
-            this.Year = nYear;
-            this.ClimateAnnualTemp = dMeanAnnualTemp;
+            Year = nYear;
+            ClimateAnnualTemp = dMeanAnnualTemp;
         }
 
         public double ClimateAnnualTemp
