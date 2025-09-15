@@ -1,5 +1,6 @@
-//  Copyright 2005-2010 Portland State University, University of Wisconsin
-//  Authors:  Robert M. Scheller, James B. Domingo
+// Authors: Robert M. Scheller, James B. Domingo
+
+// NOTE: SiteCohorts --> Landis.Library.UniversalCohorts
 
 using System.Collections.Generic;
 
@@ -102,7 +103,7 @@ namespace Landis.Extension.Succession.ForC
         /// The initial community of age cohorts at the site.
         /// </param>
         public static InitialBiomass CalcInitBiomass(ActiveSite site,
-                                                        ICommunity initialCommunity)
+                                                     ICommunity initialCommunity)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             uint key = CalcKey(initialCommunity.MapCode, ecoregion.MapCode);
@@ -150,8 +151,8 @@ namespace Landis.Extension.Succession.ForC
         /// site based on the existing cohorts.
         /// </summary>
         public delegate int CalculationMethod(ISpecies species,
-                                          SiteCohorts siteCohorts,
-                                          ActiveSite  site);
+                                              SiteCohorts siteCohorts,
+                                              ActiveSite  site);
 
         /// <summary>
         /// Makes the set of biomass cohorts at a site based on the age cohorts
@@ -183,7 +184,7 @@ namespace Landis.Extension.Succession.ForC
                                                         cohort.Data.Biomass,
                                                         cohort.Data.AdditionalParameters);
                     SiteVars.TotalBiomass[site] = Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
-                    SiteVars.soils[site].CollectBiomassMortality(cohort.Species, 0, 0, 0, 0);      //dummy for getting it to recognize that the species is now present.
+                    SiteVars.soils[site].CollectBiomassMortality(cohort.Species, 0, 0, 0, 0);      // dummy for getting it to recognize that the species is now present.
                 }
             }
             else
