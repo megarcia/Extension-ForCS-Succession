@@ -10,6 +10,7 @@ namespace Landis.Extension.Succession.ForC
     public interface IInputDisturbanceMatrixParams
     {
         IDictionary<int, IDOMPool> DOMPools { get; }
+
         /// <summary>
         /// Returns an array of IDisturbTransferFromPools objects, indexed by a 0-based severity level.
         /// </summary>
