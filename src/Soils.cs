@@ -32,20 +32,6 @@ namespace Landis.Extension.Succession.ForC
             FINEROOT  // The fine root biomass component.
         };  
 
-        /// <summary>
-        /// eBiomassPoolIDs - IDs used to index directly into the calculations.
-        /// Note that unlike Soils.ComponentType, these are 1-based.
-        /// </summary>
-        public enum eBiomassPoolIDs
-        {
-            Merchantable = 1,
-            Foliage,
-            Other,
-            SubMerchantable,
-            CoarseRoot,
-            FineRoot
-        };
-
         private ActiveSite m_ActiveSite;
         private bool[] DistOccurred = new bool[Constants.NUMDISTURBANCES];      
         private bool[] SpeciesPresent = new bool[PlugIn.ModelCore.Species.Count]; // true if a species is or was ever present on the site

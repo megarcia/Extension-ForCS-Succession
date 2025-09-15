@@ -31,12 +31,12 @@ namespace Landis.Extension.Succession.ForC
         public void InitializeBiomassPools()
         {
             m_dict.Clear();
-            m_dict.Add((int)Soils.eBiomassPoolIDs.Merchantable, new DisturbTransferFromPool((int)Soils.eBiomassPoolIDs.Merchantable, "Merchantable"));
-            m_dict.Add((int)Soils.eBiomassPoolIDs.Foliage, new DisturbTransferFromPool((int)Soils.eBiomassPoolIDs.Foliage, "Foliage"));
-            m_dict.Add((int)Soils.eBiomassPoolIDs.Other, new DisturbTransferFromPool((int)Soils.eBiomassPoolIDs.Other, "Other"));
-            m_dict.Add((int)Soils.eBiomassPoolIDs.SubMerchantable, new DisturbTransferFromPool((int)Soils.eBiomassPoolIDs.SubMerchantable, "Sub-Merchantable"));
-            m_dict.Add((int)Soils.eBiomassPoolIDs.CoarseRoot, new DisturbTransferFromPool((int)Soils.eBiomassPoolIDs.CoarseRoot, "Coarse Root"));
-            m_dict.Add((int)Soils.eBiomassPoolIDs.FineRoot, new DisturbTransferFromPool((int)Soils.eBiomassPoolIDs.FineRoot, "Fine Root"));
+            m_dict.Add((int)eBiomassPoolIDs.Merchantable, new DisturbTransferFromPool((int)eBiomassPoolIDs.Merchantable, "Merchantable"));
+            m_dict.Add((int)eBiomassPoolIDs.Foliage, new DisturbTransferFromPool((int)eBiomassPoolIDs.Foliage, "Foliage"));
+            m_dict.Add((int)eBiomassPoolIDs.Other, new DisturbTransferFromPool((int)eBiomassPoolIDs.Other, "Other"));
+            m_dict.Add((int)eBiomassPoolIDs.SubMerchantable, new DisturbTransferFromPool((int)eBiomassPoolIDs.SubMerchantable, "Sub-Merchantable"));
+            m_dict.Add((int)eBiomassPoolIDs.CoarseRoot, new DisturbTransferFromPool((int)eBiomassPoolIDs.CoarseRoot, "Coarse Root"));
+            m_dict.Add((int)eBiomassPoolIDs.FineRoot, new DisturbTransferFromPool((int)eBiomassPoolIDs.FineRoot, "Fine Root"));
         }
 
         /// <param name="nPoolID">Pool ID, 1-based</param>
