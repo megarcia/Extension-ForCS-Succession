@@ -447,14 +447,14 @@ namespace Landis.Extension.Succession.ForC
                 throw new InputValueException("MaxBiomass",
                                               "MaxBiomass values wre not entered for year 0 for all species and ecoregions! Please check.");
             //  EstablishProbabilities
-            InputVar<string> establishProbabilitiesInputFile = new InputVar<string>(Names.EstablishProbabilities);
-            ReadVar(establishProbabilitiesInputFile);
-            CSVParser establishProbabilitiesParser = new CSVParser();
-            DataTable establishProbabilitiesTable = establishProbabilitiesParser.ParseToDataTable(establishProbabilitiesInputFile.Value);
+            InputVar<string> probEstablishmentInputFile = new InputVar<string>(Names.EstablishProbabilities);
+            ReadVar(probEstablishmentInputFile);
+            CSVParser probEstablishmentParser = new CSVParser();
+            DataTable probEstablishmentTable = probEstablishmentParser.ParseToDataTable(probEstablishmentInputFile.Value);
             nread = 0;
             nYear = 0;
             double dProbEstablishment = 0;
-            foreach (DataRow row in establishProbabilitiesTable.Rows)
+            foreach (DataRow row in probEstablishmentTable.Rows)
             {
                 IEcoregion ecoregion = GetEcoregion(System.Convert.ToString(row["Ecoregion"]));
                 ISpecies species = ReadSpecies(System.Convert.ToString(row["Species"]));
