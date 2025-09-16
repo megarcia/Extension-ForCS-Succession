@@ -93,7 +93,7 @@ namespace Landis.Extension.Succession.ForC
             // SuccessionCohorts property in its Initialization method.
             Library.UniversalCohorts.Cohorts.Initialize(Timestep, new CohortBiomass());
             Reproduction.SufficientResources = IsSufficientLight;
-            Reproduction.Establish = Establish;
+            Reproduction.Establish = CanEstablish;
             Reproduction.AddNewCohort = AddNewCohort;
             Reproduction.MaturePresent = IsMaturePresent;
             base.Initialize(modelCore, inputParams.SeedAlgorithm); 
@@ -312,7 +312,7 @@ namespace Landis.Extension.Succession.ForC
         /// Determines if a species can establish on a site according
         /// to a random value threshold.
         /// </summary>
-        public bool Establish(ISpecies species, ActiveSite site)
+        public bool CanEstablish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
             double establishProbability = SpeciesData.ProbEstablishment[species][ecoregion];
