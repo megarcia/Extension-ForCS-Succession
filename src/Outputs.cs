@@ -9,7 +9,8 @@ namespace Landis.Extension.Succession.ForC
     {
         public static void WriteMaps(string outpath, int outint)
         {
-            string[] pathname = new string[7];
+            int nOutputFiles = 7;
+            string[] pathname = new string[nOutputFiles];
             int printval = 0;
             pathname[0] = outpath + "/SoilC-{timestep}.tif";
             pathname[1] = outpath + "/BiomassC-{timestep}.tif";
@@ -18,7 +19,7 @@ namespace Landis.Extension.Succession.ForC
             pathname[4] = outpath + "/NBP-{timestep}.tif";
             pathname[5] = outpath + "/RH-{timestep}.tif";
             pathname[6] = outpath + "/ToFPS-{timestep}.tif";
-            for (int j = 0; j < 7; j++)
+            for (int j = 0; j < nOutputFiles; j++)
             {
                 // Skip map outputs if ForCSMapControl table indicates so
                 if (j == 0 && SoilVars.iParams.OutputSDOMC == 0)

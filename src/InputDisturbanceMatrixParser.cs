@@ -46,10 +46,10 @@ namespace Landis.Extension.Succession.ForC
             int nread = 0;
             InputDisturbanceMatrixParams parameters = new InputDisturbanceMatrixParams();
             PlugIn.ModelCore.UI.WriteLine("Reading new DM input file.");
-            //First set-up the DOM pools (This used to be done already, but we will do it manually now
-            for (int n = 1; n < 11; n++)
+            // First set-up the DOM pools (This used to be done already, but we will do it manually now
+            for (int n = 1; n < Constants.NUMSOILPOOLS + 1; n++)
                 parameters.SetDOMPool(n, "not specified");
-            //  DisturbFireTransferDOM Parameters
+            // DisturbFireTransferDOM Parameters
             ReadName(Names.DisturbFireTransferDOM);
             aDisturbTransferPools = new DisturbTransferFromPools[Constants.FIREINTENSITYCOUNT];
             for (int n = 0; n < Constants.FIREINTENSITYCOUNT; n++)
