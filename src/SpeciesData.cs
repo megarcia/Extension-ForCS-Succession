@@ -26,7 +26,7 @@ namespace Landis.Extension.Succession.ForC
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<int>> B_MAX_Spp;
 
         //  Establishment probability modifier for each species in each ecoregion (from biomass succession)
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> EstablishModifier;
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> ProbEstablishModifier;
 
         // Root parameters
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> MinWoodyBio;
@@ -90,7 +90,7 @@ namespace Landis.Extension.Succession.ForC
             ANPP_MAX_Spp = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
             B_MAX_Spp = Util.CreateSpeciesEcoregionParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
             ProbEstablishment = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-            EstablishModifier = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
+            ProbEstablishModifier = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
             // double MeanAnnualTemperature = 0.0;
             int usetime = PlugIn.ModelCore.CurrentTime;
             if (spinupyear < 0)
@@ -116,7 +116,7 @@ namespace Landis.Extension.Succession.ForC
                     foreach(ISpecies species in PlugIn.ModelCore.Species)
                     {
                         IANPP anpp;
-                        EstablishModifier[species][ecoregion] = 1.0;
+                        ProbEstablishModifier[species][ecoregion] = 1.0;
                         if (m_iParams.ANPPTimeCollection[ecoregion][species].TryGetValue(usetime + y, out anpp))
                         {
                             PlugIn.ModelCore.NormalDistribution.Mu = anpp.GramsPerMetre2Year;
