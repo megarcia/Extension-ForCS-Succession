@@ -26,10 +26,6 @@ namespace Landis.Extension.Succession.ForC
         public const string DOMPools = "DOMPools";
         public const string EcoSppDOMParms = "EcoSppDOMParameters";
         public const string ForCSProportions = "ForCSProportions";
-        public const string DisturbFireTransferDOM = "DisturbFireTransferDOM";
-        public const string DisturbOtherTransferDOM = "DisturbOtherTransferDOM";
-        public const string DisturbFireTransferBiomass = "DisturbFireTransferBiomass";
-        public const string DisturbOtherTransferBiomass = "DisturbOtherTransferBiomass";
         public const string ANPPTimeSeries = "ANPPTimeSeries";
         public const string MaxBiomassTimeSeries = "MaxBiomassTimeSeries";
         public const string EstablishProbabilities = "EstablishProbabilities";
