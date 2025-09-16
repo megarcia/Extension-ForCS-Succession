@@ -14,41 +14,41 @@ namespace Landis.Extension.Succession.ForC
         public DisturbTransferFromPool(int nID)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
-            this.ID = nID;
+            ID = nID;
         }
 
         public DisturbTransferFromPool(int nID, string sName)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
-            this.ID = nID;
-            this.Name = sName;
+            ID = nID;
+            Name = sName;
         }
 
         public DisturbTransferFromPool(int nID, double dFracToAir, double dFracToFloor, double dFracToFPS, double dFracToDOM)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
-            this.ID = nID;
+            ID = nID;
             if ((dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM) > 1.0)
                 throw new InputValueException("Proportions",
                                               "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM);
-            this.FracToAir = dFracToAir;
-            this.FracToFloor = dFracToFloor;
-            this.FracToFPS = dFracToFPS;
-            this.FracToDOM = dFracToDOM;
+            FracToAir = dFracToAir;
+            FracToFloor = dFracToFloor;
+            FracToFPS = dFracToFPS;
+            FracToDOM = dFracToDOM;
         }
 
         public DisturbTransferFromPool(int nID, string sName, double dFracToAir, double dFracToFloor, double dFracToFPS, double dFracToDOM)
         {
             // Set the member data through the property, so error/range checking code doesn't have to be duplicated.
-            this.ID = nID;
-            this.Name = sName;
+            ID = nID;
+            Name = sName;
             if ((dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM) > 1.0)
                 throw new InputValueException("Proportions",
                                               "Sum of all proportions must be no greater than 1.0.  The total of the proportions is = {0}.", dFracToAir + dFracToFloor + dFracToFPS + dFracToDOM);
-            this.FracToAir = dFracToAir;
-            this.FracToFloor = dFracToFloor;
-            this.FracToFPS = dFracToFPS;
-            this.FracToDOM = dFracToDOM;
+            FracToAir = dFracToAir;
+            FracToFloor = dFracToFloor;
+            FracToFPS = dFracToFPS;
+            FracToDOM = dFracToDOM;
         }
 
         public int ID

@@ -13,7 +13,7 @@ namespace Landis.Extension.Succession.ForC
 
         public TimeInput(int nYear)
         {
-            this.Year = nYear;
+            Year = nYear;
         }
 
         public int Year

@@ -520,7 +520,7 @@ namespace Landis.Extension.Succession.ForC
         public void SetDOMPool(int nID, string sName, double dQ10, double dFracAtm)
         {
             DOMPool pool = new DOMPool(nID, sName, dQ10, dFracAtm);
-            this.m_dictDOMPools.Add(pool.ID, pool);
+            m_dictDOMPools.Add(pool.ID, pool);
         }
 
         public void SetDOMDecayRate(IEcoregion ecoregion, ISpecies species, int idxDOMPool, InputValue<double> newValue)
@@ -534,7 +534,7 @@ namespace Landis.Extension.Succession.ForC
                 strCombo += actPool;
                 PlugIn.ModelCore.UI.WriteLine("Warning: Decay rate for " + strCombo + " is 0. No decay will occur.");
             }
-            this.m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
         public void SetDOMPoolAmountT0(IEcoregion ecoregion, ISpecies species, int idxDOMPool, InputValue<double> newValue)
@@ -551,12 +551,12 @@ namespace Landis.Extension.Succession.ForC
                 strCombo += actPool;
                 PlugIn.ModelCore.UI.WriteLine("Warning: Initial DOM value for " + strCombo + " is 0. This can cause modelling artifacts.");
             }
-            this.m_aDOMPoolAmountT0[ecoregion][species][idxDOMPool] = newValue;
+            m_aDOMPoolAmountT0[ecoregion][species][idxDOMPool] = newValue;
         }
 
         public void SetDOMPoolQ10(IEcoregion ecoregion, ISpecies species, int idxDOMPool, InputValue<double> newValue)
         {
-            this.m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0);
+            m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0);
         }
 
         public void SetDOMDecayRate(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
@@ -570,7 +570,7 @@ namespace Landis.Extension.Succession.ForC
                 strCombo += actPool;
                 PlugIn.ModelCore.UI.WriteLine("Warning: Decay rate for " + strCombo + " is 0. No decay will occur.");
             }
-            this.m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 0.0, 1.0, "DOMDecayRate");
+            m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 0.0, 1.0, "DOMDecayRate");
         }
 
         public void SetDOMPoolAmountT0(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
@@ -587,12 +587,12 @@ namespace Landis.Extension.Succession.ForC
                 strCombo += actPool;
                 PlugIn.ModelCore.UI.WriteLine("Warning: Initial DOM value for " + strCombo + " is 0. This can cause modelling artifacts.");
             }
-            this.m_aDOMPoolAmountT0[ecoregion][species][idxDOMPool] = newValue;
+            m_aDOMPoolAmountT0[ecoregion][species][idxDOMPool] = newValue;
         }
 
         public void SetDOMPoolQ10(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
         {
-            this.m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0, "DOMPoolQ10");
+            m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0, "DOMPoolQ10");
         }
 
         public void SetDOMInitialVFastAG(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue)
@@ -685,17 +685,17 @@ namespace Landis.Extension.Succession.ForC
 
         public void SetANPPTimeCollection(IEcoregion ecoregion, ISpecies species, ITimeCollection<IANPP> oCollection)
         {
-            this.m_ANPPTimeCollection[ecoregion][species] = oCollection;
+            m_ANPPTimeCollection[ecoregion][species] = oCollection;
         }
 
         public void SetMaxBiomassTimeCollection(IEcoregion ecoregion, ISpecies species, ITimeCollection<IMaxBiomass> oCollection)
         {
-            this.m_MaxBiomassTimeCollection[ecoregion][species] = oCollection;
+            m_MaxBiomassTimeCollection[ecoregion][species] = oCollection;
         }
 
         public void SetProbEstablishment(IEcoregion ecoregion, ISpecies species, InputValue<double> dFrac)
         {
-            this.m_dProbEstablishment[species][ecoregion] = CheckBiomassParm(dFrac, 0.0, 1.0);
+            m_dProbEstablishment[species][ecoregion] = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
         public InputParams()
@@ -717,50 +717,50 @@ namespace Landis.Extension.Succession.ForC
             growthCurveShape = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             fieldCapacity = new Library.Parameters.Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
             latitude = new Library.Parameters.Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
-            this.m_dsSpecies = PlugIn.ModelCore.Species;
-            this.m_dsEcoregion = PlugIn.ModelCore.Ecoregions;
-            this.m_dictDOMPools = new Dictionary<int, IDOMPool>();
-            this.m_aDOMDecayRates = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
-            this.m_aDOMPoolAmountT0 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
-            this.m_aDOMPoolQ10 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
-            this.m_DOMInitialVFastAG = CreateEcoregionSpeciesParm<double>(); //  CreateSpeciesEcoregionParm<double>();
-            this.m_dFracBiomassFine = 0.0;
-            this.m_dFracBiomassCoarse = 0.0;
-            this.m_dFracDOMSlowAGToSlowBG = 0.0;
-            this.m_dFracDOMStemSnagToMedium = 0.0;
-            this.m_dFracDOMBranchSnagToFastAG = 0.0;
+            m_dsSpecies = PlugIn.ModelCore.Species;
+            m_dsEcoregion = PlugIn.ModelCore.Ecoregions;
+            m_dictDOMPools = new Dictionary<int, IDOMPool>();
+            m_aDOMDecayRates = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            m_aDOMPoolAmountT0 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            m_aDOMPoolQ10 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            m_DOMInitialVFastAG = CreateEcoregionSpeciesParm<double>(); //  CreateSpeciesEcoregionParm<double>();
+            m_dFracBiomassFine = 0.0;
+            m_dFracBiomassCoarse = 0.0;
+            m_dFracDOMSlowAGToSlowBG = 0.0;
+            m_dFracDOMStemSnagToMedium = 0.0;
+            m_dFracDOMBranchSnagToFastAG = 0.0;
             // Roots
-            this.m_MinWoodyBio = CreateEcoregionSpeciesPoolParm<double>(5);
-            this.m_Ratio = CreateEcoregionSpeciesPoolParm<double>(5);
-            this.m_FracFine = CreateEcoregionSpeciesPoolParm<double>(5);
-            this.m_FineTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
-            this.m_CoarseTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_MinWoodyBio = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_Ratio = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_FracFine = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_FineTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_CoarseTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
             // set the initial MinWoodyBiomass to -999 to indicate that it has not been initialized
             foreach (IEcoregion ecoregion in m_dsEcoregion)
             {
                 foreach (ISpecies species in m_dsSpecies)
                 {
                     for (int i=0; i<5; i++)
-                        this.m_MinWoodyBio[ecoregion][species][i] = -999;
+                        m_MinWoodyBio[ecoregion][species][i] = -999;
                 }
             }
             // ANPP and Max Biomass Time Collection
-            this.m_ANPPTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>>(m_dsEcoregion);
-            this.m_MaxBiomassTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>>(m_dsEcoregion);
-            this.m_ProbEstablishmentTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>>(m_dsEcoregion);
+            m_ANPPTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>>(m_dsEcoregion);
+            m_MaxBiomassTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>>(m_dsEcoregion);
+            m_ProbEstablishmentTimeCollection = new Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>>(m_dsEcoregion);
             foreach (IEcoregion ecoregion in m_dsEcoregion)
             {
-                this.m_ANPPTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>(m_dsSpecies);
-                this.m_MaxBiomassTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>(m_dsSpecies);
-                this.m_ProbEstablishmentTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>(m_dsSpecies);
+                m_ANPPTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>(m_dsSpecies);
+                m_MaxBiomassTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>(m_dsSpecies);
+                m_ProbEstablishmentTimeCollection[ecoregion] = new Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>(m_dsSpecies);
                 foreach (ISpecies species in m_dsSpecies)
                 {
-                    this.m_ANPPTimeCollection[ecoregion][species] = new TimeCollection<IANPP>();
-                    this.m_MaxBiomassTimeCollection[ecoregion][species] = new TimeCollection<IMaxBiomass>();
-                    this.m_ProbEstablishmentTimeCollection[ecoregion][species] = new TimeCollection<IProbEstablishment>();
+                    m_ANPPTimeCollection[ecoregion][species] = new TimeCollection<IANPP>();
+                    m_MaxBiomassTimeCollection[ecoregion][species] = new TimeCollection<IMaxBiomass>();
+                    m_ProbEstablishmentTimeCollection[ecoregion][species] = new TimeCollection<IProbEstablishment>();
                 }
             }
-            this.m_dProbEstablishment = CreateSpeciesEcoregionParm<double>();
+            m_dProbEstablishment = CreateSpeciesEcoregionParm<double>();
        }
 
         private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<T>> CreateSpeciesEcoregionParm<T>()

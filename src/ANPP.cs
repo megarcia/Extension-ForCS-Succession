@@ -16,9 +16,9 @@ namespace Landis.Extension.Succession.ForC
 
         public ANPP(int nYear, double dGramsPerMetre2Year, double dStdDev)
         {
-            this.Year = nYear;
-            this.GramsPerMetre2Year = dGramsPerMetre2Year;
-            this.StdDev = dStdDev;
+            Year = nYear;
+            GramsPerMetre2Year = dGramsPerMetre2Year;
+            StdDev = dStdDev;
         }
 
         public double GramsPerMetre2Year

@@ -23,7 +23,7 @@ namespace Landis.Extension.Succession.ForC
         /// <returns></returns>
         public void Add(T value)
         {
-            if (this.Contains(value))
+            if (Contains(value))
                 m_listValues.Remove(value.Year);
             m_listValues.Add(value.Year, value);
         }

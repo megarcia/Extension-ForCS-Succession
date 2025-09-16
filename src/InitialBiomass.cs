@@ -46,11 +46,11 @@ namespace Landis.Extension.Succession.ForC
                                Soils soils)
         {
             this.cohorts = cohorts;
-            this.SoilOrganicMatterC = soilOrganicMatterC;
-            this.DeadWoodMass = deadWoodMass;
-            this.LitterMass = litterMass;
-            this.DeadWoodDecayRate = deadWoodDecayRate;
-            this.LitterDecayRate = litterDecayRate;
+            SoilOrganicMatterC = soilOrganicMatterC;
+            DeadWoodMass = deadWoodMass;
+            LitterMass = litterMass;
+            DeadWoodDecayRate = deadWoodDecayRate;
+            LitterDecayRate = litterDecayRate;
             this.soils = soils;
         }
 

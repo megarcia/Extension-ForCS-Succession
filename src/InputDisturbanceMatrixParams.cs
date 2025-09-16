@@ -87,12 +87,12 @@ namespace Landis.Extension.Succession.ForC
         public void SetDOMPool(int nID, string sName)
         {
             DOMPool pool = new DOMPool(nID, sName);
-            this.m_dictDOMPools.Add(pool.ID, pool);
+            m_dictDOMPools.Add(pool.ID, pool);
         }
 
         public InputDisturbanceMatrixParams()
         {
-            this.m_dictDOMPools = new Dictionary<int, IDOMPool>();
+            m_dictDOMPools = new Dictionary<int, IDOMPool>();
         }
     }
 }

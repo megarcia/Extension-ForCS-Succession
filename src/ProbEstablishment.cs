@@ -15,8 +15,8 @@ namespace Landis.Extension.Succession.ForC
 
         public ProbEstablishment(int nYear, double dProbEstablishment)
         {
-            this.Year = nYear;
-            this.Establishment = dProbEstablishment;
+            Year = nYear;
+            Establishment = dProbEstablishment;
         }
 
         public double Establishment
