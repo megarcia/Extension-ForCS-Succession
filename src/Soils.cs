@@ -899,9 +899,10 @@ namespace Landis.Extension.Succession.ForC
                 logPools.Write("{0},{1},{2},{3},{4},",
                     PlugIn.ModelCore.CurrentTime, site.Location.Row, site.Location.Column, PlugIn.ModelCore.Ecoregion[site].MapCode, species.Name);
             }
-            for (int j = 0; j < 1; j++)
+            for (int j = 0; j < 1; j++)  // TODO: this just loops once, correct? why a loop at all?
             {
-                if (j > 0 && !DistOccurred[j])  // We only need to print disturbances when and where they have occurred.
+                // We only need to print disturbances when and where they have occurred.
+                if (j > 0 && !DistOccurred[j])  // TODO: this is never true if the loop limit above is correct
                     continue;
                 if (bPrintFlux)
                 {
