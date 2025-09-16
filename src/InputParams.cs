@@ -80,7 +80,7 @@ namespace Landis.Extension.Succession.ForC
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> m_ProbEstablishmentTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_MinWoodyBio;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_Ratio;
-        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_PropFine;
+        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FracFine;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FineTurnover;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_CoarseTurnover;
         private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> m_dEstablishProbability;
@@ -337,7 +337,7 @@ namespace Landis.Extension.Succession.ForC
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseTurnover { get { return m_CoarseTurnover; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineTurnover { get { return m_FineTurnover; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get { return m_Ratio; } }
-        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> PropFine { get { return m_PropFine; } }
+        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FracFine { get { return m_FracFine; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBio { get { return m_MinWoodyBio; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get { return m_ANPPTimeCollection; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> MaxBiomassTimeCollection { get { return m_MaxBiomassTimeCollection; } }
@@ -668,9 +668,9 @@ namespace Landis.Extension.Succession.ForC
             m_Ratio[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
-        public void SetPropFine(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
+        public void SetFracFine(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_PropFine[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_FracFine[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
         public void SetFineTurnover(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
@@ -732,7 +732,7 @@ namespace Landis.Extension.Succession.ForC
             // Roots
             this.m_MinWoodyBio = CreateEcoregionSpeciesPoolParm<double>(5);
             this.m_Ratio = CreateEcoregionSpeciesPoolParm<double>(5);
-            this.m_PropFine = CreateEcoregionSpeciesPoolParm<double>(5);
+            this.m_FracFine = CreateEcoregionSpeciesPoolParm<double>(5);
             this.m_FineTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
             this.m_CoarseTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
             // set the initial MinWoodyBiomass to -999 to indicate that it has not been initialized

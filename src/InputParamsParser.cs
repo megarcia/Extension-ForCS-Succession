@@ -494,7 +494,7 @@ namespace Landis.Extension.Succession.ForC
                 ReadValue(dRatio, currentLine);
                 parameters.SetRootRatio(ecoregion, species, dRatio.Value, idxval);
                 ReadValue(dFracFine, currentLine);
-                parameters.SetPropFine(ecoregion, species, dFracFine.Value, idxval);
+                parameters.SetFracFine(ecoregion, species, dFracFine.Value, idxval);
                 ReadValue(dFineTurnover, currentLine);
                 parameters.SetFineTurnover(ecoregion, species, dFineTurnover.Value, idxval);
                 ReadValue(dCoarseTurnover, currentLine);

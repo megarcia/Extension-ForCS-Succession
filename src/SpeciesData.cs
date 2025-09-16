@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.ForC
         // Root parameters
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> MinWoodyBio;
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> Ratio;
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> PropFine;
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> FracFine;
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> FineTurnover;
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> CoarseTurnover;
         private static IInputParams m_iParams;
@@ -55,7 +55,7 @@ namespace Landis.Extension.Succession.ForC
             // Roots
             Ratio = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             MinWoodyBio = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
-            PropFine = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
+            FracFine = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             FineTurnover = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             CoarseTurnover = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
 
@@ -69,7 +69,7 @@ namespace Landis.Extension.Succession.ForC
                     {
                         Ratio[species][ecoregion][i] = parameters.Ratio[ecoregion][species][i];
                         MinWoodyBio[species][ecoregion][i] = parameters.MinWoodyBio[ecoregion][species][i];
-                        PropFine[species][ecoregion][i] = parameters.FracFine[ecoregion][species][i];
+                        FracFine[species][ecoregion][i] = parameters.FracFine[ecoregion][species][i];
                         FineTurnover[species][ecoregion][i] = parameters.FineTurnover[ecoregion][species][i];
                         CoarseTurnover[species][ecoregion][i] = parameters.CoarseTurnover[ecoregion][species][i];
                     }

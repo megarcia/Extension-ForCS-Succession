@@ -65,7 +65,7 @@ namespace Landis.Extension.Succession.ForC
         double FracDOMBranchSnagToFastAG { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBio { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get; }
-        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> PropFine { get; }
+        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FracFine { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineTurnover { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseTurnover { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get; }
