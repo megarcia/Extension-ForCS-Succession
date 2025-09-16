@@ -71,6 +71,6 @@ namespace Landis.Extension.Succession.ForC
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> MaxBiomassTimeCollection { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> ProbEstablishmentTimeCollection { get; }
-        Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> EstablishProbability { get; }
+        Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> ProbEstablishment { get; }
     }
 }

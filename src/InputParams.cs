@@ -83,7 +83,7 @@ namespace Landis.Extension.Succession.ForC
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FracFine;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FineTurnover;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_CoarseTurnover;
-        private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> m_dEstablishProbability;
+        private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> m_dProbEstablishment;
 
         /// <summary>
         /// Timestep (years)
@@ -342,7 +342,7 @@ namespace Landis.Extension.Succession.ForC
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get { return m_ANPPTimeCollection; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> MaxBiomassTimeCollection { get { return m_MaxBiomassTimeCollection; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> ProbEstablishmentTimeCollection { get { return m_ProbEstablishmentTimeCollection; } }
-        public Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> EstablishProbability { get { return m_dEstablishProbability; } }
+        public Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> ProbEstablishment { get { return m_dProbEstablishment; } }
 
         public Library.Parameters.Ecoregions.AuxParm<double> FieldCapacity
         {
@@ -693,9 +693,9 @@ namespace Landis.Extension.Succession.ForC
             this.m_MaxBiomassTimeCollection[ecoregion][species] = oCollection;
         }
 
-        public void SetEstablishProbability(IEcoregion ecoregion, ISpecies species, InputValue<double> dFrac)
+        public void SetProbEstablishment(IEcoregion ecoregion, ISpecies species, InputValue<double> dFrac)
         {
-            this.m_dEstablishProbability[species][ecoregion] = CheckBiomassParm(dFrac, 0.0, 1.0);
+            this.m_dProbEstablishment[species][ecoregion] = CheckBiomassParm(dFrac, 0.0, 1.0);
         }
 
         public InputParams()
@@ -760,7 +760,7 @@ namespace Landis.Extension.Succession.ForC
                     this.m_ProbEstablishmentTimeCollection[ecoregion][species] = new TimeCollection<IProbEstablishment>();
                 }
             }
-            this.m_dEstablishProbability = CreateSpeciesEcoregionParm<double>();
+            this.m_dProbEstablishment = CreateSpeciesEcoregionParm<double>();
        }
 
         private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<T>> CreateSpeciesEcoregionParm<T>()

@@ -21,7 +21,7 @@ namespace Landis.Extension.Succession.ForC
         public static Library.Parameters.Species.AuxParm<byte> FireTolerance;
         public static Library.Parameters.Species.AuxParm<byte> ShadeTolerance;
 
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> EstablishProbability;
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> ProbEstablishment;
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> ANPP_MAX_Spp;
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<int>> B_MAX_Spp;
 
@@ -89,7 +89,7 @@ namespace Landis.Extension.Succession.ForC
         {
             ANPP_MAX_Spp = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
             B_MAX_Spp = Util.CreateSpeciesEcoregionParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-            EstablishProbability = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
+            ProbEstablishment = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
             EstablishModifier = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
             // double MeanAnnualTemperature = 0.0;
             int usetime = PlugIn.ModelCore.CurrentTime;
@@ -161,7 +161,7 @@ namespace Landis.Extension.Succession.ForC
                         if (usetime >= 0)
                         {
                             if (m_iParams.ProbEstablishmentTimeCollection[ecoregion][species].TryGetValue(usetime + y, out probEstablishment))
-                                EstablishProbability[species][ecoregion] = (double)probEstablishment.Establishment;
+                                ProbEstablishment[species][ecoregion] = (double)probEstablishment.Establishment;
                         }
                     }
                 }

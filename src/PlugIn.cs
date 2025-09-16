@@ -307,19 +307,18 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Determines if a species can establish on a site.
-        /// This is a Delegate method to base succession.
+        /// Determines if a species can establish on a site according
+        /// to a random value threshold.
         /// </summary>
         public bool Establish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
-            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+            double establishProbability = SpeciesData.ProbEstablishment[species][ecoregion];
             return modelCore.GenerateUniform() < establishProbability;
         }
 
         /// <summary>
         /// Determines if there is a mature cohort at a site.  
-        /// This is a Delegate method to base succession.
         /// </summary>
         public bool MaturePresent(ISpecies species, ActiveSite site)
         {
