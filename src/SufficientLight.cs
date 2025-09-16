@@ -1,6 +1,15 @@
 // Authors: Caren Dymond, Sarah Beukema
 
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: ICohort --> Landis.Library.UniversalCohorts
+// NOTE: ICore --> Landis.Core
+// NOTE: IEcoregion --> Landis.Core
 // NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesCohorts --> Landis.Library.UniversalCohorts
+
+using System;
+using System.Collections.Generic;
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -16,7 +25,7 @@ namespace Landis.Extension.Succession.ForC
         private double probSufficientLight3;
         private double probSufficientLight4;
         private double probSufficientLight5;
-        
+
         public SufficientLight()
         {
         }
@@ -127,6 +136,83 @@ namespace Landis.Extension.Succession.ForC
                                                   "Value must be between 0 and 1");
                 probSufficientLight5 = value;
             }
+        }
+
+        /// <summary>
+        /// Determines if there is sufficient light at a site for a 
+        /// species to germinate/resprout. 
+        /// 
+        /// MG 20250916 description edited: the following does not 
+        /// appear valid here: 
+        /// 
+        /// Also accounts for SITE level N limitations.  N 
+        /// limits could not be accommodated in the Establishment Probability as 
+        /// that is an ecoregion x spp property. Therefore, would better be 
+        /// described as "SiteLevelDeterminantReproduction".
+        /// </summary>
+        public bool IsSufficientLight(ISpecies species,
+                                      ActiveSite site,
+                                      List<ISufficientLight> sufficientLight,
+                                      ICore modelCore)
+        {
+            byte siteShade = modelCore.GetSiteVar<byte>("Shade")[site];
+            double lightProbability = 0.0;
+            bool found = false;
+            foreach (ISufficientLight lights in sufficientLight)
+            {
+                if (lights.ShadeClass == SpeciesData.ShadeTolerance[species])
+                {
+                    if (siteShade == 0)
+                        lightProbability = lights.ProbSufficientLight0;
+                    if (siteShade == 1)
+                        lightProbability = lights.ProbSufficientLight1;
+                    if (siteShade == 2)
+                        lightProbability = lights.ProbSufficientLight2;
+                    if (siteShade == 3)
+                        lightProbability = lights.ProbSufficientLight3;
+                    if (siteShade == 4)
+                        lightProbability = lights.ProbSufficientLight4;
+                    if (siteShade == 5)
+                        lightProbability = lights.ProbSufficientLight5;
+                    found = true;
+                }
+            }
+            if (!found)
+                modelCore.UI.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
+            return modelCore.GenerateUniform() < lightProbability;
+        }
+
+        /// <summary>
+        /// Calculate shade class at a site  
+        /// </summary>
+        public override byte CalcShadeClass(ActiveSite site,
+                                            ICore modelCore)
+        {
+            IEcoregion ecoregion = modelCore.Ecoregion[site];
+            double B_MAX = EcoregionData.B_MAX[ecoregion];
+            double B_ACT = 0.0;
+            if (SiteVars.Cohorts[site] != null)
+            {
+                foreach (ISpeciesCohorts sppCohorts in SiteVars.Cohorts[site])
+                    foreach (ICohort cohort in sppCohorts)
+                        if (cohort.Data.Age > 5)
+                            B_ACT += cohort.Data.Biomass;
+            }
+            int lastMortality = SiteVars.PreviousYearMortality[site];
+            B_ACT = Math.Min(EcoregionData.B_MAX[ecoregion] - lastMortality, B_ACT);
+            // Relative living biomass (ratio of actual to maximum site biomass).
+            double B_AM = B_ACT / B_MAX;
+            for (byte shadeClass = 5; shadeClass >= 1; shadeClass--)
+            {
+                if (EcoregionData.ShadeBiomass[shadeClass][ecoregion] <= 0)
+                {
+                    string mesg = string.Format("Minimum relative biomass has not been defined for ecoregion {0}", ecoregion.Name);
+                    throw new ApplicationException(mesg);
+                }
+                if (B_AM >= EcoregionData.ShadeBiomass[shadeClass][ecoregion])
+                    return shadeClass;
+            }
+            return 0;
         }
     }
 }

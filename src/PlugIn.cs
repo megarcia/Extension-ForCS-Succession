@@ -248,69 +248,36 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Determines if there is sufficient light at a site for a species to
-        /// germinate/resprout. Also accounts for SITE level N limitations.  N 
+        /// Determines if there is sufficient light at a site for a 
+        /// species to germinate/resprout. 
+        /// 
+        /// MG 20250916 moved bulk of method to SufficientLight class.  
+        /// 
+        /// MG 20250916 description edited: the following does not appear 
+        /// valid here: 
+        /// 
+        /// Also accounts for SITE level N limitations.  N 
         /// limits could not be accommodated in the Establishment Probability as 
         /// that is an ecoregion x spp property. Therefore, would better be 
         /// described as "SiteLevelDeterminantReproduction".
+        /// 
         /// </summary>
         public bool IsSufficientLight(ISpecies species,
                                       ActiveSite site)
         {
-            byte siteShade = ModelCore.GetSiteVar<byte>("Shade")[site];            
-            double lightProbability = 0.0;
-            bool found = false;
-            foreach(ISufficientLight lights in sufficientLight)
-            {
-                if (lights.ShadeClass == SpeciesData.ShadeTolerance[species])
-                {
-                    if (siteShade == 0)
-                        lightProbability = lights.ProbSufficientLight0;
-                    if (siteShade == 1)
-                        lightProbability = lights.ProbSufficientLight1;
-                    if (siteShade == 2)
-                        lightProbability = lights.ProbSufficientLight2;
-                    if (siteShade == 3)
-                        lightProbability = lights.ProbSufficientLight3;
-                    if (siteShade == 4)
-                        lightProbability = lights.ProbSufficientLight4;
-                    if (siteShade == 5)
-                        lightProbability = lights.ProbSufficientLight5;
-                    found = true;
-                }
-            }
-            if(!found)
-                ModelCore.UI.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
-            return ModelCore.GenerateUniform() < lightProbability;
+            bool isSufficientLight = SufficientLight.IsSufficientLight(species, site, sufficientLight, modelCore);
+            return isSufficientLight;
         }
 
-        public override byte CalcShade(ActiveSite site)
+        /// <summary>
+        /// Calculate shade class at a site  
+        /// 
+        /// MG 20250916 moved bulk of method to SufficientLight class.  
+        /// </summary>
+        public override byte CalcShadeClass(ActiveSite site)
         {
-            IEcoregion ecoregion = ModelCore.Ecoregion[site];
-            double B_MAX = (double) EcoregionData.B_MAX[ecoregion];
-            double B_ACT = 0.0;
-            if (SiteVars.Cohorts[site] != null)
-            {
-                foreach (ISpeciesCohorts sppCohorts in SiteVars.Cohorts[site])
-                    foreach (ICohort cohort in sppCohorts)
-                        if (cohort.Data.Age > 5)
-                            B_ACT += cohort.Data.Biomass;
-            }
-            int lastMortality = SiteVars.PreviousYearMortality[site];
-            B_ACT = Math.Min(EcoregionData.B_MAX[ecoregion] - lastMortality, B_ACT);
-            // Relative living biomass (ratio of actual to maximum site biomass).
-            double B_AM = B_ACT / B_MAX;
-            for (byte shade = 5; shade >= 1; shade--) 
-            {
-                if(EcoregionData.ShadeBiomass[shade][ecoregion] <= 0)
-                {
-                    string mesg = string.Format("Minimum relative biomass has not been defined for ecoregion {0}", ecoregion.Name);
-                    throw new ApplicationException(mesg);
-                }
-                if (B_AM >= EcoregionData.ShadeBiomass[shade][ecoregion])
-                    return shade;
-            }
-            return 0;
+            byte shadeClass = SufficientLight.CalcShadeClass(site, modelCore);
+            return shadeClass;
         }
 
         /// <summary>
