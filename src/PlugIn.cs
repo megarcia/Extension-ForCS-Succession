@@ -134,7 +134,8 @@ namespace Landis.Extension.Succession.ForC
             SiteVars.soils[site].BiomassOutput(site, 1);
         }
 
-        public void CohortMortality(object sender, MortalityEventArgs eventArgs)
+        public void CohortMortality(object sender,
+                                    MortalityEventArgs eventArgs)
         {
             ExtensionType disturbanceType = eventArgs.DisturbanceType;
             ActiveSite site = eventArgs.Site;
@@ -150,7 +151,7 @@ namespace Landis.Extension.Succession.ForC
                     SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, wood, foliar, 0);
                     SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRoot, Roots.FineRoot, 1);
                     if (site.DataIndex == 1)
-                        ModelCore.UI.WriteLine("{0} Roots from dying cohort {1}", PlugIn.ModelCore.CurrentTime, Roots.FineRoot);
+                        ModelCore.UI.WriteLine("{0} Roots from dying cohort {1}", ModelCore.CurrentTime, Roots.FineRoot);
                 }
                 if (disturbanceType != null)
                 {
@@ -179,7 +180,10 @@ namespace Landis.Extension.Succession.ForC
         /// added to site until after growth phase.
         /// This is a Delegate method to base succession.
         /// </summary>
-        public void AddNewCohort(ISpecies species, ActiveSite site, string reproductionType, double fracBiomass = 1.0)
+        public void AddNewCohort(ISpecies species,
+                                 ActiveSite site,
+                                 string reproductionType,
+                                 double fracBiomass = 1.0)
         {
             int newBiomass = CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site);
             // Cohorts will be officially added after growth phase
@@ -250,7 +254,8 @@ namespace Landis.Extension.Succession.ForC
         /// that is an ecoregion x spp property. Therefore, would better be 
         /// described as "SiteLevelDeterminantReproduction".
         /// </summary>
-        public bool IsSufficientLight(ISpecies species, ActiveSite site)
+        public bool IsSufficientLight(ISpecies species,
+                                      ActiveSite site)
         {
             byte siteShade = ModelCore.GetSiteVar<byte>("Shade")[site];            
             double lightProbability = 0.0;
@@ -312,7 +317,8 @@ namespace Landis.Extension.Succession.ForC
         /// Determines if a species can establish on a site according
         /// to a random value threshold.
         /// </summary>
-        public bool CanEstablish(ISpecies species, ActiveSite site)
+        public bool CanEstablish(ISpecies species,
+                                 ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
             double establishProbability = SpeciesData.ProbEstablishment[species][ecoregion];
@@ -322,12 +328,15 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Determines if there is a mature cohort at a site.  
         /// </summary>
-        public bool IsMaturePresent(ISpecies species, ActiveSite site)
+        public bool IsMaturePresent(ISpecies species,
+                                    ActiveSite site)
         {
             return SiteVars.Cohorts[site].IsMaturePresent(species);
         }
 
-        public override void InitializeSites(string initialCommunitiesText, string initialCommunitiesMap, ICore modelCore)
+        public override void InitializeSites(string initialCommunitiesText,
+                                             string initialCommunitiesMap,
+                                             ICore modelCore)
         {
             ModelCore.UI.WriteLine("   Loading initial communities from file \"{0}\" ...", initialCommunitiesText);
             DatasetParser parser = new DatasetParser(Timestep, ModelCore.Species, additionalCohortParameters, initialCommunitiesText);
