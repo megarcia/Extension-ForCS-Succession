@@ -46,7 +46,7 @@ namespace Landis.Extension.Succession.ForC
         private int m_nSpinUpIterations;
         private string m_sForCSFunctionalGroupFilePath;
         private Library.Parameters.Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
-        private List<ISufficientLight> sufficientLight;
+        private List<ILight> sufficientLight;
         private Library.Parameters.Species.AuxParm<int> sppFunctionalType;
         private Library.Parameters.Species.AuxParm<double> leafLongevity;
         private Library.Parameters.Species.AuxParm<bool> epicormic;
@@ -294,7 +294,7 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Definitions of sufficient light probabilities.
         /// </summary>
-        public List<ISufficientLight> LightClassProbabilities
+        public List<ILight> LightClassProbabilities
         {
             get
             {
@@ -703,7 +703,7 @@ namespace Landis.Extension.Succession.ForC
             minRelativeBiomass = new Library.Parameters.Ecoregions.AuxParm<Percentage>[6];
             for (byte shadeClass = 1; shadeClass <= 5; shadeClass++)
                 minRelativeBiomass[shadeClass] = new Library.Parameters.Ecoregions.AuxParm<Percentage>(PlugIn.ModelCore.Ecoregions);
-            sufficientLight = new List<ISufficientLight>();
+            sufficientLight = new List<ILight>();
             sppFunctionalType = new Library.Parameters.Species.AuxParm<int>(PlugIn.ModelCore.Species);
             leafLongevity = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             epicormic = new Library.Parameters.Species.AuxParm<bool>(PlugIn.ModelCore.Species);

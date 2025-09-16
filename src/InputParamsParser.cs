@@ -217,7 +217,7 @@ namespace Landis.Extension.Succession.ForC
             while (! AtEndOfInput && CurrentName != Names.SpeciesParameters
                                   && previousNumber != 6) {
                 currentLine = new StringReader(CurrentLine);
-                ISufficientLight suffLight = new SufficientLight();                
+                ILight suffLight = new Light();                
                 parameters.LightClassProbabilities.Add(suffLight);
                 ReadValue(sc, currentLine);
                 suffLight.ShadeClass = sc.Value;

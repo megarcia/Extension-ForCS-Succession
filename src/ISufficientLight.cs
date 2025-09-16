@@ -1,6 +1,6 @@
 namespace Landis.Extension.Succession.ForC
 {
-    public interface ISufficientLight
+    public interface ILight
     {  
         byte ShadeClass { get; set; }
         double ProbSufficientLight0 { get; set; }

@@ -40,7 +40,7 @@ namespace Landis.Extension.Succession.ForC
         double SpinUpTolerance { get; }
         int SpinUpIterations { get; }
         Library.Parameters.Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass { get; }
-        List<ISufficientLight> LightClassProbabilities { get; }
+        List<ILight> LightClassProbabilities { get; }
         Library.Parameters.Species.AuxParm<int> SppFunctionalType { get; }
         Library.Parameters.Species.AuxParm<double> LeafLongevity { get; }
         Library.Parameters.Species.AuxParm<bool> Epicormic { get; }

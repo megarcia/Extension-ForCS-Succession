@@ -16,7 +16,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// Definition of the probability of germination under different light levels for 5 shade classes.
     /// </summary>
-    public class SufficientLight : ISufficientLight
+    public class Light : ILight
     {
         private byte shadeClass;
         private double probSufficientLight0;
@@ -152,13 +152,13 @@ namespace Landis.Extension.Succession.ForC
         /// </summary>
         public bool IsSufficientLight(ISpecies species,
                                       ActiveSite site,
-                                      List<ISufficientLight> sufficientLight,
+                                      List<ILight> sufficientLight,
                                       ICore modelCore)
         {
             byte siteShade = modelCore.GetSiteVar<byte>("Shade")[site];
             double lightProbability = 0.0;
             bool found = false;
-            foreach (ISufficientLight lights in sufficientLight)
+            foreach (ILight lights in sufficientLight)
             {
                 if (lights.ShadeClass == SpeciesData.ShadeTolerance[species])
                 {

@@ -35,7 +35,7 @@ namespace Landis.Extension.Succession.ForC
         public static int MaxLife;
         private ICommunity initialCommunity;
         private static List<SiteCohortToAdd> siteCohortsToAdd;
-        private List<ISufficientLight> sufficientLight;
+        private List<ILight> sufficientLight;
 
         public PlugIn() : base(ExtensionName)
         {
@@ -251,7 +251,7 @@ namespace Landis.Extension.Succession.ForC
         /// Determines if there is sufficient light at a site for a 
         /// species to germinate/resprout. 
         /// 
-        /// MG 20250916 moved bulk of method to SufficientLight class.  
+        /// MG 20250916 moved bulk of method to Light class.  
         /// 
         /// MG 20250916 description edited: the following does not appear 
         /// valid here: 
@@ -265,18 +265,18 @@ namespace Landis.Extension.Succession.ForC
         public bool IsSufficientLight(ISpecies species,
                                       ActiveSite site)
         {
-            bool isSufficientLight = SufficientLight.IsSufficientLight(species, site, sufficientLight, modelCore);
+            bool isSufficientLight = Light.IsSufficientLight(species, site, sufficientLight, modelCore);
             return isSufficientLight;
         }
 
         /// <summary>
         /// Calculate shade class at a site  
         /// 
-        /// MG 20250916 moved bulk of method to SufficientLight class.  
+        /// MG 20250916 moved bulk of method to Light class.  
         /// </summary>
         public override byte CalcShadeClass(ActiveSite site)
         {
-            byte shadeClass = SufficientLight.CalcShadeClass(site, modelCore);
+            byte shadeClass = Light.CalcShadeClass(site, modelCore);
             return shadeClass;
         }
 
