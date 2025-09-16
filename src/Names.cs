@@ -33,7 +33,6 @@ namespace Landis.Extension.Succession.ForC
         public const string initSnagFile = "SnagFile";
         public const string SnagData = "SnagData";
         public const string DMFile = "DisturbanceMatrixFile";
-        public const string SnagData = "SnagData";
         public const string DisturbTypeFire = "Fire";
         public const string DisturbTypeHarvest = "Harvest";
     }
