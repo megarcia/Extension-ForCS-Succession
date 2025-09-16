@@ -159,7 +159,6 @@ namespace Landis.Extension.Succession.ForC
                         Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
                     else
                         Reproduction.CheckForResprouting(eventArgs.Cohort, site);
-
                     SiteVars.soils[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, wood, foliar, disturbanceType.Name, 0);
                 }
             }
