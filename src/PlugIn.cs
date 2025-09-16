@@ -1,4 +1,20 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: base --> Landis.Library.Succession
+// NOTE: Cohort --> Landis.Library.UniversalCohorts
+// NOTE: DatasetParser --> Landis.Core
+// NOTE: Disturbed --> Landis.Library.Succession
+// NOTE: ExtensionType --> Landis.Core
+// NOTE: ICohort --> Landis.Library.UniversalCohorts
+// NOTE: ICommunity --> Landis.Library.InitialCommunities.Universal
+// NOTE: ICore --> Landis.Core
+// NOTE: IDataset --> Landis.Library.InitialCommunities.Universal
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: IInputRaster --> Landis.Library.Spatial
+// NOTE: ISpecies --> Landis.Core
+// NOTE: Reproduction --> Landis.Library.Succession
+// NOTE: UIntPixel --> Landis.Library.Spatial
 
 using System;
 using System.Collections.Generic;
@@ -61,20 +77,20 @@ namespace Landis.Extension.Succession.ForC
         {
             Timestep = inputParams.Timestep;
             sufficientLight = inputParams.LightClassProbabilities;
-            //  Initialize climate.  A list of ecoregion indices is passed so that
-            //  the climate library can operate independently of the LANDIS-II core.
+            // Initialize climate.  A list of ecoregion indices is passed so that
+            // the climate library can operate independently of the LANDIS-II core.
             List<int> ecoregionIndices = new List<int>();
             foreach(IEcoregion ecoregion in ModelCore.Ecoregions)
                 ecoregionIndices.Add(ecoregion.Index);
-            // Climate.Initialize(inputParams.ClimateFile, false, modelCore);     //LANDIS CLIMATE LIBRARY
+            // Climate.Initialize(inputParams.ClimateFile, false, modelCore);     // LANDIS CLIMATE LIBRARY
             EcoregionData.Initialize(inputParams, inputClimateParams);
             SpeciesData.Initialize(inputParams);
             CalibrateMode = inputParams.CalibrateMode;
             CohortBiomass.SpinupMortalityFraction = inputParams.SpinupMortalityFraction;
             Snags.Initialize(inputSnagParams);
-            //  Cohorts must be created before the base class is initialized
-            //  because the base class' reproduction module uses the core's
-            //  SuccessionCohorts property in its Initialization method.
+            // Cohorts must be created before the base class is initialized
+            // because the base class' reproduction module uses the core's
+            // SuccessionCohorts property in its Initialization method.
             Library.UniversalCohorts.Cohorts.Initialize(Timestep, new CohortBiomass());
             Reproduction.SufficientResources = SufficientLight;
             Reproduction.Establish = Establish;
@@ -91,10 +107,10 @@ namespace Landis.Extension.Succession.ForC
             if (ModelCore.CurrentTime > 0 && SiteVars.CapacityReduction == null)
                 SiteVars.CapacityReduction = ModelCore.GetSiteVar<double>("Harvest.CapacityReduction");
             SiteVars.FireSeverity = ModelCore.GetSiteVar<byte>("Fire.Severity");
-            EcoregionData.GetAnnualTemperature(Timestep, 0);                            //ForCS CLIMATE
+            EcoregionData.GetAnnualTemperature(Timestep, 0);                            // ForCS CLIMATE
             SpeciesData.GenerateNewANPPandMaxBiomass(Timestep, 0);
             base.RunReproductionFirst();
-            //write the maps, if the timestep is right
+            // write the maps, if the timestep is right
             if (inputParams.OutputMap > 0)   // 0 = don't print
             {  
                 if (ModelCore.CurrentTime % inputParams.OutputMap == 0)
@@ -160,7 +176,8 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Add a new cohort to a site. Cohort will not be officially added to site until after growth phase
+        /// Add a new cohort to a site. Cohort will not be officially 
+        /// added to site until after growth phase.
         /// This is a Delegate method to base succession.
         /// </summary>
         public void AddNewCohort(ISpecies species, ActiveSite site, string reproductionType, double fracBiomass = 1.0)
@@ -202,10 +219,10 @@ namespace Landis.Extension.Succession.ForC
                 }
                 */
                 preGrowthBiomass = SiteVars.TotalBiomass[site];
-                SiteVars.Cohorts[site].Grow(site, (y == years && isSuccessionTimestep), true);
+                SiteVars.Cohorts[site].Grow(site, y == years && isSuccessionTimestep, true);
                 AddNewCohortsPostGrowth(site);
                 SiteVars.soils[site].BiomassOutput(site, 0);
-                //update total biomass, before sending this to the soil routines.
+                // update total biomass, before sending this to the soil routines.
                 SiteVars.TotalBiomass[site] = Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
                 SiteVars.soils[site].ProcessSoils(site, SiteVars.TotalBiomass[site], preGrowthBiomass, 0);
             }

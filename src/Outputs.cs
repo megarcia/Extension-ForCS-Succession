@@ -1,4 +1,7 @@
-//  Authors:  Caren Dymond, Sarah Beukema (based on code from Robert Scheller)
+// Authors: Caren Dymond, Sarah Beukema (based on code from Robert Scheller)
+
+// NOTE: IOutputRaster --> Landis.Library.Spatial
+// NOTE: IntPixel --> Landis.Library.Spatial
 
 namespace Landis.Extension.Succession.ForC
 {

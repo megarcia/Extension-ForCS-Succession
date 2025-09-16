@@ -1,4 +1,6 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: OutputPath --> Landis.Utilities
 
 using System.Collections.Generic;
 
