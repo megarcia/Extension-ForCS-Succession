@@ -1,7 +1,13 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: ICohort --> Landis.Library.UniversalCohorts
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesCohorts --> Landis.Library.UniversalCohorts
 
 using System;
-using System.Diagnostics
+using System.Diagnostics;
 using System.IO;
 
 namespace Landis.Extension.Succession.ForC
@@ -411,7 +417,7 @@ namespace Landis.Extension.Succession.ForC
             double woodC_mort = mortality_wood * Constants.BIOTOC;
             if (PlugIn.ModelCore.CurrentTime == 0)
                 idxAge = age;               // set to the age in spin-up years (works as it did before)
-            double FracStem;
+            double FracStem = 0.0;
             if (mortality_wood > 0)
                 FracStem = DeadStemToSnagRates(species, age, woodC_mort);
             if (AboveBelow == 0)        // aboveground wood
@@ -863,11 +869,9 @@ namespace Landis.Extension.Succession.ForC
         private void SoilOutput(ActiveSite site, ISpecies species, int Year0)
         {
             int i;
-            bool bPrintDOM;
-            bool bPrintFlux;
             //set up the printing flags
-            bPrintDOM = false; 
-            bPrintFlux = false;
+            bool bPrintDOM = false; 
+            bool bPrintFlux = false;
             if ((PlugIn.ModelCore.CurrentTime % SoilVars.iParams.OutputDOMPools == 0) || PlugIn.ModelCore.CurrentTime == 1 || Year0 == 1)
                 bPrintDOM = true;
             if ((PlugIn.ModelCore.CurrentTime % SoilVars.iParams.OutputFlux == 0) || PlugIn.ModelCore.CurrentTime == 1)
@@ -915,9 +919,9 @@ namespace Landis.Extension.Succession.ForC
                         {
                             logFlux.Write("{0:0.000},", carbonToAir[i]);
                             logFlux.Write("{0:0.000},", carbonToSlowPool[i]);
-                            if (i == 7)     //SSTEMSNAG 
+                            if (i == 7)     // SSTEMSNAG 
                                 logFlux.Write("{0:0.000},", snagToMedium);
-                            else if (i == 8)    //SSTEMBRANCH 
+                            else if (i == 8)    // SSTEMBRANCH 
                                 logFlux.Write("{0:0.000},", branchSnagToFastPool);
                         }
                     }

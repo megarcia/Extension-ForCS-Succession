@@ -1,4 +1,4 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
 
 // NOTE: InputValueException --> Landis.Utilities.InputValueException
 

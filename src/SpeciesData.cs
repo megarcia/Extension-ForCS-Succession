@@ -1,4 +1,7 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
 
 using System.IO;
 
