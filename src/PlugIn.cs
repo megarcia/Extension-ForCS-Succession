@@ -89,13 +89,13 @@ namespace Landis.Extension.Succession.ForC
             CohortBiomass.SpinupMortalityFraction = inputParams.SpinupMortalityFraction;
             Snags.Initialize(inputSnagParams);
             // Cohorts must be created before the base class is initialized
-            // because the base class' reproduction module uses the core's
+            // because the base class's reproduction module uses the core's
             // SuccessionCohorts property in its Initialization method.
             Library.UniversalCohorts.Cohorts.Initialize(Timestep, new CohortBiomass());
-            Reproduction.SufficientResources = SufficientLight;
+            Reproduction.SufficientResources = IsSufficientLight;
             Reproduction.Establish = Establish;
             Reproduction.AddNewCohort = AddNewCohort;
-            Reproduction.MaturePresent = MaturePresent;
+            Reproduction.MaturePresent = IsMaturePresent;
             base.Initialize(modelCore, inputParams.SeedAlgorithm); 
             InitialBiomass.Initialize(Timestep);
             Cohort.MortalityEvent += CohortMortality;
@@ -197,7 +197,9 @@ namespace Landis.Extension.Succession.ForC
         /// Grows all cohorts at a site for a specified number of years.  The
         /// dead pools at the site also decompose for the given time period.
         /// </summary>
-        public static void GrowCohorts(ActiveSite site, int years, bool isSuccessionTimestep)
+        public static void GrowCohorts(ActiveSite site,
+                                       int years,
+                                       bool isSuccessionTimestep)
         {
             IEcoregion ecoregion = ModelCore.Ecoregion[site];
             double preGrowthBiomass = 0;
@@ -248,7 +250,7 @@ namespace Landis.Extension.Succession.ForC
         /// that is an ecoregion x spp property. Therefore, would better be 
         /// described as "SiteLevelDeterminantReproduction".
         /// </summary>
-        public bool SufficientLight(ISpecies species, ActiveSite site)
+        public bool IsSufficientLight(ISpecies species, ActiveSite site)
         {
             byte siteShade = ModelCore.GetSiteVar<byte>("Shade")[site];            
             double lightProbability = 0.0;
@@ -320,7 +322,7 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Determines if there is a mature cohort at a site.  
         /// </summary>
-        public bool MaturePresent(ISpecies species, ActiveSite site)
+        public bool IsMaturePresent(ISpecies species, ActiveSite site)
         {
             return SiteVars.Cohorts[site].IsMaturePresent(species);
         }
