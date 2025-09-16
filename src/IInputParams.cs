@@ -50,7 +50,7 @@ namespace Landis.Extension.Succession.ForC
         Library.Parameters.Species.AuxParm<int> MerchStemsMinAge { get; }
         Library.Parameters.Species.AuxParm<double> MerchCurveParmA { get; }
         Library.Parameters.Species.AuxParm<double> MerchCurveParmB { get; }
-        Library.Parameters.Species.AuxParm<double> PropNonMerch { get; }
+        Library.Parameters.Species.AuxParm<double> FracNonMerch { get; }
         Library.Parameters.Species.AuxParm<double> GrowthCurveShapeParm { get; }
         Library.Parameters.Ecoregions.AuxParm<double> FieldCapacity { get; }
         Library.Parameters.Ecoregions.AuxParm<double> Latitude { get; }

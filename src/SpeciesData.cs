@@ -13,7 +13,7 @@ namespace Landis.Extension.Succession.ForC
         public static Library.Parameters.Species.AuxParm<int> MerchStemsMinAge;
         public static Library.Parameters.Species.AuxParm<double> MerchCurveParmA;
         public static Library.Parameters.Species.AuxParm<double> MerchCurveParmB;
-        public static Library.Parameters.Species.AuxParm<double> PropNonMerch;
+        public static Library.Parameters.Species.AuxParm<double> FracNonMerch;
         public static Library.Parameters.Species.AuxParm<double> GrowthCurveShapeParm;
         public static Library.Parameters.Species.AuxParm<byte> FireTolerance;
         public static Library.Parameters.Species.AuxParm<byte> ShadeTolerance;

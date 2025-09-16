@@ -323,7 +323,7 @@ namespace Landis.Extension.Succession.ForC
         public Library.Parameters.Species.AuxParm<int> MerchStemsMinAge { get { return m_anMerchStemsMinAge; } }
         public Library.Parameters.Species.AuxParm<double> MerchCurveParmA { get { return m_adMerchCurveParmA; } }
         public Library.Parameters.Species.AuxParm<double> MerchCurveParmB { get { return m_adMerchCurveParmB; } }
-        public Library.Parameters.Species.AuxParm<double> PropNonMerch { get { return m_adFracNonMerch; } }
+        public Library.Parameters.Species.AuxParm<double> FracNonMerch { get { return m_adFracNonMerch; } }
         public Library.Parameters.Species.AuxParm<double> GrowthCurveShapeParm { get { return growthCurveShape; } }
         public IDictionary<int, IDOMPool> DOMPools { get { return m_dictDOMPools; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> DOMDecayRates { get { return m_aDOMDecayRates; } }
@@ -492,7 +492,7 @@ namespace Landis.Extension.Succession.ForC
             m_adMerchCurveParmB[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
-        public void SetPropNonMerch(ISpecies species, InputValue<double> newValue)
+        public void SetFracNonMerch(ISpecies species, InputValue<double> newValue)
         {
             m_adFracNonMerch[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
         }

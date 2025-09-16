@@ -279,7 +279,7 @@ namespace Landis.Extension.Succession.ForC
                 ReadValue(dMerchCurveParmB, currentLine);
                 parameters.SetMerchCurveParmB(species, dMerchCurveParmB.Value);
                 ReadValue(dFracNonMerch, currentLine);
-                parameters.SetPropNonMerch(species, dFracNonMerch.Value);
+                parameters.SetFracNonMerch(species, dFracNonMerch.Value);
                 ReadValue(growthCurveShapeParm, currentLine);
                 parameters.SetGrowthCurveShape(species, growthCurveShapeParm.Value);
                 ReadValue(shadeTolerance, currentLine);
