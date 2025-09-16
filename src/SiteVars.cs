@@ -1,5 +1,10 @@
-//  Copyright 2005-2010 Portland State University, University of Wisconsin
-//  Authors:  Robert M. Scheller, James B. Domingo
+// Authors: Robert M. Scheller, James B. Domingo
+
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: ISiteVar --> Landis.Library.Spatial
+// NOTE: Pool --> Landis.Library.UniversalCohorts
+// NOTE: Process --> ???
+// NOTE: SiteCohorts --> Landis.Library.UniversalCohorts
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -26,7 +31,7 @@ namespace Landis.Extension.Succession.ForC
         public static ISiteVar<byte> fireSeverity;
         public static ISiteVar<string> HarvestPrescriptionName;
 
-        public static ISiteVar<Soils> soils;    
+        public static ISiteVar<Soils> soils;
         public static ISiteVar<double> capacityReduction;
 
         // Site-level values for printing maps
@@ -43,7 +48,7 @@ namespace Landis.Extension.Succession.ForC
         public static void Initialize(IInputParams iParams, IInputDisturbanceMatrixParams iDMParams)
         {
             System.Diagnostics.Debug.Assert(iParams != null);
-            universalCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<SiteCohorts>();        
+            universalCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<SiteCohorts>();
             timeOfLast = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             previousYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             currentYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();

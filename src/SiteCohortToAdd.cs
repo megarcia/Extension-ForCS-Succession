@@ -1,4 +1,7 @@
-﻿//  Authors:  Caren Dymond, Sarah Beukema
+﻿// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: ISpecies --> Landis.Core
 
 namespace Landis.Extension.Succession.ForC
 {

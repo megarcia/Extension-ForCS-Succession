@@ -1,4 +1,8 @@
-using System.Diagnostics
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
+
+using System;
+using System.Diagnostics;
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -63,7 +67,7 @@ namespace Landis.Extension.Succession.ForC
         public float CalcDecayFPrecip(double precipitation)
         {
             // Currently, precipitation does not influence the decay rates.
-            double decayFPrecip = 1.0;
+            float decayFPrecip = 1F;
             return decayFPrecip;
         }
     }

@@ -1,4 +1,8 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -28,15 +32,15 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Kills fine roots and add the biomass directly to the SOC pool.
         /// </summary>
-        public static void AddFineRootLitter(double abovegroundFoliarBiomass, 
+        public static void AddFineRootLitter(double abovegroundFoliarBiomass,
                                              ISpecies species,
                                              ActiveSite site)
         {
-            double fineRootBiomass = CalcFineRoot(abovegroundFoliarBiomass); 
+            double fineRootBiomass = CalcFineRoot(abovegroundFoliarBiomass);
             if (fineRootBiomass > 0)
                 SiteVars.SoilOrganicMatterC[site] += fineRootBiomass * 0.47;  // = convert to g C / m2
         }
-        
+
         /// <summary>
         /// Calculate coarse and fine roots based on total aboveground biomass.
         /// Niklas & Enquist 2002: 25% of total stocks
@@ -95,6 +99,6 @@ namespace Landis.Extension.Succession.ForC
             }
             CoarseRootTurnover = CoarseRoot * SpeciesData.CoarseTurnover[species][ecoregion][i];
             FineRootTurnover = FineRoot * SpeciesData.FineTurnover[species][ecoregion][i];
-        }   
+        }
     }
 }
