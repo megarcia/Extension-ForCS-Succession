@@ -229,17 +229,17 @@ namespace Landis.Extension.Succession.ForC
                                                   previousNumber + 1);
                 previousNumber = (int) sc.Value.Actual;
                 ReadValue(pl0, currentLine);
-                suffLight.ProbabilityLight0 = pl0.Value;
+                suffLight.ProbSufficientLight0 = pl0.Value;
                 ReadValue(pl1, currentLine);
-                suffLight.ProbabilityLight1 = pl1.Value;
+                suffLight.ProbSufficientLight1 = pl1.Value;
                 ReadValue(pl2, currentLine);
-                suffLight.ProbabilityLight2 = pl2.Value;
+                suffLight.ProbSufficientLight2 = pl2.Value;
                 ReadValue(pl3, currentLine);
-                suffLight.ProbabilityLight3 = pl3.Value;
+                suffLight.ProbSufficientLight3 = pl3.Value;
                 ReadValue(pl4, currentLine);
-                suffLight.ProbabilityLight4 = pl4.Value;
+                suffLight.ProbSufficientLight4 = pl4.Value;
                 ReadValue(pl5, currentLine);
-                suffLight.ProbabilityLight5 = pl5.Value;
+                suffLight.ProbSufficientLight5 = pl5.Value;
                 CheckNoDataAfter("the " + pl5.Name + " column",
                                  currentLine);
                 GetNextLine();

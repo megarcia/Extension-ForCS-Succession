@@ -265,17 +265,17 @@ namespace Landis.Extension.Succession.ForC
                 if (lights.ShadeClass == SpeciesData.ShadeTolerance[species])
                 {
                     if (siteShade == 0)
-                        lightProbability = lights.ProbabilityLight0;
+                        lightProbability = lights.ProbSufficientLight0;
                     if (siteShade == 1)
-                        lightProbability = lights.ProbabilityLight1;
+                        lightProbability = lights.ProbSufficientLight1;
                     if (siteShade == 2)
-                        lightProbability = lights.ProbabilityLight2;
+                        lightProbability = lights.ProbSufficientLight2;
                     if (siteShade == 3)
-                        lightProbability = lights.ProbabilityLight3;
+                        lightProbability = lights.ProbSufficientLight3;
                     if (siteShade == 4)
-                        lightProbability = lights.ProbabilityLight4;
+                        lightProbability = lights.ProbSufficientLight4;
                     if (siteShade == 5)
-                        lightProbability = lights.ProbabilityLight5;
+                        lightProbability = lights.ProbSufficientLight5;
                     found = true;
                 }
             }

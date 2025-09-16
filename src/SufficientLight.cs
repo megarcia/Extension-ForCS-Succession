@@ -10,12 +10,12 @@ namespace Landis.Extension.Succession.ForC
     public class SufficientLight : ISufficientLight
     {
         private byte shadeClass;
-        private double probabilityLight0;
-        private double probabilityLight1;
-        private double probabilityLight2;
-        private double probabilityLight3;
-        private double probabilityLight4;
-        private double probabilityLight5;
+        private double probSufficientLight0;
+        private double probSufficientLight1;
+        private double probSufficientLight2;
+        private double probSufficientLight3;
+        private double probSufficientLight4;
+        private double probSufficientLight5;
         
         public SufficientLight()
         {
@@ -39,93 +39,93 @@ namespace Landis.Extension.Succession.ForC
             }
         }
 
-        public double ProbabilityLight0
+        public double ProbSufficientLight0
         {
             get
             {
-                return probabilityLight0;
+                return probSufficientLight0;
             }
             set
             {
                 if (value < 0.0 || value > 1.0)
                     throw new InputValueException(value.ToString(),
                                                   "Value must be between 0 and 1");
-                probabilityLight0 = value;
+                probSufficientLight0 = value;
             }
         }
 
-        public double ProbabilityLight1
+        public double ProbSufficientLight1
         {
             get
             {
-                return probabilityLight1;
+                return probSufficientLight1;
             }
             set
             {
                 if (value < 0.0 || value > 1.0)
                     throw new InputValueException(value.ToString(),
                                                   "Value must be between 0 and 1");
-                probabilityLight1 = value;
+                probSufficientLight1 = value;
             }
         }
 
-        public double ProbabilityLight2
+        public double ProbSufficientLight2
         {
             get
             {
-                return probabilityLight2;
+                return probSufficientLight2;
             }
             set
             {
                 if (value < 0.0 || value > 1.0)
                     throw new InputValueException(value.ToString(),
                                                   "Value must be between 0 and 1");
-                probabilityLight2 = value;
+                probSufficientLight2 = value;
             }
         }
 
-        public double ProbabilityLight3
+        public double ProbSufficientLight3
         {
             get
             {
-                return probabilityLight3;
+                return probSufficientLight3;
             }
             set
             {
                 if (value < 0.0 || value > 1.0)
                     throw new InputValueException(value.ToString(),
                                                   "Value must be between 0 and 1");
-                probabilityLight3 = value;
+                probSufficientLight3 = value;
             }
         }
 
-        public double ProbabilityLight4
+        public double ProbSufficientLight4
         {
             get
             {
-                return probabilityLight4;
+                return probSufficientLight4;
             }
             set
             {
                 if (value < 0.0 || value > 1.0)
                     throw new InputValueException(value.ToString(),
                                                   "Value must be between 0 and 1");
-                probabilityLight4 = value;
+                probSufficientLight4 = value;
             }
         }
 
-        public double ProbabilityLight5
+        public double ProbSufficientLight5
         {
             get
             {
-                return probabilityLight5;
+                return probSufficientLight5;
             }
             set
             {
                 if (value < 0.0 || value > 1.0)
                     throw new InputValueException(value.ToString(),
                                                   "Value must be between 0 and 1");
-                probabilityLight5 = value;
+                probSufficientLight5 = value;
             }
         }
     }
