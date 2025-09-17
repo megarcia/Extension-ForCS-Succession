@@ -76,7 +76,8 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// main constructor
         /// </summary>
-        public Soils(IInputParams iParams, ActiveSite site, IInputDisturbanceMatrixParams iDMParams)
+        public Soils(IInputParams iParams, ActiveSite site,
+                     IInputDisturbanceMatrixParams iDMParams)
         {
             Debug.Assert(iParams != null);
             SoilVars.iParams = iParams;
@@ -86,7 +87,7 @@ namespace Landis.Extension.Succession.ForC
             foreach (ISpecies species in PlugIn.ModelCore.Species)
                 for (int idxDOMPool = 0; idxDOMPool < Constants.NUMSOILPOOLS; idxDOMPool++)
                     soilC[idxDOMPool, species.Index] = SoilVars.iParams.DOMPoolAmountT0[ecoregion][species][idxDOMPool];
-            InitializeOutput();  // note that this will actually only be done for the first site.
+            InitializeSoilOutputFiles();  // note that this will actually only be done for the first site.
         }
 
         /// <summary>
@@ -132,7 +133,8 @@ namespace Landis.Extension.Succession.ForC
         /// </summary>
         /// <param name="species"></param>
         /// <param name="slowAG_to_slowBG_transferRate"></param>
-        public void DoPoolBioMixing(ISpecies species, double slowAG_to_slowBG_transferRate)
+        public void DoPoolBioMixing(ISpecies species,
+                                    double slowAG_to_slowBG_transferRate)
         {
             carbonToSlowPool[(int)SoilPoolType.SLOWAG] += soilC[(int)SoilPoolType.SLOWAG, species.Index] * slowAG_to_slowBG_transferRate;
             soilC[(int)SoilPoolType.SLOWBG, species.Index] += soilC[(int)SoilPoolType.SLOWAG, species.Index] * slowAG_to_slowBG_transferRate;
@@ -148,7 +150,9 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="species"></param>
         /// <param name="site"></param>
         /// <param name="soilInfo"></param>
-        public void DoSoilDynamics(IEcoregion ecoregion, ISpecies species, ActiveSite site)
+        public void DoSoilDynamics(IEcoregion ecoregion,
+                                   ISpecies species,
+                                   ActiveSite site)
         {
             // Variable definitions.
             double bFactor = Math.Log(0.5 / 0.15);  // The b factor.
@@ -324,13 +328,13 @@ namespace Landis.Extension.Succession.ForC
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += BranchSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SOTHERSNAG] += BranchSnagLost - snagToAir;
             }
+            // Do the medium soil pool dynamics, working individually with each 
+            // species. Since only stem turnover (ie. merchantable component 
+            // carbon) goes into the medium soil pool, we calculate the total 
+            // carbon additions to the pool directly without worrying about 
+            // above- and below-ground partitions.
             if (snagToMedium > 0 || soilC[(int)SoilPoolType.MEDIUM, species.Index] > 0)
             {
-                // Do the medium soil pool dynamics, working individually with each 
-                // species. Since only stem turnover (ie. merchantable component 
-                // carbon) goes into the medium soil pool, we calculate the total 
-                // carbon additions to the pool directly without worrying about 
-                // above- and below-ground partitions.
                 totalC = snagToMedium;
                 // We determine the new carbon in the medium soil pool by adding 
                 // in the biomass carbon turned over and subtracting out the carbon 
@@ -349,7 +353,7 @@ namespace Landis.Extension.Succession.ForC
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC - toAir;
                 carbonToSlowPool[(int)SoilPoolType.MEDIUM] += totalLostC - toAir;
             }
-            // do black carbon dynamics (note that there is currently nothing 
+            // Do black carbon dynamics (note that there is currently nothing 
             // going into black carbon)
             if (soilC[(int)SoilPoolType.BLACKCARBON, species.Index] > 0)
             {
@@ -393,8 +397,10 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Collect biomass mortality and turnover from Landis and put into appropriate arrays for Soil Routines 
-        /// This now just collects the basic mortality, not disturbance related mortality.
+        /// Collect biomass mortality and turnover from Landis 
+        /// and put into appropriate arrays for Soil Routines. 
+        /// This now just collects the basic mortality, not 
+        /// disturbance related mortality.
         /// (note: New routine - not part of CBM)                                         
         /// </summary>
         /// <param name="species"></param>
@@ -402,7 +408,11 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="mortality_wood"></param>
         /// <param name="mortality_nonwood"></param>
         /// <param name="AboveBelow"></param>
-        public void CollectBiomassMortality(ISpecies species, int age, double mortality_wood, double mortality_nonwood, int AboveBelow)
+        public void CollectBiomassMortality(ISpecies species,
+                                            int age,
+                                            double mortality_wood,
+                                            double mortality_nonwood,
+                                            int AboveBelow)
         {
             int idxSpecies = species.Index;
             int idxAge = 0;         // use 0 in non-spinup years to hold the stuff for printing
@@ -465,7 +475,8 @@ namespace Landis.Extension.Succession.ForC
 
         /// <summary>
         /// new routine for disturbance impacts on biomass.
-        /// Pass in the wood and non-wood biomass of the stand, and calculate the impact here
+        /// Pass in the wood and non-wood biomass of the stand, 
+        /// and calculate the impact here.
         /// </summary>
         /// <param name="site"></param>
         /// <param name="species"></param>
@@ -474,7 +485,12 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="nonwood"></param>
         /// <param name="DistTypeName"></param>
         /// <param name="tmpFireSeverity"></param>
-        public void DisturbanceImpactsBiomass(ActiveSite site, ISpecies species, int age, double wood, double nonwood, string DistTypeName, int tmpFireSeverity)
+        public void DisturbanceImpactsBiomass(ActiveSite site,
+                                              ISpecies species,
+                                              int age, double wood,
+                                              double nonwood,
+                                              string DistTypeName,
+                                              int tmpFireSeverity)
         {
             int idxSpecies = species.Index;
             int idxDist = DistTypeIndex(DistTypeName);
@@ -597,7 +613,9 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="site"></param>
         /// <param name="DistTypeName"></param>
         /// <param name="tmpFireSeverity"></param>
-        public void DisturbanceImpactsDOM(ActiveSite site, string DistTypeName, int tmpFireSeverity)
+        public void DisturbanceImpactsDOM(ActiveSite site,
+                                          string DistTypeName,
+                                          int tmpFireSeverity)
         {
             double loss = 0;
             double tofps = 0;
@@ -711,8 +729,9 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Calculate the amount of biomass in each cohort and total up for the site.
-        /// This will be used for output purposes.
+        /// Calculate the amount of biomass in each cohort and 
+        /// total up for the site. This will be used for output
+        /// purposes.
         /// (note: New routine - not part of CBM) 
         /// </summary>
         /// <param name="site"></param>
@@ -763,15 +782,16 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Description: Controlling routine to loop over all the species 
-        /// in the Model and call the soil dynamics routine
+        /// Controlling routine to loop over all the species
+        /// in the Model and call the soil dynamics routine.
         /// (note: New routine - not part of CBM)
         /// </summary>
         /// <param name="site"></param>
         /// <param name="totalBiomass"></param>
         /// <param name="preGrowthBiomass"></param>
         /// <param name="LastPass"></param>
-        public void ProcessSoils(ActiveSite site, double totalBiomass, double preGrowthBiomass, int LastPass)
+        public void ProcessSoils(ActiveSite site, double totalBiomass,
+                                 double preGrowthBiomass, int LastPass)
         {
             // note codes: 
             // LastPass = -1 means soil spin-up phase. 
@@ -834,15 +854,16 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Returns proportion of the stem that goes to the snag stem pool.
-        /// The remainder will go to snagother.
+        /// Returns proportion of the stem that goes to the 
+        /// snag stem pool. The remainder will go to snagother.
         /// (note: New routine - not part of CBM)
         /// </summary>
         /// <param name="ispecies"></param>
         /// <param name="age"></param>
         /// <param name="StemBio"></param>
         /// <returns></returns>
-        public double DeadStemToSnagRates(ISpecies species, int age, double StemBio)
+        public double DeadStemToSnagRates(ISpecies species,
+                                          int age, double StemBio)
         {
             double dFracStem = 0.0;
             if (age >= SoilVars.iParams.MerchStemsMinAge[species])
@@ -863,7 +884,9 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="site"></param>
         /// <param name="species"></param>
         /// <param name="Year0"></param>
-        private void SoilOutput(ActiveSite site, ISpecies species, int Year0)
+        private void SoilOutput(ActiveSite site,
+                                ISpecies species,
+                                int Year0)
         {
             int i;
             //set up the printing flags
@@ -948,7 +971,7 @@ namespace Landis.Extension.Succession.ForC
         /// (note: New routine - not part of CBM)
         /// </summary>
         /// <exception cref="ApplicationException"></exception>
-        private void InitializeOutput()
+        private void InitializeSoilOutputFiles()
         {
             Debug.Assert(SoilVars.iParams != null);
             int i;
@@ -1020,7 +1043,7 @@ namespace Landis.Extension.Succession.ForC
                 throw new ApplicationException(mesg);
             }
             logFluxSum.AutoFlush = true;
-            //Now write the headers for each of the output files
+            // Now write the headers for each of the output files
             logPools.Write("Time, row, column, ecoregion, species, ");
             logFlux.Write("Time, row, column, ecoregion, species, Dist, ");
             logFluxDist.Write("Time, row, column, ecoregion, species, Dist, ");
@@ -1069,7 +1092,10 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="TotBiomass"></param>
         /// <param name="totalSoil"></param>
         /// <param name="preGrowthBiomass"></param>
-        private void SummaryOutput(ActiveSite site, double TotBiomass, double totalSoil, double preGrowthBiomass)
+        private void SummaryOutput(ActiveSite site,
+                                   double TotBiomass,
+                                   double totalSoil,
+                                   double preGrowthBiomass)
         {
             int i;
             double NBP;
@@ -1171,7 +1197,8 @@ namespace Landis.Extension.Succession.ForC
         /// </summary>
         /// <param name="AllRoots"></param>
         /// <param name="PrePostGrowth"></param>
-        public void CollectRootBiomass(double AllRoots, int PrePostGrowth)
+        public void CollectRootBiomass(double AllRoots,
+                                       int PrePostGrowth)
         {
             if (PrePostGrowth == 0)
                 PreGrowthRootBiomass += AllRoots;
@@ -1228,7 +1255,6 @@ namespace Landis.Extension.Succession.ForC
                     }
                     if (iage == maxage)
                         DisturbanceImpactsDOM(site, ":fire", 4);
-
                     ProcessSoils(site, Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]), 0, -1);
                 }
                 foreach (ISpecies species in PlugIn.ModelCore.Species)
@@ -1284,7 +1310,7 @@ namespace Landis.Extension.Succession.ForC
                                 {
                                     if (iage == maxage - Snags.initSnagAge[jdx] && idxSpecies == Snags.initSpecIdx[jdx])
                                     {
-                                        //add in the biomass for the snags - note that we have to pass it the age at death, not the current age
+                                        // add in the biomass for the snags - note that we have to pass it the age at death, not the current age
                                         sDist = ":" + Snags.initSnagDist[jdx];
                                         DisturbanceImpactsBiomass(site, species, Snags.DiedAt[jdx], BioSnag[0, jdx], BioSnag[1, jdx], sDist, 0);
                                         distIdx = jdx;
@@ -1304,7 +1330,6 @@ namespace Landis.Extension.Succession.ForC
                     sDist = ":" + Snags.initSnagDist[distIdx];
                     DisturbanceImpactsDOM(site, sDist, 0);
                 }
-
                 ProcessSoils(site, SiteVars.TotalBiomass[site], 0, 1);
             }
             BioSnag = null;
