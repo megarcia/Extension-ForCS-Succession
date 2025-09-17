@@ -277,7 +277,7 @@ namespace Landis.Extension.Succession.ForC
         public static SiteCohorts MakeBiomassCohorts(List<ICohort> ageCohorts,
                                                      ActiveSite site)
         {
-            return MakeBiomassCohorts(ageCohorts, site, CohortBiomass.InitialBiomass);
+            return MakeBiomassCohorts(ageCohorts, site, CohortBiomass.CalcInitCohortBiomass);
         }
     }
 }

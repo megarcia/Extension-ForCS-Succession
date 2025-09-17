@@ -43,7 +43,7 @@ namespace Landis.Extension.Succession.ForC
 
         // Ecoregion where the cohort's site is located
         private IEcoregion ecoregion;
-        // Ratio of actual biomass to maximum biomass for the cohort.
+        // Ratio of actual biomass to potential biomass for the cohort.
         private double B_AP;
         // Ratio of potential biomass to maximum biomass for the cohort.
         private double B_PM;
@@ -183,24 +183,27 @@ namespace Landis.Extension.Succession.ForC
             {
                 capacityReduction = 1.0 - SiteVars.CapacityReduction[site];
                 if (PlugIn.CalibrateMode)
-                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.", (PlugIn.ModelCore.CurrentTime + SubYear), capacityReduction, cohort.Species.Name, cohort.Data.Age, cohort.Data.Biomass);
+                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.",
+                                                  PlugIn.ModelCore.CurrentTime + SubYear,
+                                                  capacityReduction, cohort.Species.Name,
+                                                  cohort.Data.Age, cohort.Data.Biomass);
             }
             double indexC = CalcCompetition(site, cohort);   // Biomass model
             // Potential biomass, equation 3 in Scheller and Mladenoff, 2004   
-            double potentialBiomass = Math.Max(1, maxBiomass - siteBiomass + cohortBiomass);  //Biomass model
-            // Species can use new space immediately
-            // except in the case of capacity reduction due to harvesting.
+            double potentialBiomass = Math.Max(1, maxBiomass - siteBiomass + cohortBiomass);  // Biomass model
+            // Species can use new space immediately except in the 
+            // case of capacity reduction due to harvesting.
             if (capacityReduction >= 1.0)
                 potentialBiomass = Math.Max(potentialBiomass, prevYearSiteMortality);
             // Ratio of cohort's actual biomass to potential biomass
             B_AP = Math.Min(1.0, cohortBiomass / potentialBiomass);
-            // Ratio of cohort's potential biomass to maximum biomass.  The
-            // ratio cannot be exceed 1.
+            // Ratio of cohort's potential biomass to maximum biomass.
+            // The ratio cannot be exceed 1.
             B_PM = Math.Min(1.0, indexC);   // Biomass model
             // Actual ANPP: equation (4) from Scheller & Mladenoff, 2004.
             // Constants k1 and k2 control whether growth rate declines with
-            // age.  Set to default = 1.
-            double actualANPP = maxANPP * Math.E * Math.Pow(B_AP, growthShape) * Math.Exp(-1 * Math.Pow(B_AP, growthShape)) * B_PM;   //Biomass model
+            // age. Set to default = 1.
+            double actualANPP = maxANPP * Math.E * Math.Pow(B_AP, growthShape) * Math.Exp(-1 * Math.Pow(B_AP, growthShape)) * B_PM;   // Biomass model
             // Calculated actual ANPP can not exceed the limit set by the
             // maximum ANPP times the ratio of potential to maximum biomass.
             // This down-regulates actual ANPP by the available growing space.
@@ -211,8 +214,8 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// The mortality caused by development processes,
-        /// including self-thinning and loss of branches, twigs, etc.
+        /// The mortality caused by development processes, including 
+        /// self-thinning and loss of branches, twigs, etc.
         /// See equation 5 in Scheller and Mladenoff, 2004.
         /// </summary>
         private double CalcGrowthMortality(ICohort cohort,
@@ -221,7 +224,7 @@ namespace Landis.Extension.Succession.ForC
         {
             double M_BIO = 1.0;
             double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
-            // Michaelis-Menton function (added by Scheller et all 2010):  //Biomass
+            // Michaelis-Menten function (added by Scheller et al. 2010):  // Biomass
             if (B_AP > 1.0)
                 M_BIO = maxANPP * B_PM;
             else
@@ -320,7 +323,8 @@ namespace Landis.Extension.Succession.ForC
 
         /// <summary>
         /// Calculates the cohort's biomass that is leaf litter
-        /// or other non-woody components.  Assumption is that remainder is woody.
+        /// or other non-woody components.  Assumption is that 
+        /// remainder is woody.
         /// </summary>
         public static double CalcStandingLeafBiomass(double ANPPactual,
                                                      ICohort cohort)
@@ -328,8 +332,8 @@ namespace Landis.Extension.Succession.ForC
             double annualLeafFraction = CalcFractionANPPleaf(cohort.Species);
             double annualFoliar = ANPPactual * annualLeafFraction;
             double B_nonwoody = annualFoliar * SpeciesData.LeafLongevity[cohort.Species];
-            //  Non-woody cannot be less than 2.5% or greater than leaf fraction of total
-            //  biomass for a cohort.
+            // Non-woody cannot be less than 2.5% or greater than leaf fraction of total
+            // biomass for a cohort.
             B_nonwoody = Math.Max(B_nonwoody, cohort.Data.Biomass * 0.025);
             B_nonwoody = Math.Min(B_nonwoody, cohort.Data.Biomass * annualLeafFraction);
             return B_nonwoody;
@@ -348,9 +352,10 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Calculates the percentage of a cohort's standing biomass that is non-woody.
-        /// April 2010: changed to be a constant percentage of foliage, so that the 
-        /// calculations of turnover give reasonable numbers.
+        /// Calculates the percentage of a cohort's standing biomass 
+        /// that is non-woody.
+        /// April 2010: changed to be a constant percentage of foliage, 
+        /// so that the calculations of turnover give reasonable numbers.
         /// </summary>
         public Percentage CalcNonWoodyPercentage(ICohort cohort,
                                                  ActiveSite site)
@@ -363,7 +368,7 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Calculates the initial biomass for a cohort at a site.
         /// </summary>
-        public static int InitialBiomass(ISpecies species,
+        public static int CalcInitCohortBiomass(ISpecies species,
                                          SiteCohorts siteCohorts,
                                          ActiveSite site)
         {

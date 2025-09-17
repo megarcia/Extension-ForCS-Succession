@@ -185,7 +185,7 @@ namespace Landis.Extension.Succession.ForC
                                  string reproductionType,
                                  double fracBiomass = 1.0)
         {
-            int newBiomass = CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site);
+            int newBiomass = CohortBiomass.CalcInitCohortBiomass(species, SiteVars.Cohorts[site], site);
             // Cohorts will be officially added after growth phase
             siteCohortsToAdd.Add(new SiteCohortToAdd(site, species, newBiomass));
         }
@@ -239,7 +239,7 @@ namespace Landis.Extension.Succession.ForC
             // Add the cohorts
             foreach (var cohort in toAdd)
             {
-                int newBiomass = CohortBiomass.InitialBiomass(cohort.species, SiteVars.Cohorts[site], site);
+                int newBiomass = CohortBiomass.CalcInitCohortBiomass(cohort.species, SiteVars.Cohorts[site], site);
                 SiteVars.Cohorts[site].AddNewCohort(cohort.species, 1, newBiomass, new System.Dynamic.ExpandoObject());
                 SiteVars.soils[site].CollectBiomassMortality(cohort.species, 0, 0, 0, 0);
                 double TotalRoots = Roots.CalcRootBiomass(site, cohort.species, newBiomass);
