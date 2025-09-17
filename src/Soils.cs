@@ -287,9 +287,9 @@ namespace Landis.Extension.Succession.ForC
             }
             // withdraw and update the original snag pool size
             double StemSnagLost;
-            double BranSnagLost;
+            double BranchSnagLost;
             double totalStemSnagLost = 0.0;
-            double totalBranSnagLost = 0.0;
+            double totalBranchSnagLost = 0.0;
             double snagToAir;
             snagToMedium = 0F;
             // do the snag dynamics if there already are snags (soilC) or if 
@@ -311,18 +311,18 @@ namespace Landis.Extension.Succession.ForC
                 StemSnagLost = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SSTEMSNAG, species.Index];
                 soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= StemSnagLost;
                 totalStemSnagLost += StemSnagLost;
-                BranSnagLost = soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SOTHERSNAG, species.Index];
-                soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] -= BranSnagLost;
-                totalBranSnagLost += BranSnagLost;
+                BranchSnagLost = soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SOTHERSNAG, species.Index];
+                soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] -= BranchSnagLost;
+                totalBranchSnagLost += BranchSnagLost;
                 // collect information into variables for output
                 snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftStemSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SSTEMSNAG] += snagToAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += StemSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SSTEMSNAG] += StemSnagLost - snagToAir;
-                snagToAir = BranSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftBranchSnag].FracAir;
+                snagToAir = BranchSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftBranchSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SOTHERSNAG] += snagToAir;
-                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += BranSnagLost - snagToAir;
-                carbonToSlowPool[(int)SoilPoolType.SOTHERSNAG] += BranSnagLost - snagToAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += BranchSnagLost - snagToAir;
+                carbonToSlowPool[(int)SoilPoolType.SOTHERSNAG] += BranchSnagLost - snagToAir;
             }
             if (snagToMedium > 0 || soilC[(int)SoilPoolType.MEDIUM, species.Index] > 0)
             {
