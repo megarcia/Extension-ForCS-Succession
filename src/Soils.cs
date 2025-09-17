@@ -168,7 +168,7 @@ namespace Landis.Extension.Succession.ForC
             const int numberABSlowPool = 2;  // number of above- and below-ground slow soil carbon pool
             const int aboveSlowPool = 0;     // above-ground slow carbon pool 
             const int belowSlowPool = 1;     // below-ground slow soil carbon pool
-            double[] carbonToABG_SlowPool = new double[numberABSlowPool]; // to store the slow carbon from different sources
+            double[] carbonToABG_SlowPool = new double[Constants.NUMSLOWPOOLS]; // to store the slow carbon from different sources
             double totalLostC_AS;
             double totalLostC_BS;
             double[,] snagPools = new double[PlugIn.ModelCore.Species.Count, Constants.NUMSNAGPOOLS];
@@ -180,7 +180,7 @@ namespace Landis.Extension.Succession.ForC
                     snagPools[i, j] = 0F;
             }
             // initialize the slow pool array
-            for (int p = 0; p < numberABSlowPool; p++)
+            for (int p = 0; p < Constants.NUMSLOWPOOLS; p++)
                 carbonToABG_SlowPool[p] = 0F;
             if (species.Index != 1 && ecoregion.Index == 0)
                 snagPools[0, 0] = 0F;
@@ -221,11 +221,11 @@ namespace Landis.Extension.Succession.ForC
                 // pool.
                 toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastAG].FracAir;
                 carbonToAir[(int)SoilPoolType.VERYFASTAG] += toAir;
-                carbonToABG_SlowPool[aboveSlowPool] += totalLostC_AS - toAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC_AS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.VERYFASTAG] += totalLostC_AS - toAir;
                 toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastBG].FracAir;
                 carbonToAir[(int)SoilPoolType.VERYFASTBG] += toAir;
-                carbonToABG_SlowPool[belowSlowPool] += totalLostC_BS - toAir;
+                carbonToABG_SlowPool[Constants.BGSLOWPOOLIDX] += totalLostC_BS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.VERYFASTBG] += totalLostC_BS - toAir;
             }
             // Do the fast soil pool dynamics
@@ -281,11 +281,11 @@ namespace Landis.Extension.Succession.ForC
                 // soil pool.
                 toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastAG].FracAir;
                 carbonToAir[(int)SoilPoolType.FASTAG] += toAir;
-                carbonToABG_SlowPool[aboveSlowPool] += totalLostC_AS - toAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC_AS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.FASTAG] += totalLostC_AS - toAir;
                 toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastBG].FracAir;
                 carbonToAir[(int)SoilPoolType.FASTBG] += toAir;
-                carbonToABG_SlowPool[belowSlowPool] += totalLostC_BS - toAir;
+                carbonToABG_SlowPool[Constants.BGSLOWPOOLIDX] += totalLostC_BS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.FASTBG] += totalLostC_BS - toAir;
             }
             // withdraw and update the original snag pool size
@@ -320,11 +320,11 @@ namespace Landis.Extension.Succession.ForC
                 // collect information into variables for output
                 snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftStemSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SSTEMSNAG] += snagToAir;
-                carbonToABG_SlowPool[aboveSlowPool] += StemSnagLost - snagToAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += StemSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SSTEMSNAG] += StemSnagLost - snagToAir;
                 snagToAir = BranSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftBranchSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SOTHERSNAG] += snagToAir;
-                carbonToABG_SlowPool[aboveSlowPool] += BranSnagLost - snagToAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += BranSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SOTHERSNAG] += BranSnagLost - snagToAir;
             }
             if (snagToMedium > 0 || soilC[(int)SoilPoolType.MEDIUM, species.Index] > 0)
@@ -349,7 +349,7 @@ namespace Landis.Extension.Succession.ForC
                 // soil pool.
                 toAir = totalLostC * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.Medium].FracAir;
                 carbonToAir[(int)SoilPoolType.MEDIUM] += toAir;
-                carbonToABG_SlowPool[aboveSlowPool] += totalLostC - toAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC - toAir;
                 carbonToSlowPool[(int)SoilPoolType.MEDIUM] += totalLostC - toAir;
             }
             // do black carbon dynamics (note that there is currently nothing 
@@ -360,7 +360,7 @@ namespace Landis.Extension.Succession.ForC
                 blackC_lost = soilC[(int)SoilPoolType.BLACKCARBON, species.Index] * SoilVars.decayRates[(int)SoilPoolType.BLACKCARBON, species.Index];
                 soilC[(int)SoilPoolType.BLACKCARBON, species.Index] -= blackC_lost;
                 carbonToAir[(int)SoilPoolType.BLACKCARBON] += blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
-                carbonToABG_SlowPool[aboveSlowPool] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
                 carbonToSlowPool[(int)SoilPoolType.BLACKCARBON] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
             }
             // Do the slow soil pool dynamics.
@@ -373,13 +373,13 @@ namespace Landis.Extension.Succession.ForC
             double lostC_AS;
             double lostC_BS;
             if (soilC[(int)SoilPoolType.SLOWAG, species.Index] > 0 || soilC[(int)SoilPoolType.SLOWBG, species.Index] > 0
-                || carbonToABG_SlowPool[aboveSlowPool] > 0 || carbonToABG_SlowPool[belowSlowPool] > 0)
+                || carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] > 0 || carbonToABG_SlowPool[Constants.BGSLOWPOOLIDX] > 0)
             {
-                soilC[(int)SoilPoolType.SLOWAG, species.Index] += carbonToABG_SlowPool[aboveSlowPool];
+                soilC[(int)SoilPoolType.SLOWAG, species.Index] += carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX];
                 lostC_AS = soilC[(int)SoilPoolType.SLOWAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SLOWAG, species.Index];
                 soilC[(int)SoilPoolType.SLOWAG, species.Index] -= lostC_AS;
                 totalLostC_AS += lostC_AS;
-                soilC[(int)SoilPoolType.SLOWBG, species.Index] += carbonToABG_SlowPool[belowSlowPool];
+                soilC[(int)SoilPoolType.SLOWBG, species.Index] += carbonToABG_SlowPool[Constants.BGSLOWPOOLIDX];
                 lostC_BS = soilC[(int)SoilPoolType.SLOWBG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SLOWBG, species.Index];
                 soilC[(int)SoilPoolType.SLOWBG, species.Index] -= lostC_BS;
                 totalLostC_BS += lostC_BS;
