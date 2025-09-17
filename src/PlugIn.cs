@@ -182,7 +182,7 @@ namespace Landis.Extension.Succession.ForC
         public void AddNewCohort(ISpecies species,
                                  ActiveSite site,
                                  string reproductionType,
-                                 double fracBiomass = 1.0)
+                                 double propBiomass = 1.0)  // not "fracBiomass" to conform to Landis.Library.Succession.Reproduction.AddNewCohort
         {
             int newBiomass = CohortBiomass.CalcInitCohortBiomass(species, SiteVars.Cohorts[site], site);
             // Cohorts will be officially added after growth phase
