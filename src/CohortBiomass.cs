@@ -388,12 +388,12 @@ namespace Landis.Extension.Succession.ForC
             double maxBiomass = SpeciesData.B_MAX_Spp[species][ecoregion];
             double maxANPP = SpeciesData.ANPP_MAX_Spp[species][ecoregion];
             // Initial biomass exponentially declines in response to competition.
-            double initialBiomass = maxANPP * Math.Exp(-1.6 * B_ACT / EcoregionData.B_MAX[ecoregion]);     //Biomass
+            double initCohortBiomass = maxANPP * Math.Exp(-1.6 * B_ACT / EcoregionData.B_MAX[ecoregion]);     //Biomass
             // Initial biomass cannot be greater than maxANPP
-            initialBiomass = Math.Min(maxANPP, initialBiomass);
+            initCohortBiomass = Math.Min(maxANPP, initCohortBiomass);
             //  Initial biomass cannot be less than 2.  C. Dymond issue from August 2016
-            initialBiomass = Math.Max(2.0, initialBiomass);
-            return (int)initialBiomass;
+            initCohortBiomass = Math.Max(2.0, initCohortBiomass);
+            return (int)initCohortBiomass;
         }
 
         /// <summary>
