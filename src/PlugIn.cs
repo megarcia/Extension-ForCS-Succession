@@ -122,7 +122,7 @@ namespace Landis.Extension.Succession.ForC
 
         protected override void InitializeSite(ActiveSite site)
         {
-            SiteBiomass initialBiomass = SiteBiomass.CalcInitBiomass(site, initialCommunity);
+            SiteBiomass initialBiomass = SiteBiomass.CalcInitSiteBiomass(site, initialCommunity);
             SiteVars.Cohorts[site] = SiteBiomass.Clone(initialBiomass.Cohorts);
             // Note: we need this both here and in SiteVars.Initialize()?
             SiteVars.soils[site] = new Soils(initialBiomass.soils);

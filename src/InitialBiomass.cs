@@ -108,7 +108,7 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="initialCommunity">
         /// The initial community of age cohorts at the site.
         /// </param>
-        public static SiteBiomass CalcInitBiomass(ActiveSite site,
+        public static SiteBiomass CalcInitSiteBiomass(ActiveSite site,
                                                      ICommunity initialCommunity)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
