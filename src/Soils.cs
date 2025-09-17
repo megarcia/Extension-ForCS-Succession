@@ -165,9 +165,6 @@ namespace Landis.Extension.Succession.ForC
             double lostCB;
             double toAir;
             // Variable definitions: (Used exclusively by very fast soil pool dynamics code.)
-            const int numberABSlowPool = 2;  // number of above- and below-ground slow soil carbon pool
-            const int aboveSlowPool = 0;     // above-ground slow carbon pool 
-            const int belowSlowPool = 1;     // below-ground slow soil carbon pool
             double[] carbonToABG_SlowPool = new double[Constants.NUMSLOWPOOLS]; // to store the slow carbon from different sources
             double totalLostC_AS;
             double totalLostC_BS;
