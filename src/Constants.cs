@@ -14,5 +14,6 @@ namespace Landis.Extension.Succession.ForC
         public const double FINEROOTSABOVERATIO = 0.5;
         public const double COARSEROOTABOVERATIO = 0.5;
         public const int NUMDISTURBANCES = 9;  // note, if add more dists, then increase this
+        public const double DECAYREFTEMP = 10.0;  // originally from SoilDecay.CalcDecayFTemp
     }
 }

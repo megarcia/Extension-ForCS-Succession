@@ -54,8 +54,7 @@ namespace Landis.Extension.Succession.ForC
         public double CalcDecayFTemp(double temperature,
                                      double q10Rate)
         {
-            const double decayTempRef = 10.0;
-            double decayFTemp = Math.Exp((temperature - decayTempRef) * Math.Log(q10Rate) * 0.1);
+            double decayFTemp = Math.Exp((temperature - Constants.DECAYREFTEMP) * Math.Log(q10Rate) * 0.1);
             return decayFTemp;
         }
 
