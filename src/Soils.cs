@@ -500,8 +500,8 @@ namespace Landis.Extension.Succession.ForC
             string TransferName = "null";
             double FracStem;
             double totroot = Roots.CalcRootBiomass(site, species, wood + nonwood);
-            double crsRoot = Roots.CoarseRoot * Constants.BIOTOC;
-            double fineRoot = Roots.FineRoot * Constants.BIOTOC;
+            double coarseRootC = Roots.CoarseRoot * Constants.BIOTOC;
+            double fineRootC = Roots.FineRoot * Constants.BIOTOC;
             double nonwoodC = nonwood * Constants.BIOTOC;   // turns biomass into C
             double woodC = wood * Constants.BIOTOC;
             DistOccurred[idxDist] = true;
@@ -580,9 +580,9 @@ namespace Landis.Extension.Succession.ForC
                     continue;
                 }
                 else if (ipool == 4)         // coarse roots
-                    amtC = crsRoot;
+                    amtC = coarseRootC;
                 else if (ipool == 5)         // fine roots
-                    amtC = fineRoot;
+                    amtC = fineRootC;
                 oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPoolsBiomass.GetDisturbTransfer(ipool + 1);
                 netCLoss[ipool, idxSpecies] += amtC * oDisturbTransfer.FracToDOM;
                 totToFPS += amtC * oDisturbTransfer.FracToFPS;
@@ -761,20 +761,20 @@ namespace Landis.Extension.Succession.ForC
                 {
                     double foliar = (double)cohort.ComputeNonWoodyBiomass(site);
                     double wood = (double)cohort.Data.Biomass - foliar;
-                    double crsRoot = 0.0;
-                    double fineRoot = 0.0;
+                    double coarseRootC = 0.0;
+                    double fineRootC = 0.0;
                     double bbio = Roots.CalcRootBiomass(site, cohort.Species, cohort.Data.Biomass);
                     // now change everything to C
                     foliar *= Constants.BIOTOC;
                     wood *= Constants.BIOTOC;
-                    crsRoot = Roots.CoarseRoot * Constants.BIOTOC;
-                    fineRoot = Roots.FineRoot * Constants.BIOTOC;
+                    coarseRootC = Roots.CoarseRoot * Constants.BIOTOC;
+                    fineRootC = Roots.FineRoot * Constants.BIOTOC;
                     logBioPools.Write("{0},{1},{2},", PlugIn.ModelCore.CurrentTime, site.Location.Row, site.Location.Column);
                     logBioPools.Write("{0},{1},{2},", ecoregion.MapCode, cohort.Species.Name, cohort.Data.Age);
                     logBioPools.Write("{0:0.0},", wood);
                     logBioPools.Write("{0:0.0},", foliar);
-                    logBioPools.Write("{0:0.0},", crsRoot);
-                    logBioPools.Write("{0:0.0} ", fineRoot);
+                    logBioPools.Write("{0:0.0},", coarseRootC);
+                    logBioPools.Write("{0:0.0} ", fineRootC);
                     logBioPools.WriteLine("");
                 }
             }
