@@ -54,7 +54,7 @@ namespace Landis.Extension.Succession.ForC
         private double[] carbonToSlowPool = new double[Constants.NUMSOILPOOLS];
         private double[] totalDOMC = new double[Constants.NUMSOILPOOLS];
         private double[,] TotTransfer = new double[2, 3];   // first: 0=no dist,1=dist; second: 0=to DOM, 1=to Air, 3=to FPS
-        private double snagToMedium;
+        private double stemSnagToMediumPool;
         private double branchSnagToFastPool;
         private double oldBiomass;
         private double PreGrowthRootBiomass = 0.0;
@@ -118,7 +118,7 @@ namespace Landis.Extension.Succession.ForC
                 }
             }
             oldBiomass = oSrc.oldBiomass;
-            snagToMedium = oSrc.snagToMedium;
+            stemSnagToMediumPool = oSrc.stemSnagToMediumPool;
             branchSnagToFastPool = oSrc.branchSnagToFastPool;
             for (i = 0; i < PlugIn.ModelCore.Species.Count; i++)
             {
@@ -174,7 +174,7 @@ namespace Landis.Extension.Succession.ForC
             double totalLostC_BS;
             double[,] snagPools = new double[PlugIn.ModelCore.Species.Count, Constants.NUMSNAGPOOLS];
             branchSnagToFastPool = 0.0;
-            snagToMedium = 0.0;
+            stemSnagToMediumPool = 0.0;
             for (int i = 0; i < PlugIn.ModelCore.Species.Count; i++)
             {
                 for (int j = 0; j < Constants.NUMSNAGPOOLS; j++)
@@ -295,7 +295,7 @@ namespace Landis.Extension.Succession.ForC
             double totalStemSnagLost = 0.0;
             double totalBranchSnagLost = 0.0;
             double snagToAir;
-            snagToMedium = 0F;
+            stemSnagToMediumPool = 0F;
             // do the snag dynamics if there already are snags (soilC) or if 
             // there is input to the snag pools (from netCloss or from input 
             // pools calculated above -Jan2020)
@@ -307,8 +307,8 @@ namespace Landis.Extension.Succession.ForC
                 )
             {
                 // calculate how much snag goes to medium soil pool
-                snagToMedium = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
-                soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= snagToMedium;
+                stemSnagToMediumPool = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
+                soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= stemSnagToMediumPool;
                 snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS] = netCLoss[(int)ComponentType.MERCHANTABLE, species.Index];
                 soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS];
                 soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG];
@@ -333,9 +333,9 @@ namespace Landis.Extension.Succession.ForC
             // carbon) goes into the medium soil pool, we calculate the total 
             // carbon additions to the pool directly without worrying about 
             // above- and below-ground partitions.
-            if (snagToMedium > 0 || soilC[(int)SoilPoolType.MEDIUM, species.Index] > 0)
+            if (stemSnagToMediumPool > 0 || soilC[(int)SoilPoolType.MEDIUM, species.Index] > 0)
             {
-                totalC = snagToMedium;
+                totalC = stemSnagToMediumPool;
                 // We determine the new carbon in the medium soil pool by adding 
                 // in the biomass carbon turned over and subtracting out the carbon 
                 // lost due to decay attributable to the current species.
@@ -941,7 +941,7 @@ namespace Landis.Extension.Succession.ForC
                             logFlux.Write("{0:0.000},", carbonToAir[i]);
                             logFlux.Write("{0:0.000},", carbonToSlowPool[i]);
                             if (i == 7)     // SSTEMSNAG 
-                                logFlux.Write("{0:0.000},", snagToMedium);
+                                logFlux.Write("{0:0.000},", stemSnagToMediumPool);
                             else if (i == 8)    // SSTEMBRANCH 
                                 logFlux.Write("{0:0.000},", branchSnagToFastPool);
                         }
