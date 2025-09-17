@@ -109,7 +109,7 @@ namespace Landis.Extension.Succession.ForC
         /// The initial community of age cohorts at the site.
         /// </param>
         public static SiteBiomass CalcInitSiteBiomass(ActiveSite site,
-                                                     ICommunity initialCommunity)
+                                                      ICommunity initialCommunity)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             uint key = CalcKey(initialCommunity.MapCode, ecoregion.MapCode);
@@ -228,12 +228,12 @@ namespace Landis.Extension.Succession.ForC
             int endTime = (successionTimestep == 1) ? -1 : 0;
             for (int time = -ageCohorts[0].Data.Age; time <= endTime; time += successionTimestep)
             {
-                EcoregionData.GetAnnualTemperature(successionTimestep, 0);                        //ForCS CLIMATE
+                EcoregionData.GetAnnualTemperature(successionTimestep, 0);                        // ForCS CLIMATE
                 SpeciesData.GenerateNewANPPandMaxBiomass(successionTimestep, time);
                 //  Grow current biomass cohorts.
                 if (time == endTime)
                 {
-                    SiteVars.soils[site].lastAge = ageCohorts[0].Data.Age;       //signal both that the spin-up is done, and the oldest age
+                    SiteVars.soils[site].lastAge = ageCohorts[0].Data.Age;       // signal both that the spin-up is done, and the oldest age
                     SiteVars.soils[site].bKillNow = false;
                 }
                 PlugIn.GrowCohorts(site, successionTimestep, true);
@@ -248,17 +248,15 @@ namespace Landis.Extension.Succession.ForC
                     SiteVars.soils[site].CollectBiomassMortality(species, 0, 0, 0, 0);      //dummy for getting it to recognize that the species is now present.
                     indexNextAgeCohort++;
                 }
+                // just before the last timestep, we want to send a signal 
+                // to the growth routine to kill the cohorts that need to 
+                // be snags. Hardwire this first for testing.
+                if (time == endTime - 1)
+                    SiteVars.soils[site].bKillNow = true;
                 if (time == endTime)
                 {
                     SiteVars.soils[site].lastAge = ageCohorts[0].Data.Age;       //signal both that the spin-up is done, and the oldest age
                     SiteVars.soils[site].bKillNow = false;
-                }
-                else if (time == endTime - 1)
-                {                              
-                    // just before the last timestep, we want to send a signal 
-                    // to the growth routine to kill the cohorts that need to 
-                    // be snags. Hardwire this first for testing.
-                    SiteVars.soils[site].bKillNow = true;
                 }
             }
         }
