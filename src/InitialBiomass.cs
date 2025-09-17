@@ -15,7 +15,7 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// The initial live and dead biomass at a site.
     /// </summary>
-    public class InitialBiomass
+    public class SiteBiomass
     {
         public Soils soils;
         public double SoilOrganicMatterC;
@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.ForC
             }
         }
         
-        private InitialBiomass(SiteCohorts cohorts,
+        private SiteBiomass(SiteCohorts cohorts,
                                double soilOrganicMatterC,
                                double deadWoodMass,
                                double litterMass,
@@ -67,7 +67,7 @@ namespace Landis.Extension.Succession.ForC
         // community and ecoregion; Key = 32-bit unsigned integer where
         // high 16-bits is the map code of the initial community and the
         // low 16-bits is the ecoregion's map code
-        private static IDictionary<uint, InitialBiomass> initialSites;
+        private static IDictionary<uint, SiteBiomass> initialSites;
 
         // Age cohorts for an initial community sorted from oldest to
         // youngest.  Key = initial community's map code
@@ -81,9 +81,9 @@ namespace Landis.Extension.Succession.ForC
             return (initCommunityMapCode << 16) | ecoregionMapCode;
         }
 
-        static InitialBiomass()
+        static SiteBiomass()
         {
-            initialSites = new Dictionary<uint, InitialBiomass>();
+            initialSites = new Dictionary<uint, SiteBiomass>();
             sortedCohorts = new Dictionary<uint, List<ICohort>>();
         }
 
@@ -108,12 +108,12 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="initialCommunity">
         /// The initial community of age cohorts at the site.
         /// </param>
-        public static InitialBiomass CalcInitBiomass(ActiveSite site,
+        public static SiteBiomass CalcInitBiomass(ActiveSite site,
                                                      ICommunity initialCommunity)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             uint key = CalcKey(initialCommunity.MapCode, ecoregion.MapCode);
-            InitialBiomass initialBiomass;
+            SiteBiomass initialBiomass;
             if (initialSites.TryGetValue(key, out initialBiomass))
                 return initialBiomass;
             //  If we don't have a sorted list of age cohorts for the initial
@@ -125,7 +125,7 @@ namespace Landis.Extension.Succession.ForC
                 sortedCohorts[initialCommunity.MapCode] = sortedAgeCohorts;
             }
             SiteCohorts cohorts = MakeBiomassCohorts(sortedAgeCohorts, site);
-            initialBiomass = new InitialBiomass(cohorts,
+            initialBiomass = new SiteBiomass(cohorts,
                                                 SiteVars.SoilOrganicMatterC[site],
                                                 SiteVars.DeadWoodMass[site].Mass,
                                                 SiteVars.LitterMass[site].Mass,

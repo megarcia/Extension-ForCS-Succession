@@ -97,7 +97,7 @@ namespace Landis.Extension.Succession.ForC
             Reproduction.AddNewCohort = AddNewCohort;
             Reproduction.MaturePresent = IsMaturePresent;
             base.Initialize(modelCore, inputParams.SeedAlgorithm); 
-            InitialBiomass.Initialize(Timestep);
+            SiteBiomass.Initialize(Timestep);
             Cohort.MortalityEvent += CohortMortality;
             InitializeSites(inputParams.InitialCommunities, inputParams.InitialCommunitiesMap, modelCore);
         }
@@ -122,8 +122,8 @@ namespace Landis.Extension.Succession.ForC
 
         protected override void InitializeSite(ActiveSite site)
         {
-            InitialBiomass initialBiomass = InitialBiomass.CalcInitBiomass(site, initialCommunity);
-            SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts);
+            SiteBiomass initialBiomass = SiteBiomass.CalcInitBiomass(site, initialCommunity);
+            SiteVars.Cohorts[site] = SiteBiomass.Clone(initialBiomass.Cohorts);
             // Note: we need this both here and in SiteVars.Initialize()?
             SiteVars.soils[site] = new Soils(initialBiomass.soils);
             SiteVars.SoilOrganicMatterC[site] = initialBiomass.SoilOrganicMatterC;            
