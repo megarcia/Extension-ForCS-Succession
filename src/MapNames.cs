@@ -10,13 +10,13 @@ namespace Landis.Extension.Succession.ForC
     /// <summary>
     /// Methods for working with the template for map filenames.
     /// </summary>
-    public static class MapNames
+    public static class MapFileNames
     {
         public const string TimestepVar = "timestep";
         private static IDictionary<string, bool> knownVars;
         private static IDictionary<string, string> varValues;
 
-        static MapNames()
+        static MapFileNames()
         {
             knownVars = new Dictionary<string, bool>();
             knownVars[TimestepVar] = true;

@@ -36,7 +36,7 @@ namespace Landis.Extension.Succession.ForC
                     continue;
                 if (j == 6 && SoilVars.iParams.OutputToFPS == 0)
                     continue;
-                string path1 = MapNames.ReplaceTemplateVars(@pathname[j], PlugIn.ModelCore.CurrentTime);
+                string path1 = MapFileNames.ReplaceTemplateVars(@pathname[j], PlugIn.ModelCore.CurrentTime);
                 using (IOutputRaster<IntPixel> outputRaster = PlugIn.ModelCore.CreateRaster<IntPixel>(path1, PlugIn.ModelCore.Landscape.Dimensions))
                 {
                     IntPixel pixel = outputRaster.BufferPixel;
