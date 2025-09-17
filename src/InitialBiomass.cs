@@ -113,9 +113,9 @@ namespace Landis.Extension.Succession.ForC
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             uint key = CalcKey(initialCommunity.MapCode, ecoregion.MapCode);
-            SiteBiomass initialBiomass;
-            if (initialSites.TryGetValue(key, out initialBiomass))
-                return initialBiomass;
+            SiteBiomass initSiteBiomass;
+            if (initialSites.TryGetValue(key, out initSiteBiomass))
+                return initSiteBiomass;
             //  If we don't have a sorted list of age cohorts for the initial
             //  community, make the list
             List<ICohort> sortedAgeCohorts;
@@ -125,15 +125,15 @@ namespace Landis.Extension.Succession.ForC
                 sortedCohorts[initialCommunity.MapCode] = sortedAgeCohorts;
             }
             SiteCohorts cohorts = MakeBiomassCohorts(sortedAgeCohorts, site);
-            initialBiomass = new SiteBiomass(cohorts,
+            initSiteBiomass = new SiteBiomass(cohorts,
                                                 SiteVars.SoilOrganicMatterC[site],
                                                 SiteVars.DeadWoodMass[site].Mass,
                                                 SiteVars.LitterMass[site].Mass,
                                                 SiteVars.DeadWoodDecayRate[site],
                                                 SiteVars.LitterDecayRate[site],
                                                 SiteVars.soils[site]);
-            initialSites[key] = initialBiomass;
-            return initialBiomass;
+            initialSites[key] = initSiteBiomass;
+            return initSiteBiomass;
         }
 
         /// <summary>
@@ -171,12 +171,12 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="site">
         /// Site where cohorts are located.
         /// </param>
-        /// <param name="initialBiomassMethod">
+        /// <param name="initSiteBiomassMethod">
         /// The method for computing the initial biomass for a new cohort.
         /// </param>
         public static SiteCohorts MakeBiomassCohorts(List<ICohort> ageCohorts,
                                                      ActiveSite site,
-                                                     CalculationMethod initialBiomassMethod)
+                                                     CalculationMethod initSiteBiomassMethod)
         {
             SiteVars.Cohorts[site] = new SiteCohorts();
             if (ageCohorts.Count == 0)
@@ -194,7 +194,7 @@ namespace Landis.Extension.Succession.ForC
                 }
             }
             else
-                SpinUpBiomassCohorts(ageCohorts, site, initialBiomassMethod);
+                SpinUpBiomassCohorts(ageCohorts, site, initSiteBiomassMethod);
             if (SoilVars.iParams.SoilSpinUpFlag == 0)
                 ReadSoilValuesFromTable(site);
             else
@@ -212,7 +212,7 @@ namespace Landis.Extension.Succession.ForC
 
         private static void SpinUpBiomassCohorts(List<ICohort> ageCohorts,
                                                  ActiveSite site,
-                                                 CalculationMethod initialBiomassMethod)
+                                                 CalculationMethod initSiteBiomassMethod)
         {
             int indexNextAgeCohort = 0;
             //  The index in the list of sorted age cohorts of the next
@@ -242,9 +242,9 @@ namespace Landis.Extension.Succession.ForC
                        ageCohorts[indexNextAgeCohort].Data.Age == -time)
                 {
                     ISpecies species = ageCohorts[indexNextAgeCohort].Species;
-                    int initialBiomass = initialBiomassMethod(species, SiteVars.Cohorts[site], site);
+                    int initSiteBiomass = initSiteBiomassMethod(species, SiteVars.Cohorts[site], site);
                     SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
-                                                        initialBiomass, new System.Dynamic.ExpandoObject());
+                                                        initSiteBiomass, new System.Dynamic.ExpandoObject());
                     SiteVars.soils[site].CollectBiomassMortality(species, 0, 0, 0, 0);      //dummy for getting it to recognize that the species is now present.
                     indexNextAgeCohort++;
                 }

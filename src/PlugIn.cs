@@ -122,15 +122,15 @@ namespace Landis.Extension.Succession.ForC
 
         protected override void InitializeSite(ActiveSite site)
         {
-            SiteBiomass initialBiomass = SiteBiomass.CalcInitSiteBiomass(site, initialCommunity);
-            SiteVars.Cohorts[site] = SiteBiomass.Clone(initialBiomass.Cohorts);
+            SiteBiomass initSiteBiomass = SiteBiomass.CalcInitSiteBiomass(site, initialCommunity);
+            SiteVars.Cohorts[site] = SiteBiomass.Clone(initSiteBiomass.Cohorts);
             // Note: we need this both here and in SiteVars.Initialize()?
-            SiteVars.soils[site] = new Soils(initialBiomass.soils);
-            SiteVars.SoilOrganicMatterC[site] = initialBiomass.SoilOrganicMatterC;            
-            SiteVars.DeadWoodMass[site].Mass = initialBiomass.DeadWoodMass;
-            SiteVars.LitterMass[site].Mass = initialBiomass.LitterMass;
-            SiteVars.DeadWoodDecayRate[site] = initialBiomass.DeadWoodDecayRate;
-            SiteVars.LitterDecayRate[site] = initialBiomass.LitterDecayRate;
+            SiteVars.soils[site] = new Soils(initSiteBiomass.soils);
+            SiteVars.SoilOrganicMatterC[site] = initSiteBiomass.SoilOrganicMatterC;            
+            SiteVars.DeadWoodMass[site].Mass = initSiteBiomass.DeadWoodMass;
+            SiteVars.LitterMass[site].Mass = initSiteBiomass.LitterMass;
+            SiteVars.DeadWoodDecayRate[site] = initSiteBiomass.DeadWoodDecayRate;
+            SiteVars.LitterDecayRate[site] = initSiteBiomass.LitterDecayRate;
             SiteVars.soils[site].BiomassOutput(site, 1);
         }
 
