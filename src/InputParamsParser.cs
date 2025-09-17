@@ -53,9 +53,9 @@ namespace Landis.Extension.Succession.ForC
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
-            if (landisData.Value.Actual != PlugIn.ExtensionName)
+            if (landisData.Value.Actual != Names.ExtensionName)
                 throw new InputValueException(landisData.Value.String,
-                                              "The value is not \"{0}\"", PlugIn.ExtensionName);
+                                              "The value is not \"{0}\"", Names.ExtensionName);
             StringReader currentLine;
             Dictionary<string, int> lineNumbers = new Dictionary<string, int>();
             // InputVars common to different read routines.

@@ -24,7 +24,6 @@ namespace Landis.Extension.Succession.ForC
 {
     public class PlugIn : Library.Succession.ExtensionBase
     {
-        public static readonly string ExtensionName = "ForC Succession";
         private static ICore modelCore;
         private IInputParams inputParams;
         private IInputSnagParams inputSnagParams;
@@ -37,7 +36,7 @@ namespace Landis.Extension.Succession.ForC
         private static List<SiteCohortToAdd> siteCohortsToAdd;
         private List<ILight> sufficientLight;
 
-        public PlugIn() : base(ExtensionName)
+        public PlugIn() : base(Names.ExtensionName)
         {
             siteCohortsToAdd = new List<SiteCohortToAdd>();
         }
