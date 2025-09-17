@@ -193,8 +193,10 @@ namespace Landis.Extension.Succession.ForC
             // biomass.
             //
             // Do the very fast soil pool dynamics
-            if (netCLoss[(int)ComponentType.FOLIAGE, species.Index] > 0 || netCLoss[(int)ComponentType.FINEROOT, species.Index] > 0
-                || soilC[(int)SoilPoolType.VERYFASTAG, species.Index] > 0 || soilC[(int)SoilPoolType.VERYFASTBG, species.Index] > 0)
+            if (netCLoss[(int)ComponentType.FOLIAGE, species.Index] > 0
+                || netCLoss[(int)ComponentType.FINEROOT, species.Index] > 0
+                || soilC[(int)SoilPoolType.VERYFASTAG, species.Index] > 0
+                || soilC[(int)SoilPoolType.VERYFASTBG, species.Index] > 0)
             {
                 aboveC = netCLoss[(int)ComponentType.FOLIAGE, species.Index];
                 belowC = netCLoss[(int)ComponentType.FINEROOT, species.Index];
@@ -230,9 +232,11 @@ namespace Landis.Extension.Succession.ForC
                 carbonToSlowPool[(int)SoilPoolType.VERYFASTBG] += totalLostC_BS - toAir;
             }
             // Do the fast soil pool dynamics
-            if (netCLoss[(int)ComponentType.SUBMERCHANTABLE, species.Index] > 0 || netCLoss[(int)ComponentType.OTHER, species.Index] > 0
+            if (netCLoss[(int)ComponentType.SUBMERCHANTABLE, species.Index] > 0
+                || netCLoss[(int)ComponentType.OTHER, species.Index] > 0
                 || netCLoss[(int)ComponentType.COARSEROOT, species.Index] > 0
-                || soilC[(int)SoilPoolType.FASTAG, species.Index] > 0 || soilC[(int)SoilPoolType.FASTBG, species.Index] > 0
+                || soilC[(int)SoilPoolType.FASTAG, species.Index] > 0
+                || soilC[(int)SoilPoolType.FASTBG, species.Index] > 0
                 || soilC[(int)SoilPoolType.SOTHERSNAG, 0] > 0)
             {
                 /* Variable definitions:  (Used only by fast soil pool dynamics code.) */
@@ -303,8 +307,7 @@ namespace Landis.Extension.Succession.ForC
                 || soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] > 0
                 || soilC[(int)SoilPoolType.SOTHERSNAG, 0] > 0 
                 || snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS] > 0
-                || snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG] > 0
-                )
+                || snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG] > 0)
             {
                 // calculate how much snag goes to medium soil pool
                 stemSnagToMediumPool = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
