@@ -153,7 +153,7 @@ namespace Landis.Extension.Succession.ForC
                     throw new InputValueException(nBiomassPoolID.Name,
                                                   "DisturbFireTransferBiomass: {0} is not a valid biomass pool ID.", nBiomassPoolID.Value.Actual);
                 // Convert Intensity from 1-based in input file to 0-based simple array.
-                DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)((aDisturbTransferPools[nIntensity.Value - 1]).GetDisturbTransfer(nBiomassPoolID.Value));
+                DisturbTransferFromPool oDisturbTransfer = (DisturbTransferFromPool)aDisturbTransferPools[nIntensity.Value - 1].GetDisturbTransfer(nBiomassPoolID.Value);
                 ReadValue(dFracAir, currentLine);
                 oDisturbTransfer.FracToAir = dFracAir.Value;
                 ReadValue(dFracFPS, currentLine);
