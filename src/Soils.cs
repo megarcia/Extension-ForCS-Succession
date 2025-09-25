@@ -1272,7 +1272,7 @@ namespace Landis.Extension.Succession.ForC
                 icnt++;
                 PlugIn.ModelCore.UI.WriteLine("Spinup: cycles={0}, newSlowPool={1}, diff={2}, prop={3}", icnt, initSlowPool, diff, prop);
             }
-            while (icnt < SoilVars.iParams.SpinUpIterations && (prop > SoilVars.iParams.SpinUpTolerance || prop < -SoilVars.iParams.SpinUpTolerance));
+            while (icnt < SoilVars.iParams.SpinUpIterations && (frac > SoilVars.iParams.SpinUpTolerance || prop < -SoilVars.iParams.SpinUpTolerance));
             return;
         }
 
