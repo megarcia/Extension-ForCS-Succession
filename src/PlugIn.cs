@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Landis.Core;
-using Landis.Data;
 using Landis.Library.InitialCommunities.Universal;
 using Landis.Library.Succession;
 using Landis.Library.UniversalCohorts;

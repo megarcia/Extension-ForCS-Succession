@@ -360,12 +360,15 @@ namespace Landis.Extension.Succession.ForC
 
         /// <summary>
         /// Calculates the percentage of a cohort's standing biomass 
-        /// that is non-woody.
+        /// that is non-woody. Name is inherited from Succession Library,
+        /// so it's not renamed "CalcNonWoodyPercentage" as I (MG) would 
+        /// normally do.
+        /// 
         /// April 2010: changed to be a constant percentage of foliage, 
         /// so that the calculations of turnover give reasonable numbers.
         /// </summary>
-        public Percentage CalcNonWoodyPercentage(ICohort cohort,
-                                                 ActiveSite site)
+        public Percentage ComputeNonWoodyPercentage(ICohort cohort,
+                                                    ActiveSite site)
         {
             double leaf = 0.1;
             Percentage temp = new Percentage(leaf);
@@ -376,8 +379,8 @@ namespace Landis.Extension.Succession.ForC
         /// Calculates the initial biomass for a cohort at a site.
         /// </summary>
         public static int CalcInitCohortBiomass(ISpecies species,
-                                         SiteCohorts siteCohorts,
-                                         ActiveSite site)
+                                                SiteCohorts siteCohorts,
+                                                ActiveSite site)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             double B_ACT = 0.0;
