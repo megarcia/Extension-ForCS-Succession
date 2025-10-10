@@ -52,8 +52,8 @@ namespace Landis.Extension.Succession.ForC
         /// <param name="temperature"></param>
         /// <param name="q10Rate"></param>
         /// <returns></returns>
-        public double CalcDecayFTemp(double temperature,
-                                     double q10Rate)
+        public static double CalcDecayFTemp(double temperature,
+                                            double q10Rate)
         {
             double decayFTemp = Math.Exp((temperature - Constants.DECAYREFTEMP) * Math.Log(q10Rate) * 0.1);
             return decayFTemp;
@@ -64,10 +64,10 @@ namespace Landis.Extension.Succession.ForC
         /// </summary>
         /// <param name="precipitation"></param>
         /// <returns></returns>
-        public float CalcDecayFPrecip(double precipitation)
+        public static double CalcDecayFPrecip(double precipitation)
         {
             // Currently, precipitation does not influence the decay rates.
-            float decayFPrecip = 1F;
+            double decayFPrecip = 1.0;
             return decayFPrecip;
         }
     }

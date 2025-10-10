@@ -80,7 +80,6 @@ namespace Landis.Extension.Succession.ForC
             }
             m_iParams = parameters;
             bWroteMsg1 = false;
-            bWroteMsg2 = false;
             // The initial ANPP and max biomass:
             GenerateNewANPPandMaxBiomass(parameters.Timestep, 0);
         }
@@ -148,10 +147,7 @@ namespace Landis.Extension.Succession.ForC
                         else if (usetime < 0)
                         {
                             // user didn't enter anything for all the spin-up time, and we must use the year 0 time.                            if (!bWroteMsg2)
-                            {
-                                PlugIn.ModelCore.UI.WriteLine("MaxBiomass values were not entered for the earliest spin-up years. Year 0 values will be used.");
-                                bWroteMsg2 = true;
-                            }
+                            PlugIn.ModelCore.UI.WriteLine("MaxBiomass values were not entered for the earliest spin-up years. Year 0 values will be used.");
                             if (m_iParams.MaxBiomassTimeCollection[ecoregion][species].TryGetValue(0, out maxbio))
                                 B_MAX_Spp[species][ecoregion] = (int)maxbio.MaxBio;
                         }
