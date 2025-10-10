@@ -3,6 +3,9 @@
 // NOTE: ActiveSite --> Landis.SpatialModeling
 // NOTE: ISpecies --> Landis.Core
 
+using Landis.Core;
+using Landis.SpatialModeling;
+
 namespace Landis.Extension.Succession.ForC
 {
     public struct SiteCohortToAdd

@@ -4,6 +4,8 @@
 // NOTE: ISpecies --> Landis.Core
 
 using System.IO;
+using Landis.Core;
+using Landis.Library.Parameters;
 
 namespace Landis.Extension.Succession.ForC
 {

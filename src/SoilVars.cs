@@ -1,4 +1,4 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
 
 namespace Landis.Extension.Succession.ForC
 {

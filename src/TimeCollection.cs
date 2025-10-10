@@ -1,9 +1,11 @@
+using System.Collections.Generic;
+
 namespace Landis.Extension.Succession.ForC
 {
     public class TimeCollection<T> : ITimeCollection<T> where T : ITimeInput
     {
-        protected System.Collections.Generic.SortedList<int, T> m_listValues = new System.Collections.Generic.SortedList<int, T>();
-        
+        protected SortedList<int, T> m_listValues = new SortedList<int, T>();
+
         /// <summary>
         /// Returns true if there is an ITimeInput (or derived) in the collection with the same Year, false otherwise.
         /// </summary>
@@ -13,7 +15,7 @@ namespace Landis.Extension.Succession.ForC
         {
             return m_listValues.ContainsKey(value.Year);
         }
-        
+
         /// <summary>
         /// Adds an ITimeInput object (or derived) to the collection.  If there is already an object
         /// for the given ITimeInput.Year in the collection, the existing object is

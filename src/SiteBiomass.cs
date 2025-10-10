@@ -9,6 +9,10 @@
 // NOTE: SiteCohorts --> Landis.Library.UniversalCohorts
 
 using System.Collections.Generic;
+using Landis.Core;
+using Landis.Library.InitialCommunities.Universal;
+using Landis.Library.UniversalCohorts;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.ForC
 {

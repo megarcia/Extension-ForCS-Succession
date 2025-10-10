@@ -1,5 +1,7 @@
 //  Authors:  Caren Dymond, Sarah Beukema
 
+using Landis.Library.Parameters;
+
 namespace Landis.Extension.Succession.ForC
 {
     /// <summary>

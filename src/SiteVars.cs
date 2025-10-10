@@ -1,10 +1,14 @@
 // Authors: Robert M. Scheller, James B. Domingo
 
 // NOTE: ActiveSite --> Landis.SpatialModeling
-// NOTE: ISiteVar --> Landis.Library.Spatial
+// NOTE: ISiteVar --> Landis.SpatialModeling
 // NOTE: Pool --> Landis.Library.UniversalCohorts
-// NOTE: Process --> ???
+// NOTE: Process --> System.Diagnostics
 // NOTE: SiteCohorts --> Landis.Library.UniversalCohorts
+
+using System.Diagnostics;
+using Landis.Library.UniversalCohorts;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -80,7 +84,7 @@ namespace Landis.Extension.Succession.ForC
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 // Note: we need this both here and in Plug-in
-                Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();  //temporary - for memory testing SEPT
+                Process currentProcess = Process.GetCurrentProcess();  //temporary - for memory testing SEPT
                 double totalMBOfPhysicalMemory = currentProcess.WorkingSet64 / 100000.0;
                 double totalMBOfVirtualMemory = currentProcess.VirtualMemorySize64 / 100000.0;
                 soils[site] = new Soils(iParams, site, iDMParams);

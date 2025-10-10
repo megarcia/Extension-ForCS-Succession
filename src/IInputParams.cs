@@ -4,6 +4,9 @@
 // NOTE: Percentage --> Landis.Utilities
 
 using System.Collections.Generic;
+using Landis.Library.Parameters;
+using Landis.Library.Succession;
+using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC
 {

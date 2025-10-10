@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using Landis.Core;
 
 namespace Landis.Extension.Succession.ForC
 {

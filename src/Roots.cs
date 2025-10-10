@@ -4,6 +4,9 @@
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: ISpecies --> Landis.Core
 
+using Landis.Core;
+using Landis.SpatialModeling;
+
 namespace Landis.Extension.Succession.ForC
 {
     /// <summary>

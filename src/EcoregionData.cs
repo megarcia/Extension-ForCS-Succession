@@ -5,6 +5,11 @@
 // NOTE: ISpecies --> Landis.Core
 // NOTE: Percentage --> Landis.Utilities
 
+using Landis.Core;
+using Landis.Library.Parameters;
+using Landis.SpatialModeling;
+using Landis.Utilities;
+
 namespace Landis.Extension.Succession.ForC
 {
     public class EcoregionData

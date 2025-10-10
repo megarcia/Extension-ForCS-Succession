@@ -8,6 +8,7 @@
 // NOTE: ISpeciesDataset --> Landis.Core
 
 using Landis.Core;
+using Landis.Library.Parameters;
 using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC

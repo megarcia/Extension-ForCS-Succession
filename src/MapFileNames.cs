@@ -3,6 +3,7 @@
 // NOTE: OutputPath --> Landis.Utilities
 
 using System.Collections.Generic;
+using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC
 {

@@ -3,6 +3,9 @@
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: IEcoregionDataset --> Landis.Core
 
+using Landis.Core;
+using Landis.Library.Parameters;
+
 namespace Landis.Extension.Succession.ForC
 {
     public class InputClimateParams : IInputClimateParams

@@ -1,7 +1,9 @@
 // Authors: Caren Dymond, Sarah Beukema (based on code from Robert Scheller)
 
-// NOTE: IOutputRaster --> Landis.Library.Spatial
-// NOTE: IntPixel --> Landis.Library.Spatial
+// NOTE: IOutputRaster --> Landis.SpatialModeling
+// NOTE: IntPixel --> Landis.SpatialModeling
+
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.ForC
 {

@@ -3,6 +3,9 @@
 // NOTE: InputValue --> Landis.Utilities
 // NOTE: ISpecies --> Landis.Core
 
+using Landis.Core;
+using Landis.Utilities;
+
 namespace Landis.Extension.Succession.ForC
 {
     public class InputSnagParams : IInputSnagParams
