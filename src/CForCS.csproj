@@ -1,16 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Landis.Extension.Succession.ForC-v4</AssemblyName>
     <RootNamespace>Landis.Extension.Succession.ForC</RootNamespace>
-    <ApplicationIcon />
-    <StartupObject />
-    <Version>4.0.2</Version>
-    <AssemblyVersion>4.0.2</AssemblyVersion>
-    <FileVersion>4.0.2</FileVersion>
-  </PropertyGroup>
+    <AssemblyName>Landis.Extension.Succession.ForC-v4</AssemblyName>
+    <AssemblyTitle>Landis.Extension.Succession.ForC-v4</AssemblyTitle>
+    <Version>4.1</Version>
+    <AssemblyVersion>4.1</AssemblyVersion>
+    <FileVersion>4.1</FileVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/LANDIS-II-Foundation/Extension-ForCS-Succession</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://github.com/LANDIS-II-Foundation/Extension-ForCS-Succession/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.landis-ii.org</PackageProjectUrl>
+    <NeutralLanguage>English</NeutralLanguage>
+    <Authors>Caren Dymond, Sarah Beukema</Authors>
+    <Product>Landis.Extension.Succession.ForC</Product>
+    <Copyright></Copyright>
+    <PackageTags>LANDIS-II;Landis;Extension;Succession;ForC</PackageTags>
+    <Description></Description>
+    <PackageReleaseNotes>.NET Standard 2.0 update</PackageReleaseNotes>
+    <Company></Company>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+</PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
