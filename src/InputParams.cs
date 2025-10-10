@@ -3,7 +3,7 @@
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: IEcoregionDataset --> Landis.Core
 // NOTE: InputValue --> Landis.Utilities
-// NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputValueException --> Landis.Utilities
 // NOTE: ISpecies --> Landis.Core
 // NOTE: ISpeciesDataset --> Landis.Core
 // NOTE: Percentage --> Landis.Utilities
@@ -11,6 +11,9 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using Landis.Core;
+using Landis.Library.Succession;
+using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC
 {

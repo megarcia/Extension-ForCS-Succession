@@ -4,12 +4,16 @@
 // NOTE: ICohort --> Landis.Library.UniversalCohorts
 // NOTE: ICore --> Landis.Core
 // NOTE: IEcoregion --> Landis.Core
-// NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputValueException --> Landis.Utilities
 // NOTE: ISpecies --> Landis.Core
 // NOTE: ISpeciesCohorts --> Landis.Library.UniversalCohorts
 
 using System;
 using System.Collections.Generic;
+using Landis.Core;
+using Landis.Library.UniversalCohorts;
+using Landis.SpatialModeling;
+using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC
 {

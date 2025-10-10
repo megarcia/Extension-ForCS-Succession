@@ -3,9 +3,12 @@
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: IEcoregionDataset --> Landis.Core
 // NOTE: InputValue --> Landis.Utilities
-// NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputValueException --> Landis.Utilities
 // NOTE: ISpecies --> Landis.Core
 // NOTE: ISpeciesDataset --> Landis.Core
+
+using Landis.Core;
+using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC
 {

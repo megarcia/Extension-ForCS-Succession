@@ -1,4 +1,4 @@
-// NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputValueException --> Landis.Utilities
 
 using Landis.Utilities;
 
