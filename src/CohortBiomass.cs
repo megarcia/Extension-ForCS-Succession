@@ -71,14 +71,17 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Calculates the change in a cohort's biomass due to Annual Net Primary
-        /// Productivity (ANPP), age-related mortality (M_AGE), and development-
-        /// related mortality (M_BIO).
+        /// Calculates the change in a cohort's biomass due to 
+        /// Annual Net Primary Productivity (ANPP), age-related 
+        /// mortality (M_AGE), and development-related mortality 
+        /// (M_BIO). Name is inherited from Succession Library,
+        /// so it's not renamed "CalcBiomassChange" as I (MG) 
+        /// would normally do.
         /// </summary>
-        public double CalcBiomassChange(ICohort cohort,
-                                        ActiveSite site,
-                                        out double ANPP,
-                                        out ExpandoObject otherParams)
+        public double ComputeChange(ICohort cohort,
+                                    ActiveSite site,
+                                    out double ANPP,
+                                    out ExpandoObject otherParams)
          {
             dynamic tempObject = new ExpandoObject();
             otherParams = tempObject;

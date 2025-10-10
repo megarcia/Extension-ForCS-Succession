@@ -30,7 +30,7 @@ namespace Landis.Extension.Succession.ForC
         private double probSufficientLight4;
         private double probSufficientLight5;
 
-        public SufficientLight()
+        public Light()
         {
         }
 
@@ -189,8 +189,8 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Calculate shade class at a site  
         /// </summary>
-        public override byte CalcShadeClass(ActiveSite site,
-                                            ICore modelCore)
+        public byte CalcShadeClass(ActiveSite site,
+                                   ICore modelCore)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
             double B_MAX = EcoregionData.B_MAX[ecoregion];

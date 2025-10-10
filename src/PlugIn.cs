@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Landis.Core;
+using Landis.Data;
 using Landis.Library.InitialCommunities.Universal;
 using Landis.Library.Succession;
 using Landis.Library.UniversalCohorts;
@@ -274,11 +275,13 @@ namespace Landis.Extension.Succession.ForC
         }
 
         /// <summary>
-        /// Calculate shade class at a site  
+        /// Calculate shade class at a site. Name is inherited from
+        /// Succession Library, so it's not renamed "CalcShade" as 
+        /// I (MG) would normally do.  
         /// 
-        /// MG 20250916 moved bulk of method to Light class.  
+        /// MG 20250916 moved bulk of method to Light class. 
         /// </summary>
-        public override byte CalcShadeClass(ActiveSite site)
+        public override byte ComputeShade(ActiveSite site)
         {
             byte shadeClass = Light.CalcShadeClass(site, modelCore);
             return shadeClass;
