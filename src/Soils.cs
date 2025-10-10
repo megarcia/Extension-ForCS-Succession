@@ -675,11 +675,13 @@ namespace Landis.Extension.Succession.ForC
             // Make sure we use the eDOMPoolIDs (1-based) not the 0-based SoilPoolType enum.
             // Now that we have the information, let's actually do the transfers.
             // set up the printing flags
+            /*
             bool bPrintFlux = false;
             if ((PlugIn.ModelCore.CurrentTime % SoilVars.iParams.OutputFlux == 0) || PlugIn.ModelCore.CurrentTime == 1)
                 bPrintFlux = true;
             if (PlugIn.ModelCore.CurrentTime == 0)
                 bPrintFlux = false;
+            */
             DisturbTransferFromPool oDisturbTransfer;
             foreach (ISpecies species in PlugIn.ModelCore.Species)
             {

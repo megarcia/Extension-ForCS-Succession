@@ -64,7 +64,6 @@ namespace Landis.Extension.Succession.ForC
         private Library.Parameters.Species.AuxParm<double> growthCurveShape;
         private Library.Parameters.Ecoregions.AuxParm<double> fieldCapacity;
         private Library.Parameters.Ecoregions.AuxParm<double> latitude;
-        private string ageOnlyDisturbanceParms;
         private string initCommunities;
         private string communitiesMap;
         private IEcoregionDataset m_dsEcoregion;

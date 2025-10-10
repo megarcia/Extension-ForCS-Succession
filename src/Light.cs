@@ -154,10 +154,10 @@ namespace Landis.Extension.Succession.ForC
         /// that is an ecoregion x spp property. Therefore, would better be 
         /// described as "SiteLevelDeterminantReproduction".
         /// </summary>
-        public bool IsSufficientLight(ISpecies species,
-                                      ActiveSite site,
-                                      List<ILight> sufficientLight,
-                                      ICore modelCore)
+        public static bool IsSufficientLight(ISpecies species,
+                                             ActiveSite site,
+                                             List<ILight> sufficientLight,
+                                             ICore modelCore)
         {
             byte siteShade = modelCore.GetSiteVar<byte>("Shade")[site];
             double lightProbability = 0.0;
@@ -189,8 +189,8 @@ namespace Landis.Extension.Succession.ForC
         /// <summary>
         /// Calculate shade class at a site  
         /// </summary>
-        public byte CalcShadeClass(ActiveSite site,
-                                   ICore modelCore)
+        public static byte CalcShadeClass(ActiveSite site,
+                                          ICore modelCore)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
             double B_MAX = EcoregionData.B_MAX[ecoregion];

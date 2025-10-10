@@ -37,10 +37,8 @@ namespace Landis.Extension.Succession.ForC
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> FineTurnover;
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> CoarseTurnover;
         private static IInputParams m_iParams;
-        private static StreamWriter log;
         private static bool bWroteMsg1;
-        private static bool bWroteMsg2;
-
+        
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParams parameters)

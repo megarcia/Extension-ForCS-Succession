@@ -14,7 +14,7 @@ namespace Landis.Extension.Succession.ForC
         /// </summary>
         /// <param name="ecoregion"></param>
         /// <param name="species"></param>
-        public void CalcDecayRates(IEcoregion ecoregion, ISpecies species)
+        public static void CalcDecayRates(IEcoregion ecoregion, ISpecies species)
         {
             /* CODE RELATED TO THE USE OF ONE OF THE BIGGER LANDIS CLIMATE LIBRARIES
             int year = PlugIn.ModelCore.CurrentTime;
