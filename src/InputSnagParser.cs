@@ -1,15 +1,23 @@
 // Authors: Caren Dymond, Sarah Beukema
 
+// NOTE: AtEndOfInput --> Landis.Utilities
+// NOTE: CurrentLine --> Landis.Utilities
+// NOTE: GetNextLine --> Landis.Utilities
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: InputValue --> Landis.Utilities
-// NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputValueException --> Landis.Utilities
 // NOTE: InputVar --> Landis.Utilities
 // NOTE: ISpecies --> Landis.Core
 // NOTE: ISpeciesDataset --> Landis.Core
 // NOTE: Percentage --> Landis.Utilities
+// NOTE: ReadName --> Landis.Utilities
+// NOTE: ReadValue --> Landis.Utilities
+// NOTE: ReadVar --> Landis.Utilities
 // NOTE: StringReader --> Landis.Utilities
 
 using System.Collections.Generic;
+using Landis.Core;
+using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -52,7 +60,7 @@ namespace Landis.Extension.Succession.ForC
             InputSnagParams parameters = new InputSnagParams();  
             ReadName(Names.SnagData);
             int nread = 0;            
-            while (!AtEndOfInput && (CurrentName != "No Section To Follow"))
+            while (! AtEndOfInput && (CurrentName != "No Section To Follow"))
             {
                 currentLine = new StringReader(CurrentLine);
                 ISpecies species = ReadSpecies(currentLine);

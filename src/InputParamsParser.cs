@@ -1,20 +1,30 @@
-//  Authors:  Caren Dymond, Sarah Beukema
+// Authors: Caren Dymond, Sarah Beukema
 
+// NOTE: AtEndOfInput --> Landis.Utilities
+// NOTE: CurrentLine --> Landis.Utilities
+// NOTE: GetNextLine --> Landis.Utilities
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: IEcoregionDataset --> Landis.Core
 // NOTE: InputValue --> Landis.Utilities
-// NOTE: InputValueException --> Landis.Utilities.InputValueException
+// NOTE: InputValueException --> Landis.Utilities
 // NOTE: InputVar --> Landis.Utilities
 // NOTE: ISpecies --> Landis.Core
 // NOTE: ISpeciesDataset --> Landis.Core
 // NOTE: NewParseException --> Landis.Utilities
 // NOTE: Percentage --> Landis.Utilities
+// NOTE: ReadName --> Landis.Utilities
+// NOTE: ReadOptionalVar --> Landis.Utilities
+// NOTE: ReadValue --> Landis.Utilities
+// NOTE: ReadVar --> Landis.Utilities
 // NOTE: SeedingAlgorithms --> Landis.Library.Succession
 // NOTE: SeedingAlgorithmsUtil --> Landis.Library.Succession
 // NOTE: StringReader --> Landis.Utilities
 
 using System.Collections.Generic;
 using System.Data;
+using Landis.Core;
+using Landis.Library.Succession;
+using Landis.Utilities;
 
 namespace Landis.Extension.Succession.ForC
 {
@@ -264,7 +274,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<double> growthCurveShapeParm = new InputVar<double>("Growth Curve Shape Parameter");
             string lastColumn = "the " + mbm.Name + " column";
             nread = 0;
-            while (!AtEndOfInput && (CurrentName != Names.DOMPools))
+            while (! AtEndOfInput && (CurrentName != Names.DOMPools))
             {
                 currentLine = new StringReader(CurrentLine);
                 ISpecies species = ReadSpecies(currentLine);
@@ -305,7 +315,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<string> sDOMPool = new InputVar<string>("DOMPoolName");
             nread = 0;
             previousNumber = 0;
-            while (!AtEndOfInput && (CurrentName != Names.EcoSppDOMParms))
+            while (! AtEndOfInput && (CurrentName != Names.EcoSppDOMParms))
             {
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(nDOMPoolID, currentLine);
@@ -478,7 +488,7 @@ namespace Landis.Extension.Succession.ForC
             InputVar<double> dFineTurnover = new InputVar<double>("Fine Turnover");
             InputVar<double> dCoarseTurnover = new InputVar<double>("Coarse Turnover");
             nread = 0;
-            while (!AtEndOfInput && (CurrentName != "No Section To Follow" && CurrentName != Names.SnagData))
+            while (! AtEndOfInput && (CurrentName != "No Section To Follow" && CurrentName != Names.SnagData))
             {
                 currentLine = new StringReader(CurrentLine);
                 ReadValue(sEcoregion, currentLine);
