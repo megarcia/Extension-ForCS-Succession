@@ -1,7 +1,7 @@
 ; LANDIS-II Extension infomation
 #define CoreRelease "LANDIS-II-V8"
-#define ExtensionName "ForC Succession"
-#define AppVersion "4.0.2"
+#define ExtensionName "ForC-Succession"
+#define AppVersion "4.1"
 #define AppPublisher "LANDIS-II Foundation"
 #define AppURL "http://www.landis-ii.org/"
 

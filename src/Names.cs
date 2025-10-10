@@ -5,7 +5,7 @@ namespace Landis.Extension.Succession.ForC
     /// </summary>
     public class Names
     {
-        public const string ExtensionName = "ForC Succession";
+        public const string ExtensionName = "ForC-Succession";
         public const string ClimateTable = "ClimateTable";
         public const string DisturbFireTransferDOM = "DisturbFireTransferDOM";
         public const string DisturbOtherTransferDOM = "DisturbOtherTransferDOM";
