@@ -1,5 +1,7 @@
 // NOTE: InputValueException --> Landis.Utilities.InputValueException
 
+using Landis.Utilities;
+
 namespace Landis.Extension.Succession.ForC
 {
     /// <summary>

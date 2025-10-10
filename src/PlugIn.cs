@@ -11,14 +11,19 @@
 // NOTE: ICore --> Landis.Core
 // NOTE: IDataset --> Landis.Library.InitialCommunities.Universal
 // NOTE: IEcoregion --> Landis.Core
-// NOTE: IInputRaster --> Landis.Library.Spatial
+// NOTE: IInputRaster --> Landis.SpatialModeling
 // NOTE: ISpecies --> Landis.Core
 // NOTE: Reproduction --> Landis.Library.Succession
-// NOTE: UIntPixel --> Landis.Library.Spatial
+// NOTE: UIntPixel --> Landis.SpatialModeling
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Landis.Core;
+using Landis.Library.InitialCommunities.Universal;
+using Landis.Library.Succession;
+using Landis.Library.UniversalCohorts;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.ForC
 {

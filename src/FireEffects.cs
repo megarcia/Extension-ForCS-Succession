@@ -2,6 +2,8 @@
 
 // NOTE: ICohort --> Landis.Library.UniversalCohorts
 
+using Landis.Library.UniversalCohorts;
+
 namespace Landis.Extension.Succession.ForC
 {
     public class FireEffects

@@ -9,6 +9,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using Landis.Core;
+using Landis.Library.UniversalCohorts;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.ForC
 {
