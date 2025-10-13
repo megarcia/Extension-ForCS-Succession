@@ -13,6 +13,7 @@
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: IInputRaster --> Landis.SpatialModeling
 // NOTE: ISpecies --> Landis.Core
+// NOTE: Landis.Data --> Landis.Core
 // NOTE: Reproduction --> Landis.Library.Succession
 // NOTE: UIntPixel --> Landis.SpatialModeling
 

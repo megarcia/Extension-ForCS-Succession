@@ -5,6 +5,7 @@
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: ISpecies --> Landis.Core
 // NOTE: ISpeciesCohorts --> Landis.Library.UniversalCohorts
+// NOTE: Landis.Data --> Landis.Core
 
 using System;
 using System.Diagnostics;
