@@ -28,7 +28,7 @@ using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.ForC
 {
-    public class PlugIn : Library.Succession.ExtensionBase
+    public class PlugIn : Landis.Library.Succession.ExtensionBase
     {
         private static ICore modelCore;
         private IInputParams inputParams;
